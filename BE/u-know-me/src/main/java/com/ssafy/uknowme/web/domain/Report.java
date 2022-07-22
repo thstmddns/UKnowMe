@@ -9,17 +9,19 @@ import javax.persistence.*;
 @Getter
 public class Report {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "report_seq")
     private int seq;
 
-    @ManyToOne
-    @JoinColumn(name = "member_seq")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reporting_member_seq")
     private Member reportingMember;
 
-    @ManyToOne
-    @JoinColumn(name = "member_seq")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accused_member_seq")
     private Member accusedMember;
 
+    @Enumerated(EnumType.STRING)
     private ReportState state;
 }

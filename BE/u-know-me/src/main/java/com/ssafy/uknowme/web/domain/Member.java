@@ -27,7 +27,7 @@ public class Member {
 
     private String smoke;
 
-//    private Address address;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
