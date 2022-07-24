@@ -1,18 +1,41 @@
 package com.ssafy.uknowme.web.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.ssafy.uknowme.web.domain.common.BaseEntity;
+import com.ssafy.uknowme.web.domain.enums.RoomType;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
-public class Room {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Room extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "room_seq")
     private int seq;
 
+    /**
+     * 밸런스 게임 실행 횟수
+     */
     private int balanceCount;
 
-    private int type;
+    /**
+     * 화상 채팅의 타입을 결정하는 필드
+     * ONE : 1:1 화상 채팅
+     * TWO : 2:2 화상 채팅
+     */
+    @Enumerated(EnumType.STRING)
+    private RoomType type;
+
+    @Builder
+    public Room(int seq, int balanceCount, RoomType type) {
+        this.seq = seq;
+        this.balanceCount = balanceCount;
+        this.type = type;
+    }
 }

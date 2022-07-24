@@ -1,20 +1,47 @@
 package com.ssafy.uknowme.web.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.ssafy.uknowme.web.domain.common.BaseEntity;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
-public class Notice {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Notice extends BaseEntity {
 
     @Id @GeneratedValue
-    @Column(name = "member_seq")
+    @Column(name = "notice_seq")
     private int seq;
 
+    /**
+     * 공지사항 제목
+     */
     private String title;
 
+    /**
+     * 공지사항 내용
+     */
     private String content;
 
+    /**
+     * 공지사항 작성자
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_seq")
+    private Member member;
+
     private int hit;
+
+    @Builder
+    public Notice(int seq, String title, String content, Member member, int hit) {
+        this.seq = seq;
+        this.title = title;
+        this.content = content;
+        this.member = member;
+        this.hit = hit;
+    }
 }
