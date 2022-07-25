@@ -13,10 +13,11 @@ export default {
 <style>
 .nowAvatar {
   position: absolute;
-  width: 543px;
-  height: 824px;
-  left: 724px;
-  top: 76px;
+  width: 200px;
+  height: 400px;
+  left: 50%;
+  bottom: 5%;
   background-color: #D9D9D9;
+  transform: translate(-50%, 0%);
 }
 </style>

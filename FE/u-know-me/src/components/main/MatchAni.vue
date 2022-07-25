@@ -10,7 +10,8 @@
       <div class="circle" style="animation-delay: 3s"></div>
 
     </div>
-    <button>매칭</button>
+    <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기 -->
+    <button class="matching-btn">매칭을 시작해주세요</button>
   </div>
   
 </template>
@@ -70,5 +71,15 @@ export default {
 .item img {
   width: 50px;
   height: 50px;
+}
+
+.matching-btn {
+  background-color: #DCDDFE;
+  width: 200px;
+  height: 50px;
+  border: none;
+  margin: 0;
+  border-radius: 30px;
+  filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
 }
 </style>
