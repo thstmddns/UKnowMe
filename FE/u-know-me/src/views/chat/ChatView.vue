@@ -45,8 +45,6 @@
           value="Leave session"
         />
       </div>
-      <div><video id="canvas_video" style="width: 600px; height: 600px; border: 1px solid red;"
-      autoplay controls></video></div>
       <div id="main-video" class="col-md-6">
         <user-video :stream-manager="mainStreamManager" />
       </div>
@@ -70,9 +68,10 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
-import * as THREE from 'three'
-import * as GLTF from 'three/examples/jsm/loaders/GLTFLoader'
-import * as VRMUtils from '@pixiv/three-vrm';
+import * as THREE from "three";
+import * as GLTF from "three/examples/jsm/loaders/GLTFLoader";
+import * as OrbitControls from "three/examples/jsm/controls/OrbitControls";
+import * as VRMUtils from "@pixiv/three-vrm";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -136,79 +135,98 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-			//three
+            //three
+            const scene = new THREE.Scene();
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(640, 480);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.domElement.id = "test";
+            document.body.appendChild(renderer.domElement);
 
-			const scene = new THREE.Scene();
-			const renderer = new THREE.WebGLRenderer({ alpha: true });
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.domElement.id = "test";
-			document.body.appendChild(renderer.domElement);
+            // camera
+            const orbitCamera = new THREE.PerspectiveCamera(
+              75,
+              640 / 480,
+              0.1,
+              1000
+            );
+            orbitCamera.position.set(0.0, 1.4, 0.7);
 
-			// camera
-			const orbitCamera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, 0.1, 1000);
-			orbitCamera.position.set(0.0, 1.4, 0.7);
+            // controls
+            const orbitControls = new OrbitControls.OrbitControls(
+              orbitCamera,
+              renderer.domElement
+            );
+            orbitControls.screenSpacePanning = true;
+            orbitControls.target.set(0.0, 1.4, 0.0);
+            orbitControls.update();
 
-			// light
-			const light = new THREE.DirectionalLight(0xffffff);
-			light.position.set(1.0, 1.0, 1.0).normalize();
-			scene.add(light);
+            // light
+            const light = new THREE.DirectionalLight(0xffffff);
+            light.position.set(1.0, 1.0, 1.0).normalize();
+            scene.add(light);
 
-			/* THREEJS WORLD SETUP */
-			let currentVrm;
+            /* THREEJS WORLD SETUP */
+            let currentVrm;
 
-			// Main Render Loop
-			const clock = new THREE.Clock();
+            // Main Render Loop
+            const clock = new THREE.Clock();
 
-			function animate() {
-				requestAnimationFrame(animate);
+            function animate() {
+              requestAnimationFrame(animate);
 
-				if (currentVrm) {
-					// Update model to render physics
-					currentVrm.update(clock.getDelta());
-				}
-				renderer.render(scene, orbitCamera);
-			}
-			animate();
+              if (currentVrm) {
+                // Update model to render physics
+                currentVrm.update(clock.getDelta());
+              }
+              renderer.render(scene, orbitCamera);
+            }
+            animate();
 
-			// Import Character VRM
-			const loader = new GLTF.GLTFLoader();
-			loader.crossOrigin = "anonymous";
-			// Import model from URL, add your own model here
-			loader.load(
-				// "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
-				"test.vrm",
+            // Import Character VRM
+            const loader = new GLTF.GLTFLoader();
+            loader.crossOrigin = "anonymous";
 
-				(gltf) => {
-					VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+            var ary = ["test.vrm", "test2.vrm", "동민.vrm", "진경.vrm"];
+            var rand = Math.floor(Math.random() * 101);
 
-					VRMUtils.VRM.from(gltf).then((vrm) => {
-						scene.add(vrm.scene);
-						currentVrm = vrm;
-						currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-					});
-				},
+            rand %= 4;
 
-				(progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
-				(error) => console.error(error)
-			);
+            // Import model from URL, add your own model here
+            loader.load(
+              // "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
+              ary[rand],
 
-			// capture
-			const canvas = document.getElementById('test')
-			const canvas_video = document.getElementById('canvas_video')
+              (gltf) => {
+                VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-			canvas_video.srcObject = canvas.captureStream(10)
-			var testVideo = canvas.captureStream(10).getVideoTracks()[0];
+                VRMUtils.VRM.from(gltf).then((vrm) => {
+                  scene.add(vrm.scene);
+                  currentVrm = vrm;
+                  currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+                });
+              },
 
+              (progress) =>
+                console.log(
+                  "Loading model...",
+                  100.0 * (progress.loaded / progress.total),
+                  "%"
+                ),
+              (error) => console.error(error)
+            );
+
+            // capture
+            const canvas = document.getElementById("test");
+            var testVideo = canvas.captureStream(10).getVideoTracks()[0];
 
             // --- Get your own camera stream with the desired properties ---
-
             let publisher = this.OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
+              audioSource: false, // The source of audio. If undefined default microphone
               videoSource: testVideo, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "400x480", // The resolution of your video
+              resolution: "640x480", // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: true, // Whether to mirror your local video or not
@@ -328,6 +346,4 @@ export default {
     },
   },
 };
-
-
 </script>
