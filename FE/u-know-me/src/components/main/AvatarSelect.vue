@@ -9,6 +9,7 @@
 import AvatarCard from '@/components/main/AvatarCard.vue'
 
 export default {
+  name: 'AvatarSelect',
   components: { AvatarCard },
 }
 </script>
