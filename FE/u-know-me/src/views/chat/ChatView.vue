@@ -427,7 +427,9 @@ export default {
 
             const holistic = new Holistic.Holistic({
                 locateFile: (file) => {
-                    return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
+                    console.log("test :" + file);
+                    return './holistic/'+file;
+                    // return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
                 },
             });
 
