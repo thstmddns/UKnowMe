@@ -1,13 +1,11 @@
 <template>
   <div class="side-bar">
     <button 
-      class="landing-btn landing-btn-side"
-      style="right:-20px; top:230px;"
+      class="landing-btn landing-btn-side landing-btn-signin"
       @click="btnCh=1"
     >로그인</button>
     <button
-      class="landing-btn landing-btn-side"
-      style="right:-20px; top:290px;"
+      class="landing-btn landing-btn-side landing-btn-signup"
       @click="btnCh=2"
     >회원가입</button>
   </div>
@@ -58,6 +56,14 @@ export default {
   width: 145px;
   height: 45px;
   cursor: pointer;
+}
+.landing-btn-signin {
+  right: -20px;
+  top: 24%;
+}
+.landing-btn-signup {
+  right: -20px;
+  top: calc(24% + 60px);;
 }
 .landing-btn-side:hover {
   transform: scale(1.05)

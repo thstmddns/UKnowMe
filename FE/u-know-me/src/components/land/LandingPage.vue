@@ -1,5 +1,8 @@
 <template>
   <div class="landing-page">
+    <video class="landing-video" muted autoplay loop>
+      <source src="~@/assets/land/landing-background.mp4" type="video/mp4">
+    </video>
     <CherryBlossom/>
     <img class="landing-text" src="@/assets/land/landing-text.png" alt="landing-text">
     <div class="avatar">
@@ -25,30 +28,39 @@ export default {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-image: url("@/assets/land/landing_background.png");
+  overflow: hidden;
+  /* background-size: cover; */
+  /* background-position: center; */
+  /* background-image: url("@/assets/land/landing_background.png"); */
+}
+.landing-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
 }
 .landing-text {
   position: absolute;
-  width: 210px;
-  height: 271px;
-  left: 43%;
+  /* width: 210px; */
+  /* height: 271px; */
+  height: 30%;
+  left: 42%;
   top: 0px;
   filter: drop-shadow(0px 5.25522px 5.25522px rgba(0, 0, 0, 0.25));
   pointer-events: none;
 }
 .you-know {
   position: absolute;
-  width: 520px;
-  left: calc(43%);
+  /* width: 520px; */
+  height: 78%;
+  left: 42%;
   bottom: 0px;
   pointer-events: none;
 }
 .me {
   position: absolute;
-  width: 600px;
-  left: calc(43% - 330px);
+  /* width: 600px; */
+  height: 74%;
+  left: calc(42% - 36vh);
   bottom: 0px;
   pointer-events: none;
 }

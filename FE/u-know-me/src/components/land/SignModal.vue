@@ -4,8 +4,10 @@
       <div class="close-btn" @click="btnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
       </div>
-      <SignIn v-if="btnCh==1"/>
-      <SignUp v-if="btnCh==2"/>
+      <div class="sign-modal-content">
+        <SignIn v-if="btnCh===1"/>
+        <SignUp v-if="btnCh===2"/>
+      </div>
     </div>
   </div>
 </template>
@@ -46,13 +48,17 @@ export default {
 .sign-modal {
   position: relative;
   width: 550px;
-  height: 500px;
+  height: 92%;
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
   left:50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.sign-modal-content {
+  height: 92%;
+  padding: 32px 62px;
 }
 .close-btn {
   position: absolute;

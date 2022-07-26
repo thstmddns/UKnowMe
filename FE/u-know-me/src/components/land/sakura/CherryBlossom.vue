@@ -1,5 +1,5 @@
 <template>
-  <button @click="cherry" class="cherry-blossom">벚꽃</button>
+  <button @click="cherry">벚꽃</button>
 </template>
 
 <script>
@@ -16,8 +16,5 @@ export default {
 </script>
 
 <style>
-.cherry-blossom {
-
-}
 @import 'CherryBlossom.css'
 </style>
