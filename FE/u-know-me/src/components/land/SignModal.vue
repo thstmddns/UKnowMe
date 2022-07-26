@@ -61,5 +61,6 @@ export default {
 }
 .x-btn {
   font-size: 48px;
+  cursor: pointer;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="landing-page">
+    <CherryBlossom/>
     <img class="landing-text" src="@/assets/land/landing-text.png" alt="landing-text">
     <div class="avatar">
       <img class="me" src="@/assets/land/character_woman.png" alt="me">
@@ -9,10 +10,13 @@
 </template>
 
 <script>
-
+import CherryBlossom from '@/components/land/sakura/CherryBlossom.vue'
 
 export default {
-  name: 'LandingPage'
+  name: 'LandingPage',
+  components: {
+    CherryBlossom,
+  },
 }
 </script>
 
