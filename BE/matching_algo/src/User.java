@@ -42,9 +42,8 @@ public class User {
     private int age;
     private double lat; //위도
     private double lon; //경도
-    private boolean[] options; //자신 옵션
-    private boolean[] matchoptions; //상대에게 원하는 옵션
-
+    private int[] options; //자신 옵션 ( 0 : 무관, 1 : false, 2 : true)
+    private int[] matchoptions; //상대에게 원하는 옵션
 
     public int getSeq() {
         return seq;
@@ -78,7 +77,6 @@ public class User {
         this.gender = gender;
     }
 
-
     public double getLat() {
         return lat;
     }
@@ -95,25 +93,25 @@ public class User {
         this.lon = lon;
     }
 
-    public boolean[] getOptions() {
+    public int[] getOptions() {
         return options;
     }
 
-    public void setOptions(boolean[] options) {
+    public void setOptions(int[] options) {
         this.options = options;
     }
 
-    public boolean[] getMatchoptions() {
+    public int[] getMatchoptions() {
         return matchoptions;
     }
 
-    public void setMatchoptions(boolean[] matchoptions) {
+    public void setMatchoptions(int[] matchoptions) {
         this.matchoptions = matchoptions;
     }
 
-    //TODO : 테스트 위한 생성자이므로 나중에 지울 것
+//TODO : 테스트 위한 생성자이므로 나중에 지울 것
 
-    public User(int seq, String id, String nickname, char gender, int maxage, int minage, int age, double lat, double lon, boolean[] options, boolean[] matchoptions) {
+    public User(int seq, String id, String nickname, char gender, int maxage, int minage, int age, double lat, double lon, int[] options, int[] matchoptions) {
         this.seq = seq;
         Id = id;
         this.nickname = nickname;
