@@ -41,6 +41,7 @@ button:before {
   animation: shiny-btn1 3s ease-in-out infinite;
 }
 button:active{
+  background: #ceaff9;
   box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
               -4px -4px 6px 0 rgba(116, 125, 136, .2), 
     inset -4px -4px 6px 0 rgba(255,255,255,.2),
