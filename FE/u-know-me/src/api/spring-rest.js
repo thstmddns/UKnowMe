@@ -1,33 +1,50 @@
-const HOST = 'http://localhost:8000/api/v1/'
+const HOST = 'https://uknowme.mooo.com/'
 
-const MOVIE = 'movies/'
-const ACCOUNTS = 'accounts/'
-const ARTICLES = 'articles/'
-const COMMENTS = 'comments/'
-const REVIEWS = 'reviews/'
+const MEMBERS = 'member/'
+const MACHINGS = 'maching/'
+const FEATURES = 'feature/'
+const ROOMS = 'room/'
+const AVATARS = 'avatar/'
+const NOTICES = 'notice/'
 
 export default {
-  accounts : {
-    login: () => HOST + ACCOUNTS + 'login/',
-    logout: () => HOST + ACCOUNTS + 'logout/',
-    signup: () => HOST + ACCOUNTS + 'signup/',
-    currentUserInfo: () => HOST + ACCOUNTS + 'user/',
-    profile: username => HOST + ACCOUNTS + 'profile/' + username,
-    isAdmin: username => HOST + ACCOUNTS + 'isadmin/' + username,
+  members: {
+    login: () => HOST + MEMBERS + 'login/',
+    logout: () => HOST + MEMBERS + 'logout/',
+    signup: () => HOST + MEMBERS + 'signup/',
+    findId: () => HOST + MEMBERS + 'find/id/',
+    findPassword: () => HOST + MEMBERS + 'find/password/',
+    account: memberSeq => HOST + MEMBERS + `${memberSeq}/`,
+    idDuplicate: () => HOST + MEMBERS + 'duplicate/',
+    kakaoLogin: () => HOST + MEMBERS + 'kakao/callback/',
+    naverLogin: () => HOST + MEMBERS + 'naver/callback/',
+    kakao: () => HOST + MEMBERS + 'add/kakao/',
+    naver: () => HOST + MEMBERS + 'add/naver/',
+    block: () => HOST + MEMBERS + 'block/',
+    report: () => HOST + MEMBERS + 'report/',
+    reportInfo: reportSeq => HOST + MEMBERS + 'report/' + `${reportSeq}/`,
   },
-  articles: {
-    articles: () => HOST + ARTICLES,
-    article: articlePk => HOST + ARTICLES + `${articlePk}/`,
-    likeArticle: articlePk => HOST + ARTICLES + `${articlePk}/` + 'like/',
-    comments: articlePk => HOST + ARTICLES + `${articlePk}/` + COMMENTS,
-    comment: (articlePk, commentPk) =>
-      HOST + ARTICLES + `${articlePk}/` + COMMENTS + `${commentPk}/`,
+  machings: {
+    oneToOne: memberSeq => HOST + MACHINGS + '1vs1/' + `${memberSeq}/`,
+    twoToTwo: memberSeq => HOST + MACHINGS + '2vs2/' + `${memberSeq}/`,
   },
-  movies: {
-    movies: () => HOST + MOVIE,
-    movie: moviePK => HOST + MOVIE + `${moviePK}/`,
-    likeMoive: moviePK => HOST + MOVIE + `${moviePK}/` + 'like/',
-    reviews: moviePK => HOST + MOVIE + `${moviePK}/` + REVIEWS,
-    review: (moviePK, reviewPk) => HOST + MOVIE + `${moviePK}/` + REVIEWS + `${reviewPk}/`
-  } 
+  features: {
+    balance: () => HOST + FEATURES + 'balance/',
+    balanceInfo: balanceSeq => HOST + FEATURES + 'balance/' + `${balanceSeq}/`,
+    keyword: () => HOST + FEATURES + 'keyword/',
+    keywordInfo: keywordSeq => HOST + FEATURES + 'keyword/' + `${keywordSeq}/`,
+  },
+  rooms: {
+    like: memberSeq => HOST + ROOMS + 'like/' + `${memberSeq}/`,
+    exit: () => HOST + ROOMS + 'exit/',
+    entrance: () => HOST + ROOMS + 'entrance/',
+  },
+  avatars: {
+    avatar: () => HOST + AVATARS,
+    avatarInfo: avatarSeq => HOST + AVATARS + `${avatarSeq}/`,
+  },
+  notices: {
+    notice: () => HOST + NOTICES,
+    noticeInfo: noticeSeq => HOST + NOTICES + `${noticeSeq}/`,
+  }
 }
