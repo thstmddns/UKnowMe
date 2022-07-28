@@ -5,9 +5,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
@@ -17,7 +15,7 @@ export default {
   height: 400px;
   left: 50%;
   bottom: 5%;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   transform: translate(-50%, 0%);
 }
 </style>

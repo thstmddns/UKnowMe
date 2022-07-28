@@ -38,6 +38,11 @@ import { useMainStore } from '@/stores/main/main'
 export default {
   name: "ButtonList",
   components: {},
+  data() {
+    return {
+      matchBtn : false,
+    }
+  },
   setup() {
     const main = useMainStore()
     return { main }
