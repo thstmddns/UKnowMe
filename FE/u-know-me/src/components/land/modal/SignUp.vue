@@ -106,12 +106,17 @@
     </div>
     <button type="submit" class="sign-btn">가입하기</button>
   </Form>
+  <div class="go-login">
+    이미 회원이신가요? <span @click="land.btnCh=1">로그인 하기</span>
+  </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { useAccountStore } from '@/stores/land/account'
+import { useLandStore } from '@/stores/land/land'
+
 
 export default {
  name: "SignUp",
@@ -134,6 +139,19 @@ export default {
   }
  },
  methods: {
+    initCredentials() {
+      this.credentials = {
+        id: '',
+        password: '',
+        name: '',
+        nickname: '',
+        gender: '',
+        birth: '',
+        tel: '',
+        smoke: '',
+        address: '',
+      }
+    },
     isRequired(value) {
       if (!value) {
         return '필수정보 입니다.';
@@ -164,7 +182,7 @@ export default {
       if (!value) {
         return '필수정보 입니다.';
       }
-      const nameJ = /^[가-힣a-zA-Z]$/
+      const nameJ = /^[가-힣a-zA-Z]{1,}$/
       if (!nameJ.test(value)) {
         return '한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)';
       }
@@ -236,6 +254,7 @@ export default {
  },
  setup() {
   const account = useAccountStore()
+  const land = useLandStore()
   const birth = ref({
     year: '',
     month: '',
@@ -256,6 +275,7 @@ export default {
     account,
     credentials,
     birth,
+    land,
   }
  }
 }
@@ -268,7 +288,7 @@ export default {
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
-  color: #A056FF;
+  color: #8227fa;
   padding-bottom: 40px;
 }
 #signUpForm {
@@ -343,5 +363,19 @@ export default {
 .error-message {
   font-size: 4px;
   color: red
+}
+.go-login {
+  margin-top: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+.go-login span {
+  font-size: 12px;
+  color: #C699FF;
+}
+.go-login span:hover {
+  cursor: pointer;
+  color:#8227fa;
+  text-decoration: underline;
 }
 </style>

@@ -8,7 +8,7 @@
       <div class="close-btn" @click="btnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
       </div>
-      <div class="sign-modal-content"
+      <div
       :class="{
         'signin-modal-content': btnCh===1, 
         'signup-modal-content': btnCh===2,
@@ -64,7 +64,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 .signin-modal {
-  height: 70%;
+  height: 550px;
 }
 .signup-modal {
   height: 92%;
@@ -73,10 +73,12 @@ export default {
   padding: 32px 62px;
 }
 .signin-modal-content {
+  padding: 32px 69px;
   text-align: center;
-  height: 70%;
+  height: 92%;
 }
 .signup-modal-content {
+  padding: 32px 62px;
   height: 92%;
 }
 .close-btn {
