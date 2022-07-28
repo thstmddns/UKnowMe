@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div id="nowAvatar">
-    </div>
+    <!-- <progress value="22" max="100"></progress> -->
+    <div id="nowAvatar"></div>
   </div>
 </template>
 
 <script>
-import {onMounted} from 'vue';
-import Avatar from '@/assets/main/avatar';
+import { onMounted } from "vue";
+import Avatar from "@/assets/main/avatar";
 export default {
   setup() {
     onMounted(() => {
       Avatar.load();
-    })
-  }
-}
+    });
+  },
+};
 </script>
 
 <style>
