@@ -49,20 +49,16 @@
         <div class="preview">
           <video class="input_video" width="1280px" height="720px"></video>
           <canvas class="guides"></canvas>
-          <section>
-            <a href="/live2d/"><p>Live2D</p></a>
-            <a class="current" href="/"><p>VRM</p></a>  
-          </section>
         </div>
       </div>
-      <div id="main-video" class="col-md-6">
+      <!-- <div id="main-video" class="col-md-6">
         <user-video :stream-manager="mainStreamManager" />
-      </div>
+      </div> -->
       <div id="video-container" class="col-md-6">
-        <user-video
+        <!-- <user-video
           :stream-manager="publisher"
           @click="updateMainVideoStreamManager(publisher)"
-        />
+        /> -->
         <user-video
           v-for="sub in subscribers"
           :key="sub.stream.connection.connectionId"
@@ -613,3 +609,10 @@ export default {
   },
 };
 </script>
+
+<style>
+    #session {
+        background: radial-gradient(61.17% 61.17% at 50% 50%, #EBDCFE 56.77%, #FFFFFF 100%);;
+    }
+
+</style>
