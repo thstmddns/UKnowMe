@@ -1,20 +1,24 @@
 <template>
-  <div class="logout-modal-bg">
-    <div class="logout-modal">
-      <div class="logout-modal-title">
-        <h2 class="logout-title">로그아웃</h2>
-        <button @click="logoutBtn = false">
+  <div class="inform-modal-bg">
+    <div class="inform-modal">
+      <div class="inform-modal-title">
+        <h2 class="inform-title">기본정보 수정</h2>
+        <button @click="informBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
         </button>
       </div>
       
-      <div class="logout-modal-content">
-        <h3>로그아웃 하시겠습니까?</h3>
+      <div class="inform-modal-content">
+        <p>개인 정보 조회를 위해서는 인증이 필요합니다. <br>
+          비밀번호를 입력 후 확인 버튼을 클릭해 주세요.</p>
+      </div>
+      <div class="password-input">
+        <p>비밀번호</p>
+        <input type="text">
       </div>
 
-      <div class="logout-btn-list">
-        <button class="logout-btn">아니오</button>
-        <button class="logout-btn">예</button>
+      <div class="inform-button-list">
+        <button class="inform-btn">확인</button>
       </div>
 
     </div>
@@ -30,17 +34,17 @@ export default {
   components: {},
   setup() {
     const main = useMainStore();
-    const { logoutBtn } = storeToRefs(main);
+    const { informBtn } = storeToRefs(main);
     return {
       main,
-      logoutBtn,
+      informBtn,
     };
   },
 };
 </script>
 
 <style>
-.logout-modal-bg {
+.inform-modal-bg {
   width: 100vw;
   height: 100vh;
   z-index: 1;
@@ -48,10 +52,10 @@ export default {
   position: fixed;
 }
 
-.logout-modal {
+.inform-modal {
   position: relative;
-  width: 25%;
-  height: 250px;
+  width: 30%;
+  height: 350px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
@@ -60,23 +64,27 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.logout-modal-title {
+.inform-modal-title {
   margin: 0 8%;
   display: flex;
   justify-content: space-between;
 }
 
-.logout-title {
+.inform-title {
   float: left;
   color: #A056FF;
 }
 
-.logout-modal-content {
-  padding: 10px 62px 25px ;
+.inform-modal-content {
+  padding: 0 62px;
   text-align: center;
 }
 
-.logout-btn-list {
+.password-input {
+  margin: 40px 100px;
+}
+
+.inform-button-list {
   display: flex;
   justify-content: center;
 }
@@ -91,7 +99,7 @@ export default {
   cursor: pointer;
 }
 
-.logout-btn {
+.inform-btn {
   width: 100px;
   height: 30px;
   background: #A056FF;
@@ -103,7 +111,7 @@ export default {
   cursor: pointer;
 }
 
-.logout-btn:hover {
+.inform-btn:hover {
   transition: all 150ms linear;
   opacity: .85;
 }

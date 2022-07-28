@@ -1,10 +1,12 @@
 <template>
   <div class="match-all">
     <div class="button-list">
-      <button class="btn" @click="logoutBtn = true">
+      <button class="main-btn" @click="main.logoutBtn = true">
         Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
       </button>
-      <button class="btn">정보 수정 <i class="fa-solid fa-gear"></i></button>
+      <button class="main-btn" @click="main.informBtn = true">
+        정보 수정 <i class="fa-solid fa-gear"></i>
+      </button>
     </div>
 
     <div class="match-circle">
@@ -31,15 +33,15 @@
 </template>
 
 <script>
+import { useMainStore } from '@/stores/main/main'
+
 export default {
   name: "ButtonList",
   components: {},
-  data() {
-    return {
-      logoutBtn: false,
-      matchBtn: false,
-    };
-  },
+  setup() {
+    const main = useMainStore()
+    return { main }
+  }
 };
 </script>
 
@@ -63,7 +65,7 @@ button {
   outline: none;
 }
 
-.btn {
+.main-btn {
   width: 130px;
   height: 40px;
   padding: 10px 25px;
@@ -78,11 +80,11 @@ button {
   overflow: hidden;
 }
 
-.btn:hover {
+.main-btn:hover {
   background: #c699ff;
   color: #fff;
 }
-.btn:before {
+.main-btn:before {
   position: absolute;
   display: inline-block;
   top: -180px;
@@ -92,7 +94,7 @@ button {
   background-color: #fff;
   animation: shiny-btn1 3s ease-in-out infinite;
 }
-.btn:active {
+.main-btn:active {
   box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.3),
     -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
     inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),

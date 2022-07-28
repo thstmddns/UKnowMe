@@ -3,22 +3,26 @@
     <avatar-select/>
     <now-avatar/>
     <button-list/>
-    <logout-modal v-if="logoutBtn == true"/>
-    <!-- <match-ani/> -->
+    <logout-modal v-if="main.logoutBtn == true"/>
+    <inform-modal v-if="main.informBtn == true"/>
   </div>
 </template>
 
 <script>
   import AvatarSelect from '@/components/main/AvatarSelect.vue'
   import NowAvatar from '@/components/main/NowAvatar.vue'
-  // import MatchAni from '@/components/main/MatchAni.vue'
   import ButtonList from '@/components/main/ButtonList.vue'
   import LogoutModal from '@/components/main/LogoutModal.vue'
-
+  import InformModal from '@/components/main/InformModal.vue'
+  import { useMainStore } from '@/stores/main/main'
   
   export default {
     name: 'MainPage',
-    components: { AvatarSelect, NowAvatar, ButtonList, LogoutModal },
+    components: { AvatarSelect, NowAvatar, ButtonList, LogoutModal, InformModal },
+    setup() {
+    const main = useMainStore()
+    return { main }
+  }
 
   }
 </script>
