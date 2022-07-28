@@ -2,6 +2,7 @@
   <div class="avatarCollection">
     <div>아바타 선택</div>
     <avatar-card/>
+    <avatar-card/>
   </div>
 </template>
 
