@@ -7,34 +7,40 @@
       </div>
     </div>
 
-    <div class="love-btn">
-
-    </div>
+    <div class="love-btn"></div>
 
     <div class="chat-content-right">
       <div class="sketch"></div>
       <div class="chat-btn-list">
         <div class="top-btn">
-          <button class="chat-btn sketch-btn"><i class="fa-solid fa-pencil"></i></button>
-          <button class="chat-btn camera-btn"><i class="fa-solid fa-camera"></i></button>
-          <button class="chat-btn-lg set-btn">옵션 <i class="fa-solid fa-gear"></i></button>
+          <button class="chat-btn sketch-btn">
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <button class="chat-btn camera-btn">
+            <i class="fa-solid fa-camera"></i>
+          </button>
+          <button class="chat-btn-lg set-btn">
+            옵션 <i class="fa-solid fa-gear"></i>
+          </button>
         </div>
         <div class="bottom-btn">
-          <button class="chat-btn accuse-btn"><i class="fa-solid fa-light-emergency-on"></i></button>
-          <button class="chat-btn game-btn"><i class="fa-solid fa-gamepad-modern"></i></button>
-          <button class="chat-btn-lg out-btn">나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          <button class="chat-btn accuse-btn">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </button>
+          <button class="chat-btn game-btn">
+            <i class="fa-solid fa-gamepad"></i>
+          </button>
+          <button class="chat-btn-lg out-btn">
+            나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
         </div>
       </div>
-      
     </div>
   </div>
-  
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
@@ -51,7 +57,6 @@ export default {
   width: 20%;
   height: 200px;
   background-color: rgb(255, 205, 249);
-  
 }
 .chat-content-right {
   width: 40%;
