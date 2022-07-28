@@ -16,31 +16,16 @@ export const useAccountStore = defineStore('account', {
     authHeader: state => ({ Authorization: `Token ${state.token}`}),
   },
   actions: {
+    getToken() {
+      return localStorage.getItem('id_token')
+    },
     saveToken(token) {
       this.token = token
-      localStorage.setItem('token', token)
+      localStorage.setItem('id_token', token)
     },
     removeToken() {
       this.token = ''
-      localStorage.setItem('token', '')
-    },
-    login(credentials) {
-      axios({
-        url: sr.accounts.login(),
-        method: 'post',
-        data: credentials
-      })
-        .then(res => {
-          const token = res.data.key
-          this.saveToken(token)
-          this.fetchCurrentUser()
-          this.fetchIsAdmin(credentials)
-          router.push({ name: 'home' })
-        })
-        .catch(err => {
-          console.error(err.response.data)
-          this.authError = err.response.data
-        })
+      localStorage.setItem('id_token', '')
     },
     signup(credentials, birth) {
       if (birth.day.length === 1) {
@@ -51,19 +36,34 @@ export const useAccountStore = defineStore('account', {
       // axios({
       //   url: sr.members.signup(),
       //   method: 'post',
-      //   data: credentials
+      //   data: {...credentials}
       // })
       //   .then(res => {
-      //     const token = res.data.key
-      //     console.log(token)
-          // this.saveToken(token)
-          // this.fetchCurrentUser()
           // router.push({ name: 'home' })
         // })
         // .catch(err => {
         //   console.error(err.response.data)
         //   this.authError = err.response.data
         // })
+    },
+    login(credentials) {
+      console.log({...credentials})
+      // axios({
+      //   url: sr.members.login(),
+      //   method: 'post',
+      //   data: {...credentials}
+      // })
+      //   .then(res => {
+      //     const token = res.data.key
+      //     this.saveToken(token)
+      //     this.fetchCurrentUser()
+      //     this.fetchIsAdmin(credentials)
+      //     router.push({ name: 'home' })
+      //   })
+      //   .catch(err => {
+      //     console.error(err.response.data)
+      //     this.authError = err.response.data
+      //   })
     },
     logout() {
       axios({

@@ -1,10 +1,18 @@
 <template>
   <div class="sign-modal-bg">
-    <div class="sign-modal">
+    <div class="sign-modal" 
+    :class="{
+        'signin-modal': btnCh===1, 
+        'signup-modal': btnCh===2,
+      }">
       <div class="close-btn" @click="btnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
       </div>
-      <div class="sign-modal-content">
+      <div class="sign-modal-content"
+      :class="{
+        'signin-modal-content': btnCh===1, 
+        'signup-modal-content': btnCh===2,
+      }">
         <SignIn v-if="btnCh===1"/>
         <SignUp v-if="btnCh===2"/>
       </div>
@@ -48,7 +56,6 @@ export default {
 .sign-modal {
   position: relative;
   width: 550px;
-  height: 92%;
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
@@ -56,9 +63,21 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.sign-modal-content {
+.signin-modal {
+  height: 70%;
+}
+.signup-modal {
   height: 92%;
+}
+.sign-modal-content {
   padding: 32px 62px;
+}
+.signin-modal-content {
+  text-align: center;
+  height: 70%;
+}
+.signup-modal-content {
+  height: 92%;
 }
 .close-btn {
   position: absolute;
