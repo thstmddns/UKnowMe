@@ -48,7 +48,7 @@
       <div>
         <div class="preview">
           <video class="input_video" width="1280px" height="720px"></video>
-          <canvas class="guides"></canvas>
+          <canvas class="guides" style="display:none"></canvas>
         </div>
       </div>
       <!-- <div id="main-video" class="col-md-6">
@@ -67,6 +67,8 @@
         />
       </div>
     </div>
+
+    <chat-something/>
   </div>
 </template>
 
@@ -83,6 +85,8 @@ import * as Holistic from "@mediapipe/holistic";
 import * as DrawConnectors from "@mediapipe/drawing_utils";
 import * as Camera from "@mediapipe/camera_utils";
 
+import ChatSomething from "@/components/chat/ChatSomething";
+
 const clamp = Kalidokit.Utils.clamp;
 const lerp = Kalidokit.Vector.lerp;
 
@@ -96,7 +100,7 @@ export default {
   name: "App",
 
   components: {
-    UserVideo,
+    UserVideo, ChatSomething
   },
 
   data() {
@@ -611,8 +615,7 @@ export default {
 </script>
 
 <style>
-    #session {
-        background: radial-gradient(61.17% 61.17% at 50% 50%, #EBDCFE 56.77%, #FFFFFF 100%);;
-    }
-
+#session {
+  background: radial-gradient(61.17% 61.17% at 50% 50%, #EBDCFE 56.77%, #FFFFFF 100%);;
+}
 </style>
