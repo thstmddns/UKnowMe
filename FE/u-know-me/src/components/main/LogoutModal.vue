@@ -3,9 +3,9 @@
     <div class="logout-modal">
       <div class="logout-modal-title">
         <h2 class="logout-title">로그아웃</h2>
-        <button @click="logoutBtn = false">
+        <div @click="logoutBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
-        </button>
+        </div>
       </div>
       
       <div class="logout-modal-content">
@@ -79,16 +79,6 @@ export default {
 .logout-btn-list {
   display: flex;
   justify-content: center;
-}
-
-.close-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-}
-.x-btn {
-  font-size: 30px;
-  cursor: pointer;
 }
 
 .logout-btn {

@@ -9,12 +9,12 @@
       </div>
       
       <div class="inform-modal-content">
-        <p>개인 정보 조회를 위해서는 인증이 필요합니다. <br>
-          비밀번호를 입력 후 확인 버튼을 클릭해 주세요.</p>
+        <div>개인 정보 조회를 위해서는 인증이 필요합니다. <br>
+          비밀번호를 입력 후 확인 버튼을 클릭해 주세요.</div>
       </div>
       <div class="password-input">
-        <p>비밀번호</p>
-        <input type="text">
+        <div>비밀번호</div>
+        <input type="text" id="inform-password">
       </div>
 
       <div class="inform-button-list">
@@ -77,6 +77,7 @@ export default {
 
 .inform-modal-content {
   padding: 0 62px;
+  margin: 30px 0;
   text-align: center;
 }
 
@@ -89,12 +90,10 @@ export default {
   justify-content: center;
 }
 
-.close-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-}
 .x-btn {
+  position: absolute;
+  right: 30px;
+  top: 20px;
   font-size: 30px;
   cursor: pointer;
 }
@@ -114,5 +113,15 @@ export default {
 .inform-btn:hover {
   transition: all 150ms linear;
   opacity: .85;
+}
+
+#inform-password {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  background: #FFFFFF;
+  border: 1px solid #C1BBBB;
+  border-radius: 8px;
+  padding: 10px;
 }
 </style>
