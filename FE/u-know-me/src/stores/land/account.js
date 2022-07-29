@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import sr from '@/api/spring-rest'
 import router from '@/router'
 import axios from 'axios'
+import { useLandStore } from './land'
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
@@ -80,6 +81,15 @@ export const useAccountStore = defineStore('account', {
         .error(err => {
           console.error(err.response)
         })
+    },
+    socialLogin(sns, credentials) {
+      const land = useLandStore()
+      land.btnCh=3
+      if (!credentials) {
+        console.log('sns 로그인하기');
+      } else {
+        console.log('최초 1회 로그인하기');
+      }
     },
     fetchCurrentUser() {
       if (this.isLoggedIn) {
