@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web-front:
-    build: ./FE/cli
+    build: ./FE/u-know-me
     ports:
       - "3000:80"
 
@@ -13,5 +13,3 @@ services:
     depends_on:
       - db-mysql
     restart: unless-stopped
-    
-
