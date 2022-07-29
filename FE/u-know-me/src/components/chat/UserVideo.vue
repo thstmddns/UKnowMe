@@ -1,5 +1,5 @@
 <template>
-<div v-if="streamManager">
+<div class="video-item" v-if="streamManager">
 	<ov-video :stream-manager="streamManager"/>
 	<div><p>{{ clientData }}</p></div>
 </div>
