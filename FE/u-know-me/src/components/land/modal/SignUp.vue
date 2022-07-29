@@ -289,7 +289,7 @@ export default {
   font-size: 32px;
   line-height: 39px;
   color: #8227fa;
-  padding-bottom: 40px;
+  padding-bottom: 32px;
 }
 #signUpForm {
   height: 84%;

@@ -4,6 +4,7 @@
     :class="{
         'signin-modal': btnCh===1, 
         'signup-modal': btnCh===2,
+        'sns-login-modal': btnCh===3,
       }">
       <div class="close-btn" @click="btnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
@@ -12,9 +13,11 @@
       :class="{
         'signin-modal-content': btnCh===1, 
         'signup-modal-content': btnCh===2,
+        'sns-login-modal-content': btnCh===3,
       }">
         <SignIn v-if="btnCh===1"/>
         <SignUp v-if="btnCh===2"/>
+        <SnsLogin v-if="btnCh===3"/>
       </div>
     </div>
   </div>
@@ -23,6 +26,7 @@
 <script>
 import SignIn from '@/components/land/modal/SignIn.vue'
 import SignUp from '@/components/land/modal/SignUp.vue'
+import SnsLogin from '@/components/land/modal/SnsLogin.vue'
 import { storeToRefs } from 'pinia'
 import { useLandStore } from '@/stores/land/land'
 
@@ -31,6 +35,7 @@ export default {
   components: {
     SignIn,
     SignUp,
+    SnsLogin,
   },
   setup() {
     const land = useLandStore()
@@ -69,6 +74,9 @@ export default {
 .signup-modal {
   height: 92%;
 }
+.sns-login-modal {
+  height: 550px;
+}
 .sign-modal-content {
   padding: 32px 62px;
 }
@@ -79,6 +87,11 @@ export default {
 }
 .signup-modal-content {
   padding: 32px 62px;
+  height: 92%;
+}
+.sns-login-modal-content {
+  padding: 32px 69px;
+  text-align: center;
   height: 92%;
 }
 .close-btn {
