@@ -11,7 +11,7 @@
 
     <div class="match-circle">
       <div id="container">
-        <div class="heart-img" @click="matchBtn = !matchBtn">
+        <div class="heart-img" @click="this.$router.push({ name: 'chat' })">
           <img src="@/assets/main/heart.png" alt="" />
         </div>
         <div class="circle" style="animation-delay: 0s"></div>
@@ -64,12 +64,10 @@ export default {
   top: 8%;
   transform: translate(-50%, 0%);
 }
-
-button {
+.main-btn {
   margin: 20px;
   outline: none;
 }
-
 .main-btn {
   width: 130px;
   height: 40px;
@@ -168,5 +166,13 @@ button {
   margin: 0;
   border-radius: 30px;
   filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
+}
+.matching-btn:hover {
+  background: #dcddfe;
+  color: black;
+  cursor: default;
+}
+.matching-btn:active {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>

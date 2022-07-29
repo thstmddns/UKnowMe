@@ -1,9 +1,7 @@
 <template>
+<div>
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
-      <div id="img-div">
-        <img src="resources/images/openvidu_grey_bg_transp_cropped.png" />
-      </div>
       <div id="join-dialog" class="jumbotron vertical-center">
         <h1>Join a video session</h1>
         <div class="form-group">
@@ -62,9 +60,10 @@
           @click="updateMainVideoStreamManager(sub)"
         />
       </div>
-      <chat-something />
     </div>
   </div>
+  <chat-something />
+</div>
 </template>
 
 <script>
@@ -269,7 +268,12 @@ export default {
 </script>
 
 <style>
-#session {
+h1 {
+  margin:0;
+}
+#main-container {
+  width: 100vw;
+  height: 100vh;
   background: radial-gradient(
     61.17% 61.17% at 50% 50%,
     #ebdcfe 56.77%,
@@ -284,12 +288,16 @@ export default {
 .video-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 .video-item {
   flex-grow: 1;
+  text-align: center;
 }
 .video-item video {
-  height: auto;
+  height: 480px;
+  width: 640px;
   border: 3px solid purple;
 }
 

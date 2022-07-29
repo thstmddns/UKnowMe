@@ -5,7 +5,7 @@
     </div>
     <div class="avatar-inform">
       <h4 id="avatar-name"><b>캐릭터 이름</b></h4>
-      <button class="avatar-button">아바타 변경</button>
+      <button class="avatar-button">선택</button>
     </div>
 </div>
 </template>
@@ -39,7 +39,7 @@ export default {
 }
 .avatar-button {
   width: 100px;
-  height: 30px;
+  height: 40px;
   background: #A056FF;
   color: white;
   box-shadow: 0px 2.95056px 2.21292px rgba(0, 0, 0, 0.25);

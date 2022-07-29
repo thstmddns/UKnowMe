@@ -347,6 +347,7 @@ function load() {
 
     // capture
     const avatarCanvas = document.getElementById("avatarCanvas");
+    avatarCanvas.style.display = 'inline-block'
     var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
 
     return avatarVideo;

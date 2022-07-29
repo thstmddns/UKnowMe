@@ -1,6 +1,5 @@
 <template>
   <div class="avatarCollection">
-    <div>아바타 선택</div>
     <div class="avatar-card-container">
       <avatar-card v-for="avatar in avatardata" :key="avatar" />
     </div>
@@ -25,11 +24,24 @@ export default {
 <style>
 .avatarCollection {
   position: absolute;
-  width: 300px;
+  width: 370px;
   height: 100%;
+  z-index: 2;
   background: rgba(217, 217, 217, 0.5);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
-
+.avatarCollection::-webkit-scrollbar {
+  width: 10px;
+}
+.avatarCollection::-webkit-scrollbar-thumb {
+  height: 30%;
+  background: #A056FF;
+  border-radius: 10px;
+}
+.avatarCollection::-webkit-scrollbar-track {
+  background: rgba(160, 86, 255, .1);
+}
 .avatar-card-container {
   width: 20em;
   padding: 0;
@@ -47,6 +59,5 @@ div > div.avatar-card-container {
 }
 div > div.avatar-card-container:nth-child(2) {
   color: #fff;
-  background: #1998c4;
 }
 </style>

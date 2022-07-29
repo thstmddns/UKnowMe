@@ -2,12 +2,22 @@
   <!-- <h1>버튼 리스트</h1> -->
   <div class="chat-content-left">
     <div class="chat-guide">
-      <div>
-        <p>채팅 가이드</p>
-      </div>
+      <div class="chat-text"></div>
     </div>
 
-    <div class="love-btn"></div>
+    <div class="love-btn">
+      <div class="match-circle">
+        <div id="container">
+          <div class="heart-img" @click="matchBtn = !matchBtn">
+            <img src="@/assets/main/heart.png" alt="" />
+          </div>
+          <div class="circle" style="animation-delay: 0s"></div>
+          <div class="circle" style="animation-delay: 1s"></div>
+          <div class="circle" style="animation-delay: 2s"></div>
+          <div class="circle" style="animation-delay: 3s"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="chat-content-right">
       <div class="sketch"></div>
@@ -30,7 +40,7 @@
           <button class="chat-btn game-btn">
             <i class="fa-solid fa-gamepad"></i>
           </button>
-          <button class="chat-btn-lg out-btn">
+          <button @click="$router.push({ name: 'main' })" class="chat-btn-lg out-btn">
             나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
@@ -40,10 +50,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+};
 </script>
 
 <style>
+.flex {
+  display: flex;
+}
 .chat-content-left {
   display: flex;
   position: absolute;
@@ -51,22 +65,29 @@ export default {};
   right: 0%;
   bottom: 0px;
 }
-
 .chat-guide {
   width: 40%;
   height: 200px;
-  background-color: blanchedalmond;
+  /* background-color: blanchedalmond; */
+}
+.chat-text {
+  width: 100%;
+  height: 70%;
+  margin: auto 20px;
+  background-color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin-top: 32px;
 }
 .love-btn {
   width: 20%;
   height: 200px;
-  background-color: rgb(255, 205, 249);
 }
 .chat-content-right {
   width: 40%;
   min-width: 600px;
   height: 200px;
-  background-color: blanchedalmond;
+  /* background-color: blanchedalmond; */
   display: flex;
 }
 

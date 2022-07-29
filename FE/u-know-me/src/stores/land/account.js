@@ -49,6 +49,7 @@ export const useAccountStore = defineStore('account', {
     },
     login(credentials) {
       console.log({...credentials})
+      router.push({ name: 'main' })
       // axios({
       //   url: sr.members.login(),
       //   method: 'post',

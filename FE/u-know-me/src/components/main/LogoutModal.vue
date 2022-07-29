@@ -14,7 +14,7 @@
 
       <div class="logout-btn-list">
         <button class="logout-btn">아니오</button>
-        <button class="logout-btn">예</button>
+        <button @click="$router.push({ name: 'home' })" class="logout-btn">예</button>
       </div>
 
     </div>
@@ -83,7 +83,7 @@ export default {
 
 .logout-btn {
   width: 100px;
-  height: 30px;
+  height: 40px;
   background: #A056FF;
   color: white;
   box-shadow: 0px 2.95056px 2.21292px rgba(0, 0, 0, 0.25);
