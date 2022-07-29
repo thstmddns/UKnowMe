@@ -1,6 +1,5 @@
 package com.ssafy.uknowme.web.domain.common;
 
-import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.DeleteState;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
