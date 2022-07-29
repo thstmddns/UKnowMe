@@ -1,5 +1,5 @@
 <template>
-  <h1>버튼 리스트</h1>
+  <!-- <h1>버튼 리스트</h1> -->
   <div class="chat-content-left">
     <div class="chat-guide">
       <div>
@@ -46,6 +46,10 @@ export default {};
 <style>
 .chat-content-left {
   display: flex;
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  bottom: 0px;
 }
 
 .chat-guide {
@@ -60,6 +64,7 @@ export default {};
 }
 .chat-content-right {
   width: 40%;
+  min-width: 600px;
   height: 200px;
   background-color: blanchedalmond;
   display: flex;

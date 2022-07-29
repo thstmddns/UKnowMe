@@ -47,18 +47,14 @@
       </div>
       <div>
         <div class="preview">
-          <video class="input_video" width="1280px" height="720px"></video>
-          <canvas class="guides" style="display:none"></canvas>
+          <video class="input_video" width="1280px" height="720px" style="visibility: hidden;"></video>
+          <canvas class="guides" style="display: none"></canvas>
         </div>
       </div>
-      <!-- <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
-      </div> -->
-      <div id="video-container" class="col-md-6">
-        <!-- <user-video
-          :stream-manager="publisher"
-          @click="updateMainVideoStreamManager(publisher)"
-        /> -->
+      <div class="video-container">
+        <div class="video-item" id="my-video">
+          <p>My Video</p>
+        </div>
         <user-video
           v-for="sub in subscribers"
           :key="sub.stream.connection.connectionId"
@@ -66,9 +62,8 @@
           @click="updateMainVideoStreamManager(sub)"
         />
       </div>
+      <chat-something />
     </div>
-
-    <chat-something/>
   </div>
 </template>
 
@@ -76,7 +71,7 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
-import Avatar from "@/assets/chat/avatar"
+import Avatar from "@/assets/chat/avatar";
 
 import ChatSomething from "@/components/chat/ChatSomething";
 
@@ -90,7 +85,8 @@ export default {
   name: "App",
 
   components: {
-    UserVideo, ChatSomething
+    UserVideo,
+    ChatSomething,
   },
 
   data() {
@@ -146,7 +142,7 @@ export default {
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
-              audioSource: false, // The source of audio. If undefined default microphone
+              audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: avatarVideo, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
@@ -274,6 +270,27 @@ export default {
 
 <style>
 #session {
-  background: radial-gradient(61.17% 61.17% at 50% 50%, #EBDCFE 56.77%, #FFFFFF 100%);;
+  background: radial-gradient(
+    61.17% 61.17% at 50% 50%,
+    #ebdcfe 56.77%,
+    #ffffff 100%
+  );
 }
+#avatarCanvas {
+  border: 3px solid purple;
+  height: auto;
+}
+
+.video-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.video-item {
+  flex-grow: 1;
+}
+.video-item video {
+  height: auto;
+  border: 3px solid purple;
+}
+
 </style>

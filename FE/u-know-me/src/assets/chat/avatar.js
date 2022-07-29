@@ -18,7 +18,8 @@ function load() {
     renderer.setSize(640, 480);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.domElement.id = "avatarCanvas";
-    document.body.appendChild(renderer.domElement);
+
+    document.getElementById("my-video").prepend(renderer.domElement);
 
     const clamp = Kalidokit.Utils.clamp;
     const lerp = Kalidokit.Vector.lerp;
