@@ -4,6 +4,8 @@ import { createWebHistory, createRouter } from "vue-router";
 import LandPageView from '@/views/land/LandPageView.vue'
 import TestView from '@/views/land/TestView.vue'
 import ChatView from '@/views/chat/ChatView.vue'
+import MainView from '@/views/main/MainView.vue'
+
 const routes = [
 //   {
 //     path: "/경로",
@@ -24,6 +26,11 @@ const routes = [
     path: "/chat",
     name: 'chat',
     component: ChatView,
+  },
+  {
+    path: "/main",
+    name: 'main',
+    component: MainView,
   },
 ];
 
