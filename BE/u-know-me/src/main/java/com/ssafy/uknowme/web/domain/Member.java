@@ -1,7 +1,11 @@
 package com.ssafy.uknowme.web.domain;
 
+import com.ssafy.uknowme.model.dto.MemberRequestDto;
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
 import com.ssafy.uknowme.web.domain.enums.Role;
+
+
+import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +17,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
+
 
     @Id @GeneratedValue
     @Column(name = "member_seq")
@@ -111,4 +116,17 @@ public class Member extends BaseEntity {
         this.kakaoId = kakaoId;
         this.matchCount = matchCount;
     }
+
+    public void updateMember(String name, String nickname, String tel, String smoke, String address,
+                             String naverId, String kakaoId) {
+        this.name = name;
+        this.nickname = nickname;
+        this.tel = tel;
+        this.smoke = smoke;
+        this.address = address;
+        this.naverId = naverId;
+        this.kakaoId = kakaoId;
+    }
+
+
 }
