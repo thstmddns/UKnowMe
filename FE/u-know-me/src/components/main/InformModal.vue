@@ -3,9 +3,9 @@
     <div class="inform-modal">
       <div class="inform-modal-title">
         <h2 class="inform-title">기본정보 수정</h2>
-        <button @click="informBtn = false">
+        <div @click="informBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
-        </button>
+        </div>
       </div>
       
       <div class="inform-modal-content">
