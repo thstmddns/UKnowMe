@@ -4,7 +4,7 @@
       <img src="@/assets/main/girl1.png" alt="">
     </div>
     <div class="avatar-inform">
-      <h4 id="avatar-name"><b>캐릭터 이름</b></h4>
+      <h4 id="avatar-name">{{avatar.name}}</h4>
       <button class="avatar-button">선택</button>
     </div>
 </div>
@@ -14,8 +14,8 @@
 export default {
   name: 'AvatarCard',
   props: {
-    avatardata : Array,
-  }
+    avatar : Object,
+  },
 }
 </script>
 
@@ -35,7 +35,7 @@ export default {
   border-radius: 24.9137px;
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 20px 0;
 }
 .avatar-button {
   width: 100px;

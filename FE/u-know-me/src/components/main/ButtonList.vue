@@ -64,14 +64,12 @@ export default {
   top: 8%;
   transform: translate(-50%, 0%);
 }
+
 .main-btn {
-  margin: 20px;
-  outline: none;
-}
-.main-btn {
-  width: 130px;
-  height: 40px;
+  width: 150px;
+  height: 60px;
   padding: 10px 25px;
+  margin: 15px;
   border: 2px solid #a056ff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
@@ -81,6 +79,7 @@ export default {
   position: relative;
   display: inline-block;
   overflow: hidden;
+  font-size: 17px;
 }
 
 .main-btn:hover {
