@@ -4,16 +4,9 @@ services:
   web-front:
     build: ./FE/u-know-me
     ports:
-      - "80:80"
+      - "8000:80"
       - "443:443"
     volumes:
-      - ../volumes-nginx:/etc/nginx/conf.d
-      - ../volumes/.static_root/:/static/
-      - ../volumes/certbot/conf:/etc/letsencrypt
-      - ../volumes/certbot/www:/var/www/certbot
-certbot:
-    image: certbot/certbot
-    container_name: certbot_service
-    volumes : 
-      - ../volumes/certbot/conf:/etc/letsencrypt
-      - ../volumes/certbot/www:/var/www/certbot
+      - ../volumes-nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/cerbot:/var/www/certbot
