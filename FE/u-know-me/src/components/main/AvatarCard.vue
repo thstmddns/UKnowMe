@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="container">
-      <img src="@/assets/main/girl1.png" alt="">
+      <img src="@/assets/main/boy-temp.png" alt="">
     </div>
     <div class="avatar-inform">
       <h4 id="avatar-name"><b>캐릭터 이름</b></h4>
