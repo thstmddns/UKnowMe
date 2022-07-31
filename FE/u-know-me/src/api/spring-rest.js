@@ -1,4 +1,4 @@
-const HOST = 'https://uknowme.mooo.com/'
+const HOST = 'https://i7d104.p.ssafy.io/'
 
 const MEMBERS = 'member/'
 const MACHINGS = 'maching/'

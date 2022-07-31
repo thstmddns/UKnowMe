@@ -77,10 +77,10 @@ function load() {
     const loader = new GLTF.GLTFLoader();
     loader.crossOrigin = "anonymous";
 
-    var ary = ["test.vrm", "test2.vrm", "동민.vrm", "진경.vrm"];
+    var ary = ["블랙.vrm"];
     var rand = Math.floor(Math.random() * 101);
 
-    rand %= 4;
+    rand %= ary.length;
 
     // Import model from URL, add your own model here
     loader.load(
