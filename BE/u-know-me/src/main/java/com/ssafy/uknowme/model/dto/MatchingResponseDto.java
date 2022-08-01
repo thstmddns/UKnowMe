@@ -5,7 +5,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class MatchingResonseDto {
+public class MatchingResponseDto {
 
     private String nickname;
     private String gender;
