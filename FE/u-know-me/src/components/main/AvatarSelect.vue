@@ -2,9 +2,9 @@
   <div class="avatarCollection">
     <div class="avatar-card-container">
       <avatar-card
-        :avatar="avatardata[i]"
-        v-for="(avatar, i) in avatardata"
-        :key="avatar"
+        v-for="(avatar, i) in avatars.avatar"
+        :avatar="avatar"
+        :key="i"
       />
     </div>
   </div>
@@ -12,16 +12,17 @@
 
 <script>
 import AvatarCard from "@/components/main/AvatarCard.vue";
-import avatardata from "@/assets/main/avatardata.js";
+import { useAvatarStore } from '@/stores/main/avatar'
 
 export default {
   name: "AvatarSelect",
   components: { AvatarCard },
-  data() {
+  setup() {
+    const avatars = useAvatarStore()
     return {
-      avatardata: avatardata,
-    };
-  },
+      avatars
+    }
+  }
 };
 </script>
 

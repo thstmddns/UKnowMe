@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="container">
-      <img src="@/assets/main/girl1.png" alt="">
+      <img :src="avatar.image" alt="">
     </div>
     <div class="avatar-inform">
       <h4 id="avatar-name">{{avatar.name}}</h4>
@@ -16,6 +16,7 @@ export default {
   props: {
     avatar : Object,
   },
+
 }
 </script>
 
@@ -55,6 +56,8 @@ export default {
 
 #avatar-name {
   margin: 30px 0;
+  display: flex;
+  justify-content: center;
 }
 
 
