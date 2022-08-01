@@ -25,9 +25,10 @@ public class SwaggerConfig {
                 .produces(getProduceContentTypes())
                 .apiInfo(getApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/web/**"))
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.uknowme.web.controller"))
+                .paths(PathSelectors.ant("/**"))
                 .build();
+
         return build;
     }
 
@@ -47,8 +48,8 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
                 .title("너, 나 알아? ")
-                .description("[최강4조 ㅅj성ㅅj성,,] REST API")
-                .version("1.0")
+                .description("zZ최강4조 ㅅj성ㅅj성,,Zz REST API")
+                .version("0.0")
                 .build();
     }
 
