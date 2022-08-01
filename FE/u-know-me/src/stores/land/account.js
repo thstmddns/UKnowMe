@@ -85,11 +85,15 @@ export const useAccountStore = defineStore('account', {
     },
     socialLogin(sns, credentials) {
       const land = useLandStore()
-      land.btnCh=3
       if (!credentials) {
+        const client_id = "" 
+        const callbackUrl = "http://localhost:8080/test"
         console.log('sns 로그인하기');
+        var url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id='+client_id+'&redirect_uri='+callbackUrl+'&state=1234';
+        window.open(url, 'naverloginpop', 'titlebar=1, resizable=1, scrollbars=yes, width=600, height=550')
       } else {
         console.log('최초 1회 로그인하기');
+        land.btnCh=3
       }
     },
     fetchCurrentUser() {

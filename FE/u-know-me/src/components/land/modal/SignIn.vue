@@ -40,13 +40,12 @@
         <img @click="account.socialLogin('naver', '')" class="sns-login" src="@/assets/land/naver_login_icon.png" alt="naver_login_icon">
         <img @click="account.socialLogin('google', '')" class="sns-login" src="@/assets/land/google_login_icon.png" alt="google_login_icon">
         <img @click="account.socialLogin('kakao', '')" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
-        <div id="naver_id_login"></div>
       </div>
     </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useAccountStore } from '@/stores/land/account'
 import { useLandStore } from '@/stores/land/land'
 
@@ -60,15 +59,6 @@ export default {
       password: '',
     })
 
-    onMounted(() => {
-      const naver_id_login = new window.naver_id_login("Client Id", "callback URL");
-      const state = naver_id_login.getUniqState();
-      naver_id_login.setButton("white", 2,40);
-      naver_id_login.setState(state);
-      naver_id_login.setPopup();
-      naver_id_login.init_naver_id_login();
-    })
-
     return {
       account,
       credentials,
@@ -79,6 +69,9 @@ export default {
 </script>
 
 <style>
+#naver_id_login {
+  z-index: -1;
+}
 .flex {
   display: flex;
 }
@@ -89,7 +82,8 @@ export default {
   align-items: center;
 }
 .sns-login {
-  width: 80px;
+  /* width: 80px; */
+  height: 48px;
   margin-right: 12px;
 }
 .sns-login:hover {
