@@ -2,12 +2,18 @@
   <div class="match-all">
     <div class="button-list">
       <button class="main-btn" @click="main.logoutBtn = true">
-        Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        로그아웃&#160;&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i>
       </button>
       <button class="main-btn" @click="main.informBtn = true">
-        정보 수정 <i class="fa-solid fa-gear"></i>
+        정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
       </button>
     </div>
+
+    <!-- <div class="metaverse">
+      <div class="metaverse-img">
+        <img class="metaverse-img" src="@/assets/main/metaverse.png" alt="">
+      </div>
+    </div> -->
 
     <div class="match-circle">
       <div id="container">
@@ -61,25 +67,26 @@ export default {
 .button-list {
   position: absolute;
   left: 50%;
-  top: 8%;
+  top: 2%;
   transform: translate(-50%, 0%);
 }
 
 .main-btn {
-  width: 150px;
-  height: 60px;
+  width: 170px;
+  height: 65px;
   padding: 10px 25px;
   margin: 15px;
-  border: 2px solid #a056ff;
+  border: 2px none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-  background: transparent;
+  border-radius: 20px;
+  background: white;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
   overflow: hidden;
-  font-size: 17px;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .main-btn:hover {
@@ -101,6 +108,22 @@ export default {
     -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
     inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.metaverse {
+  position: absolute;
+  bottom: 43%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  cursor: pointer;
+}
+
+.metaverse-img {
+  width: 150px;
+}
+
+.metaverse-img :hover {
+  filter: brightness(90%);
 }
 
 .match-circle {
@@ -165,6 +188,7 @@ export default {
   margin: 0;
   border-radius: 30px;
   filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
+  font-size: 15px;
 }
 .matching-btn:hover {
   background: #dcddfe;
