@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MatchingRequestDto;
-import com.ssafy.uknowme.model.dto.MatchingResponseDto;
+import com.ssafy.uknowme.model.dto.MatchingDto.MatchingRequestDto;
+import com.ssafy.uknowme.model.dto.MatchingDto.MatchingResponseDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.MatchingRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,23 +17,39 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class  MatchingServiceImpl implements  MatchingService{
 
-
     private final MatchingRepository repository;
     @Override
-    public MatchingResponseDto getMatchingMemberInfo(MatchingRequestDto dto) throws Exception {
-        log.info("id는 {}", dto.getId());
-        Member member = repository.findById(dto.getId());
+    public MatchingResponseDto get1vs1MatchingMemberInfo(MatchingRequestDto dto) throws Exception {
+
+        Optional<Member> member = repository.findById(dto.getId());
 
         MatchingResponseDto matchingResponseDto = new MatchingResponseDto();
 
-        matchingResponseDto.setBirth(member.getBirth());
-        matchingResponseDto.setBirth(member.getBirth());
-        matchingResponseDto.setBirth(member.getBirth());
-        matchingResponseDto.setBirth(member.getBirth());
+        if(member.isPresent()){
+            matchingResponseDto = new MatchingResponseDto();
 
-        System.out.println(matchingResponseDto.getBirth());
+            matchingResponseDto.setBirth(member.get().getBirth());
+            matchingResponseDto.setGender(member.get().getGender());
+            matchingResponseDto.setNickname(member.get().getNickname());
+            matchingResponseDto.setSmoke(member.get().getSmoke());
+        }
+        return matchingResponseDto;
+    }
 
+    @Override
+    public MatchingResponseDto get2vs2MatchingMemberInfo(MatchingRequestDto dto) throws Exception {
 
+        Optional<Member> member = repository.findById(dto.getId());
+
+        MatchingResponseDto matchingResponseDto =  new MatchingResponseDto();
+
+        if(member.isPresent()){
+            matchingResponseDto = new MatchingResponseDto();
+
+            matchingResponseDto.setBirth(member.get().getBirth());
+            matchingResponseDto.setGender(member.get().getGender());
+            matchingResponseDto.setNickname(member.get().getNickname());
+        }
         return matchingResponseDto;
     }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.MatchingDto;
 
 import io.swagger.annotations.ApiParam;
 import lombok.Getter;
@@ -10,12 +10,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Setter
 @Getter
 @ToString
-@Configuration
-@EnableSwagger2
 public class MatchingRequestDto {
 
-    @ApiParam(value ="d")
     private String id;
-
 
 }
