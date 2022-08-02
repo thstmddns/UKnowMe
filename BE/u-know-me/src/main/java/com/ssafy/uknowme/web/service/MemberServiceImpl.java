@@ -6,7 +6,7 @@ import com.ssafy.uknowme.model.dto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.security.util.Password;
@@ -14,7 +14,7 @@ import sun.security.util.Password;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository repository;
@@ -23,13 +23,28 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean join(MemberRequestDto dto) {
 
+        if (existsById(dto.getId())) {
+            return false;
+        } if (existsByNickname(dto.getNickname())) {
+            return false;
+        } if (existsByTel(dto.getTel())) {
+            return false;
+        }
+
 
         Member member = Member.builder()
                 .id(dto.getId())
                 .password(dto.getPassword())
                 .name(dto.getName())
                 .nickname(dto.getNickname())
+                .gender(dto.getBirth())
+                .birth(dto.getBirth())
+                .tel(dto.getTel())
+                .smoke(dto.getSmoke())
+                .address(dto.getAddress())
                 .build();
+
+
 
         repository.save(member);
 
@@ -38,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public MemberResponseDto login(MemberRequestDto dto) {
 
         Member findMember = repository.findByIdAndPassword(dto.getId(), dto.getPassword());
@@ -53,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String update(MemberUpdateDto memberUpdateDto) {
         Member member = findById(memberUpdateDto);
+
         member.updateMember(memberUpdateDto.getName(), memberUpdateDto.getNickname(),
                 memberUpdateDto.getTel(), memberUpdateDto.getSmoke(), memberUpdateDto.getAddress(),
                 memberUpdateDto.getNaverId(), memberUpdateDto.getKakaoId());
@@ -61,13 +78,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean existsByMemberId(String memberId) {
-        return MemberRepository.existsByMember(memberId);
+    public boolean existsById(String memberId) {
+        return repository.existsById(memberId);
     }
 
     @Override
-    public boolean existsByMemberNickName(String memberNickName) {
-        return MemberRepository.existsByMember(memberNickName);
+    public boolean existsByNickname(String memberNickname) {
+        return repository.existsByNickname(memberNickname);
+    }
+
+    @Override
+    public boolean existsByTel(String memberTel) {
+        return repository.existsByTel(memberTel);
     }
 
     private Member findById(MemberUpdateDto memberUpdateDto) {
@@ -79,5 +101,6 @@ public class MemberServiceImpl implements MemberService {
         }
         return member;
     }
+
 }
 

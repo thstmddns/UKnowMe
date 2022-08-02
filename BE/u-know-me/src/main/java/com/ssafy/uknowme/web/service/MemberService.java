@@ -13,7 +13,9 @@ public interface MemberService {
 
     String update(MemberUpdateDto memberUpdateDto);
 
-    boolean existsByMemberId(String memberId);
+    boolean existsById(String memberId);
 
-    boolean existsByMemberNickName(String memberNickName);
+    boolean existsByNickname(String memberNickname);
+
+    boolean existsByTel(String memberTel);
 }
