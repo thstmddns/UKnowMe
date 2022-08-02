@@ -23,6 +23,13 @@ public class Member extends BaseEntity {
     private int seq;
 
     /**
+     * 착용 아바타
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_seq")
+    private Avatar avatar;
+
+    /**
      * 로그인할 ID
      */
     @Column(nullable = false)

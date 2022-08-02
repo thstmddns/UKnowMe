@@ -6,10 +6,8 @@ import com.ssafy.uknowme.model.dto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.util.Password;
 
 
 @RequiredArgsConstructor
