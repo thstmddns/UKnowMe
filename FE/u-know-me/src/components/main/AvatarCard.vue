@@ -33,7 +33,7 @@ export default {
   width: 250px;
   height: 150px;
   background: #FFFFFF;
-  border-radius: 24.9137px;
+  border-radius: 24px;
   display: flex;
   justify-content: center;
   margin: 20px 0;

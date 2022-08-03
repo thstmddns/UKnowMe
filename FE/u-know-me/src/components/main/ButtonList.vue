@@ -1,49 +1,44 @@
 <template>
-  <div class="match-all">
-    <div class="button-list">
-      <button class="main-btn" @click="main.logoutBtn = true">
-        로그아웃&#160;&#160;&#160;<i
-          class="fa-solid fa-arrow-right-from-bracket"
-        ></i>
-      </button>
-      <button class="main-btn" @click="main.informBtn = true">
-        정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
-      </button>
-    </div>
+  <div class="button-list">
+    <button class="main-btn" @click="main.logoutBtn = true">
+      로그아웃&#160;&#160;&#160;<i
+        class="fa-solid fa-arrow-right-from-bracket"
+      ></i>
+    </button>
+    <button class="main-btn" @click="main.informBtn = true">
+      정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
+    </button>
+  </div>
 
-    <!-- <div class="metaverse">
+  <!-- <div class="metaverse">
       <div class="metaverse-img">
         <img class="metaverse-img" src="@/assets/main/metaverse.png" alt="">
       </div>
     </div> -->
 
-    <div class="match-circle">
-      <div id="container">
-        <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
-        <div class="heart-img" @click="click">
-          <img src="@/assets/main/heart.png" alt="" />
-        </div>
-        <div class="circle" style="animation-delay: 0s"></div>
-        <div class="circle" style="animation-delay: 1s"></div>
-        <div class="circle" style="animation-delay: 2s"></div>
-        <div class="circle" style="animation-delay: 3s"></div>
+  <div class="match-circle">
+    <div id="container">
+      <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
+      <div class="heart-img" @click="click">
+        <img src="@/assets/main/heart.png" alt="" />
       </div>
-
-      <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기-->
-      <button class="matching-btn" v-if="matchBtn == false">
-        매칭을 시작해주세요
-      </button>
-      <button class="matching-btn" v-if="matchBtn == true">매칭 중</button>
-      <!--  -->
+      <div class="circle" style="animation-delay: 0s"></div>
+      <div class="circle" style="animation-delay: 1s"></div>
+      <div class="circle" style="animation-delay: 2s"></div>
+      <div class="circle" style="animation-delay: 3s"></div>
     </div>
 
-    <div></div>
+    <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기-->
+    <button class="matching-btn" v-if="matchBtn == false">
+      매칭을 시작해주세요
+    </button>
+    <button class="matching-btn" v-if="matchBtn == true">매칭 중</button>
+    <!--  -->
   </div>
 </template>
 
 <script>
 import { useMainStore } from "@/stores/main/main";
-import SockJS from "sockjs-client";
 
 export default {
   name: "ButtonList",
@@ -60,19 +55,28 @@ export default {
   methods: {
     click() {
       //socket test
-      var sock = new SockJS("https://localhost:8080/ws/chat");
-      sock.onopen = function () {
-        console.log("open");
-        sock.send("test");
+      // 1. 웹소켓 클라이언트 객체 생성
+      const webSocket = new WebSocket("ws://localhost:8080/ws...");
+
+      // 2. 웹소켓 이벤트 처리
+      // 2-1) 연결 이벤트 처리
+      webSocket.onopen = () => {
+        console.log("웹소켓서버와 연결 성공");
       };
 
-      sock.onmessage = function (e) {
-        console.log("message", e.data);
-        sock.close();
+      // 2-2) 메세지 수신 이벤트 처리
+      webSocket.onmessage = function (event) {
+        console.log(`서버 웹소켓에게 받은 데이터: ${event.data}`);
       };
 
-      sock.onclose = function () {
-        console.log("close");
+      // 2-3) 연결 종료 이벤트 처리
+      webSocket.onclose = function () {
+        console.log("서버 웹소켓 연결 종료");
+      };
+
+      // 2-4) 에러 발생 이벤트 처리
+      webSocket.onerror = function (event) {
+        console.log(event);
       };
     },
   },
@@ -80,18 +84,11 @@ export default {
 </script>
 
 <style>
-.match-all {
-  position: absolute;
-  width: 294px;
-  height: 100%;
-  right: 3%;
-  /* background-color: #D9D9D9; */
-}
 .button-list {
   position: absolute;
-  left: 50%;
-  top: 2%;
-  transform: translate(-50%, 0%);
+  right: 50px;
+  top: 50px;
+  width: min-content;
 }
 
 .main-btn {
@@ -151,9 +148,8 @@ export default {
 
 .match-circle {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  bottom: 10%;
+  right: 50px;
+  bottom: 50px;
   display: grid;
 }
 #container {

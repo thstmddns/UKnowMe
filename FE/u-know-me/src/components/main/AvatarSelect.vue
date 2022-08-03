@@ -29,9 +29,11 @@ export default {
 <style>
 .avatarCollection {
   position: absolute;
-  width: 18%;
+  width: fit-content;
   height: 100%;
   z-index: 2;
+  padding-right: 20px;
+  padding-left: 20px;
   background: rgba(217, 217, 217, 0.5);
   overflow-x: hidden;
   overflow-y: auto;
