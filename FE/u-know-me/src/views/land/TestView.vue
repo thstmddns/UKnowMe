@@ -6,14 +6,16 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { useAccountStore } from '@/stores/land/account'
 
 export default {
   setup() {
-    onMounted(() => {
-      var naver_id_login  = new window.naver_id_login("Client Id", "callback URL");
-      console.log("access token", naver_id_login.getAccessToken()); // 정상적 로그인이 된 경우 access token값 출력
-    })
+    //naver
+    const account = useAccountStore()
+    const client_id = "5OSOWuXn6DTVQB4_h5Pc" 
+    const callbackUrl = "http://localhost:8080/"
+    const naver_id_login = new window.naver_id_login(client_id, callbackUrl);
+    account.naverLogin(naver_id_login.getAccessToken())
   }
 }
 </script>

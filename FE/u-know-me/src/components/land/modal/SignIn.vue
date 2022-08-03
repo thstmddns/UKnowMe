@@ -29,34 +29,103 @@
     </div>
     <button class="login-btn">로그인</button>
   </form>
-    <p class="login-signup">
-      <span @click="land.btnCh=2">계정이 필요하신가요?</span>
-    </p>
+  <p class="login-signup">
+    <span @click="land.btnCh=2">계정이 필요하신가요?</span>
+  </p>
   <div class="hr-sect">
     SNS 계정으로 로그인하기
   </div>
-  <div class=" flex justify-center align-center">
-      <div class="flex">
-        <img @click="account.socialLogin('naver', '')" class="sns-login" src="@/assets/land/naver_login_icon.png" alt="naver_login_icon">
-        <img @click="account.socialLogin('google', '')" class="sns-login" src="@/assets/land/google_login_icon.png" alt="google_login_icon">
-        <img @click="account.socialLogin('kakao', '')" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
-      </div>
+  <div class="flex justify-center align-center">
+    <div>
+      <img id="naver_login_icon" class="sns-login" src="@/assets/land/naver_login_icon.png" alt="naver_login_icon" style="display:none;">
+      <div id="naver_id_login"></div>
     </div>
+    <img @click="account.kakaoLogin()" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
+    <section class="test">
+      <div @click="GoogleLoginBtn">
+        <img class="sns-login" src="@/assets/land/google_login_icon.png" alt="google_login_icon">
+      </div>
+      <div id="my-signin2" style="display:none;"></div>
+    </section>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAccountStore } from '@/stores/land/account'
 import { useLandStore } from '@/stores/land/land'
 
+const client_id = "5OSOWuXn6DTVQB4_h5Pc" 
+const callbackUrl = "http://localhost:8080/test"
+
 export default {
   name: 'SignIn',
+  methods: {
+    GoogleLoginBtn() {
+      var self = this;
+
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 240,
+        height: 50,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: this.GoogleLoginSuccess,
+        onfailure: this.GoogleLoginFailure,
+      });
+      setTimeout(function () {
+        if (!self.googleLoginCheck) {
+          const auth = window.gapi.auth2.getAuthInstance();
+          auth.isSignedIn.get();
+          document.querySelector('.abcRioButton').click();
+        }
+      }, 1500)
+
+    },
+    async GoogleLoginSuccess(googleUser) {
+      const profile = googleUser.getBasicProfile();
+      console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+      console.log('Full Name: ' + profile.getName());
+      console.log('Given Name: ' + profile.getGivenName());
+      console.log('Family Name: ' + profile.getFamilyName());
+      console.log("Image URL: " + profile.getImageUrl());
+      console.log("Email: " + profile.getEmail());
+
+      // The ID token you need to pass to your backend:
+      const id_token = googleUser.getAuthResponse().id_token;
+      console.log("ID Token: " + id_token);
+    },
+    //구글 로그인 콜백함수 (실패)
+    GoogleLoginFailure(error) {
+      console.log('삐용삐용 에러입니다.');
+      console.log(error);
+    },
+  },
   setup() {
     const account = useAccountStore()
     const land = useLandStore()
     const credentials = ref({
       id: '',
       password: '',
+    })
+
+    onMounted(() => {
+      // naver
+      const naver_id_login = new window.naver_id_login(client_id, callbackUrl);
+      const state = naver_id_login.getUniqState();
+      naver_id_login.setState(state);
+      naver_id_login.setPopup();
+      naver_id_login.init_naver_id_login();
+      
+      const naver_id_login_anchor = document.getElementById('naver_id_login_anchor')
+      const naver_login_icon = document.getElementById('naver_login_icon')
+
+      naver_id_login_anchor.firstChild.removeAttribute('width')
+      naver_id_login_anchor.firstChild.removeAttribute('height')
+
+      naver_id_login_anchor.firstChild.src = naver_login_icon.src
+      naver_id_login_anchor.firstChild.className += 'sns-login'
+      // !naver
     })
 
     return {
