@@ -1,8 +1,9 @@
-package com.ssafy.uknowme.security;
+package com.ssafy.uknowme.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -11,12 +12,13 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class SecurityService {
-    private static final String SECRET_KEY = "aasdjaslkdasdgafgafgsdffahgdnjmmjkasdanlforfgwgdvj";
+public class JwtService {
 
+    @Value("${jwt.secret-key}")
+    private String SECRET_KEY;
 
     // 로그인서비스와 함께
-    public String createToken(String subject, long expTime) {
+    public String createToken(String id, long expTime) {
         if (expTime<=0) {
             throw new RuntimeException("Runtime Error");
         }
@@ -24,11 +26,12 @@ public class SecurityService {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
         byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
-        Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
+
+        Key keySpec = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
 
         return Jwts.builder()
-                .setSubject(subject)
-                .signWith(signingKey, signatureAlgorithm)
+                .setSubject(id)
+                .signWith(keySpec, signatureAlgorithm)
                 .setExpiration(new Date(System.currentTimeMillis() + expTime))
                 .compact();
     }

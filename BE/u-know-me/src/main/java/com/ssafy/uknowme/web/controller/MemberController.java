@@ -1,6 +1,5 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.ssafy.uknowme.aspect.TokenRequired;
 import com.ssafy.uknowme.model.dto.MemberRequestDto;
 import com.ssafy.uknowme.model.dto.MemberResponseDto;
 import com.ssafy.uknowme.model.dto.MemberUpdateDto;
@@ -48,7 +47,6 @@ public class MemberController {
         }
     }
 
-    @TokenRequired
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberRequestDto dto) {
         MemberResponseDto findDto = memberService.login(dto);

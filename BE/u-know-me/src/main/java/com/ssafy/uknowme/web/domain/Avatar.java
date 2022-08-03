@@ -20,13 +20,6 @@ public class Avatar extends BaseEntity {
     private int seq;
 
     /**
-     * 현재 아바타를 착용하고 있는 멤버
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_seq")
-    private Member member;
-
-    /**
      * 아바타 이름 ex) 유노, 
      */
     private String name;
@@ -49,9 +42,8 @@ public class Avatar extends BaseEntity {
     private AvatarState state;
 
     @Builder
-    public Avatar(int seq, Member member, String name, String file, int frequency, AvatarState state) {
+    public Avatar(int seq, String name, String file, int frequency, AvatarState state) {
         this.seq = seq;
-        this.member = member;
         this.name = name;
         this.file = file;
         this.frequency = frequency;

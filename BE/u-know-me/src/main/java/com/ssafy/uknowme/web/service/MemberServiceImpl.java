@@ -6,10 +6,10 @@ import com.ssafy.uknowme.model.dto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.util.Password;
 
 
 @RequiredArgsConstructor
@@ -22,7 +22,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean join(MemberRequestDto dto) {
-
         if (existsById(dto.getId())) {
             return false;
         } if (existsByNickname(dto.getNickname())) {
@@ -31,10 +30,11 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
 
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         Member member = Member.builder()
                 .id(dto.getId())
-                .password(dto.getPassword())
+                .password(encoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .nickname(dto.getNickname())
                 .gender(dto.getBirth())
@@ -43,7 +43,6 @@ public class MemberServiceImpl implements MemberService {
                 .smoke(dto.getSmoke())
                 .address(dto.getAddress())
                 .build();
-
 
 
         repository.save(member);
@@ -93,13 +92,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private Member findById(MemberUpdateDto memberUpdateDto) {
-        Member member;
         try {
-            member = repository.findById(memberUpdateDto.getId()).orElseThrow(() -> new IllegalAccessException("해당 아이디가 없습니다."));
+            return repository.findById(memberUpdateDto.getId()).orElseThrow(() -> new IllegalAccessException("해당 아이디가 없습니다."));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        return member;
     }
 
 }

@@ -1,0 +1,69 @@
+package com.ssafy.uknowme.security.jwt;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.uknowme.model.dto.MemberRequestDto;
+import com.ssafy.uknowme.security.auth.PrincipalDetails;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Slf4j
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    private final String HEADER_STRING = "Authorization";
+
+    private final String AUTHORIZATION_TYPE = "Bearer";
+
+    private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        MemberRequestDto dto = toMemberRequestDto(request);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getId(), dto.getPassword());
+
+        return authenticationManager.authenticate(authenticationToken);
+    }
+
+    /**
+     * JSON으로 받아온 요청 파라미터를 MemberRequestDto 형태로 변환하는 메서드입니다.
+     * @param request HttpServletRequest
+     * @return 성공 시 MemberRequestDto, 실패 시 null
+     */
+    private MemberRequestDto toMemberRequestDto(HttpServletRequest request) {
+        try {
+            return new ObjectMapper().readValue(request.getInputStream(), MemberRequestDto.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)  {
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+
+        String jwtToken = jwtService.createToken(principalDetails.getUsername(), (60 * 1000) * 10);
+
+        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + jwtToken);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        super.unsuccessfulAuthentication(request, response, failed);
+    }
+}
