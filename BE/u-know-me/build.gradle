@@ -44,6 +44,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	testImplementation 'org.springframework.security:spring-security-test'
 
+	//websocket 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	//jsonObject
+	implementation group: 'org.json', name: 'json', version: '20090211'
+
 
 }
 
