@@ -2,7 +2,9 @@
   <div class="match-all">
     <div class="button-list">
       <button class="main-btn" @click="main.logoutBtn = true">
-        로그아웃&#160;&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i>
+        로그아웃&#160;&#160;&#160;<i
+          class="fa-solid fa-arrow-right-from-bracket"
+        ></i>
       </button>
       <button class="main-btn" @click="main.informBtn = true">
         정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
@@ -17,7 +19,8 @@
 
     <div class="match-circle">
       <div id="container">
-        <div class="heart-img" @click="this.$router.push({ name: 'chat' })">
+        <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
+        <div class="heart-img" @click="click">
           <img src="@/assets/main/heart.png" alt="" />
         </div>
         <div class="circle" style="animation-delay: 0s"></div>
@@ -39,20 +42,40 @@
 </template>
 
 <script>
-import { useMainStore } from '@/stores/main/main'
+import { useMainStore } from "@/stores/main/main";
+import SockJS from "sockjs-client";
 
 export default {
   name: "ButtonList",
   components: {},
   data() {
     return {
-      matchBtn : false,
-    }
+      matchBtn: false,
+    };
   },
   setup() {
-    const main = useMainStore()
-    return { main }
-  }
+    const main = useMainStore();
+    return { main };
+  },
+  methods: {
+    click() {
+      //socket test
+      var sock = new SockJS("https://localhost:8080/ws/chat");
+      sock.onopen = function () {
+        console.log("open");
+        sock.send("test");
+      };
+
+      sock.onmessage = function (e) {
+        console.log("message", e.data);
+        sock.close();
+      };
+
+      sock.onclose = function () {
+        console.log("close");
+      };
+    },
+  },
 };
 </script>
 
