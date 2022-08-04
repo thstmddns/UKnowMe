@@ -1,4 +1,4 @@
-const HOST = 'https://i7d104.p.ssafy.io/'
+const HOST = 'http://uknowme.mooo.com:8000/'
 
 const MEMBERS = 'member/'
 const MACHINGS = 'maching/'
@@ -11,11 +11,12 @@ export default {
   members: {
     login: () => HOST + MEMBERS + 'login/',
     logout: () => HOST + MEMBERS + 'logout/',
-    signup: () => HOST + MEMBERS + 'signup/',
+    signup: () => HOST + MEMBERS + 'join/',
     findId: () => HOST + MEMBERS + 'find/id/',
     findPassword: () => HOST + MEMBERS + 'find/password/',
     account: memberSeq => HOST + MEMBERS + `${memberSeq}/`,
-    idDuplicate: () => HOST + MEMBERS + 'duplicate/',
+    idDuplicate: () => HOST + MEMBERS + 'check/id/',
+    nickNameDuplicate: () => HOST + MEMBERS + 'check/nickname/',
     kakaoLogin: () => HOST + MEMBERS + 'kakao/callback/',
     naverLogin: () => HOST + MEMBERS + 'naver/callback/',
     kakao: () => HOST + MEMBERS + 'add/kakao/',
