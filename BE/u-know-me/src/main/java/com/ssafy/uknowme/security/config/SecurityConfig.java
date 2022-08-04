@@ -56,7 +56,8 @@ public class SecurityConfig {
                     .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**").permitAll()
                 .and()
                     .authorizeRequests()
-                    .anyRequest().authenticated()
+                    // 이 부분 수정 필요합니다! 웹 소켓 테스트를 위해 잠깐 permitAll()로 수정했는데 추후에 권한 부여해야 합니다!
+                    .anyRequest().permitAll()
                 .and().build();
     }
 
