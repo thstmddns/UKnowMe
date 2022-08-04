@@ -5,6 +5,7 @@ import LandPageView from '@/views/land/LandPageView.vue'
 import TestView from '@/views/land/TestView.vue'
 import ChatView from '@/views/chat/ChatView.vue'
 import MainView from '@/views/main/MainView.vue'
+import AdminView from '@/views/admin/AdminView.vue'
 import Test2View from '@/views/land/Test2View.vue'
 
 const routes = [
@@ -32,6 +33,11 @@ const routes = [
     path: "/main",
     name: 'main',
     component: MainView,
+  },
+  {
+    path: "/admin",
+    name: 'admin',
+    component: AdminView,
   },
   {
     path: "/test2",
