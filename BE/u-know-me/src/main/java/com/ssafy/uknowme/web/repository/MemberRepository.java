@@ -28,7 +28,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
     //아이디 중복체크
     static boolean existsByMemberId(String memberId) {
         return MemberRepository.existsByMemberId(memberId);
-
     }
 
     // name으로 회원 검색

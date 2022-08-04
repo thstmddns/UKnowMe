@@ -20,11 +20,6 @@ public class MemberController {
     private final MemberService memberService;
 
 
-    @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("message", "좋은 아침");
-        return "index";
-    }
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@Validated @RequestBody MemberRequestDto dto) {
@@ -71,7 +66,5 @@ public class MemberController {
     public String update(@RequestBody MemberUpdateDto dto) {
         return memberService.update(dto);
     }
-
-    
 
 }
