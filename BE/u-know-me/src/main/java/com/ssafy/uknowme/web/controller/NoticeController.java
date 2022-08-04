@@ -28,19 +28,22 @@ public class NoticeController {
     @Autowired
     private NoticeRepository noticeRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/save")
     public boolean save(@RequestBody NoticeSaveRequestDto requestDto) {
+        noticeService.save(requestDto);
         return true;
     }
 
     @PutMapping("/{noticeSeq}")
     public boolean update(@PathVariable int noticeSeq, @RequestBody NoticeUpdateRequestDto requestDto) {
+        noticeService.update(noticeSeq, requestDto);
         return true;
     }
 
     @GetMapping("/{noticeSeq}")
-    public NoticeResponseDto findByNoticeSeq (@PathVariable int noticeSeq) {
-        return noticeService.findByNoticeSeq(noticeSeq);
+    public boolean findByNoticeSeq (@PathVariable int noticeSeq) {
+        noticeService.findByNoticeSeq(noticeSeq);
+        return true;
     }
 
     @GetMapping("/list")
