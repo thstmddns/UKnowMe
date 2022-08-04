@@ -17,7 +17,7 @@ public class Room extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "room_seq")
-    private int seq;
+    private String seq;
 
     /**
      * 밸런스 게임 실행 횟수
@@ -33,7 +33,7 @@ public class Room extends BaseEntity {
     private RoomType type;
 
     @Builder
-    public Room(int seq, int balanceCount, RoomType type) {
+    public Room(String seq, int balanceCount, RoomType type) {
         this.seq = seq;
         this.balanceCount = balanceCount;
         this.type = type;
