@@ -11,6 +11,7 @@ export const useAccountStore = defineStore('account', {
     profile: {},
     authError: null,
     isAdmin: false,
+    findUserId: '',
   }),
   getters: {
     isLoggedIn: state => !!state.token,
@@ -141,6 +142,24 @@ export const useAccountStore = defineStore('account', {
     googleLogin() {
       const Google = window.gapi
       console.log(Google);
+    },
+    findId(credentials) {
+      console.log({...credentials})
+       // axios({
+      //   url: sr.accounts.findId(),
+      //   method: 'post',
+      //   data: {...credentials},
+      // })
+      //   .then((res) => {
+      //     console.log(res)
+      //     this.findUserId = res
+      //   })
+      //   .error(err => {
+      //     console.error(err.response)
+      //   })
+    },
+    findPassword(credentials) {
+      console.log({...credentials})
     },
     fetchCurrentUser() {
       if (this.isLoggedIn) {

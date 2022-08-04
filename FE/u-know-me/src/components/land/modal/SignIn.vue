@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="find-id-password">
-      <span>아이디/</span><span>비밀번호 찾기</span>
+      <span @click="land.btnCh=4">아이디/</span><span @click="land.btnCh=5">비밀번호 찾기</span>
     </div>
     <button class="login-btn">로그인</button>
   </form>
@@ -61,6 +61,26 @@ const callbackUrl = "http://localhost:8080/test"
 export default {
   name: 'SignIn',
   methods: {
+    // openFindPage(pageNum) {
+    //   let popUpName = '팝팝파파팝'
+    //   if (pageNum === 0) {
+    //     this.land.popBtnCh=0
+    //     popUpName = '아이디 찾기'
+    //   } else if (pageNum === 1) {
+    //     this.land.popBtnCh=1
+    //     popUpName = '비밀번호 찾기'
+    //   }
+    //   window.open(`http://localhost:8080/find?idp=${this.land.popBtnCh}`, popUpName, this.getLoginPopupFeatures());
+    // },
+    // getLoginPopupFeatures() {
+    // var popupWidth = 480;
+    // var popupHeight = 450;
+    // var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+    // var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+    // var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+    // var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+    // return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
+    // },
     GoogleLoginBtn() {
       var self = this;
 
