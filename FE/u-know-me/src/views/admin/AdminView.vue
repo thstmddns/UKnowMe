@@ -40,7 +40,7 @@
 
 <script>
 import { storeToRefs } from 'pinia'
-import { useLandStore } from '@/stores/admin/admin'
+import { useAdminStore } from '@/stores/admin/admin'
 import AdminMember from '@/components/admin/AdminMember.vue'
 import AdminNotice from '@/components/admin/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
@@ -54,7 +54,7 @@ export default {
     AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper
   },
   setup() {
-    const admin = useLandStore()
+    const admin = useAdminStore()
     const { adminBtn } = storeToRefs(admin)
     return {
       admin,

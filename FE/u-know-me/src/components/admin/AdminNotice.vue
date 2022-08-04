@@ -1,7 +1,7 @@
 <template>
   <div class="admin-table">
     <div class="notice">공지사항</div>
-    <button class="notice-btn">글쓰기</button>
+    <button class="notice-btn" @click="admin.noticeAddBtn = true">글쓰기</button>
     <div class="notice-table">
       <table>
         <thead>
@@ -92,12 +92,28 @@
       </table>
     </div>
   </div>
-  
+  <notice-add v-if="admin.noticeAddBtn == true"/>
 </template>
 
 <script>
-export default {
+import { useAdminStore } from "@/stores/admin/admin";
+import NoticeAdd from "@/components/admin/modal/NoticeAdd.vue";
 
+export default {
+  name: "AdminNotice",
+  components: { NoticeAdd },
+  data() {
+    return {
+      noticeAddBtn: false,
+    };
+  },
+  setup() {
+    const admin = useAdminStore();
+    return {
+      admin,
+    }
+  },
+  
 }
 </script>
 
