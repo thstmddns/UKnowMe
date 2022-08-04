@@ -7,8 +7,11 @@ import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+=======
+>>>>>>> 296ce36bb4236261a669e14677fce3fb20f469ab
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +34,18 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
 
+<<<<<<< HEAD
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+=======
+        if (existsById(dto.getId())) {
+            return false;
+        } if (existsByNickname(dto.getNickname())) {
+            return false;
+        } if (existsByTel(dto.getTel())) {
+            return false;
+        }
+
+>>>>>>> 296ce36bb4236261a669e14677fce3fb20f469ab
 
         Member member = Member.builder()
                 .id(dto.getId())
@@ -43,10 +57,17 @@ public class MemberServiceImpl implements MemberService {
                 .tel(dto.getTel())
                 .smoke(dto.getSmoke())
                 .address(dto.getAddress())
+<<<<<<< HEAD
                 .role(Role.USER)
                 .build();
 
 
+=======
+                .build();
+
+
+
+>>>>>>> 296ce36bb4236261a669e14677fce3fb20f469ab
         repository.save(member);
 
         return true;

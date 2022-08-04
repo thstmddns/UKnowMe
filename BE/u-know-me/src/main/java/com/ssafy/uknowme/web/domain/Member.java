@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Table(indexes = @Index(columnList = "id", unique = true))
 public class Member extends BaseEntity {
 
-
     @Id @GeneratedValue
     @Column(name = "member_seq")
     private int seq;

@@ -2,10 +2,7 @@ package com.ssafy.uknowme.web.domain;
 
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
 import com.ssafy.uknowme.web.domain.enums.AvatarState;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
