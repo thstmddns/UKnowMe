@@ -292,7 +292,7 @@ export default {
   padding-bottom: 32px;
 }
 #signUpForm {
-  height: 84%;
+  height: calc(100% - 120px);
   margin-right: -32px;
   overflow-x: hidden;
   overflow-y: auto;

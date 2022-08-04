@@ -3,7 +3,6 @@
     <video class="landing-video" muted autoplay loop>
       <source src="~@/assets/land/landing-background.mp4" type="video/mp4">
     </video>
-    <CherryBlossom/>
     <img class="landing-text" src="@/assets/land/landing-text.png" alt="landing-text">
     <div class="avatar">
       <img class="me" src="@/assets/land/character_woman.png" alt="me">
@@ -13,13 +12,8 @@
 </template>
 
 <script>
-import CherryBlossom from '@/components/land/sakura/CherryBlossom.vue'
-
 export default {
   name: 'LandingPage',
-  components: {
-    CherryBlossom,
-  },
 }
 </script>
 
