@@ -33,12 +33,12 @@ public class NoticeController {
         return true;
     }
 
-    @PutMapping("{noticeSeq}")
+    @PutMapping("/{noticeSeq}")
     public boolean update(@PathVariable int noticeSeq, @RequestBody NoticeUpdateRequestDto requestDto) {
         return true;
     }
 
-    @GetMapping("{noticeSeq}")
+    @GetMapping("/{noticeSeq}")
     public NoticeResponseDto findByNoticeSeq (@PathVariable int noticeSeq) {
         return noticeService.findByNoticeSeq(noticeSeq);
     }
