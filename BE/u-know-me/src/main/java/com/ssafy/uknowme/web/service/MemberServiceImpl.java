@@ -4,6 +4,7 @@ import com.ssafy.uknowme.model.dto.MemberRequestDto;
 import com.ssafy.uknowme.model.dto.MemberResponseDto;
 import com.ssafy.uknowme.model.dto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -42,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
                 .tel(dto.getTel())
                 .smoke(dto.getSmoke())
                 .address(dto.getAddress())
+                .role(Role.USER)
                 .build();
 
 

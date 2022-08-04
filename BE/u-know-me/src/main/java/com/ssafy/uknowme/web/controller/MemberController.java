@@ -1,7 +1,6 @@
 package com.ssafy.uknowme.web.controller;
 
 import com.ssafy.uknowme.model.dto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.MemberResponseDto;
 import com.ssafy.uknowme.model.dto.MemberUpdateDto;
 import com.ssafy.uknowme.web.exception.BadRequestException;
 import com.ssafy.uknowme.web.service.MemberService;
@@ -23,41 +22,26 @@ public class MemberController {
     public ResponseEntity<?> join(@Validated @RequestBody MemberRequestDto dto) {
         if (memberService.join(dto)) {
             return new ResponseEntity<>("true", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
         }
-        else {return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);}
     }
 
     @GetMapping("/check/id")
     public ResponseEntity<?> checkIdDuplication(@RequestParam(value = "memberId") String memberId) throws BadRequestException {
-        System.out.println((memberId));
         if (memberService.existsById(memberId)) {
-            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("false", HttpStatus.OK);
         } else {
-            return ResponseEntity.ok("true");
+            return new ResponseEntity<>("true", HttpStatus.OK);
         }
     }
 
     @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickNameDuplication(@RequestParam(value = "memberNickname") String memberNickname) throws BadRequestException {
-        System.out.println((memberNickname));
         if (memberService.existsByNickname(memberNickname)) {
-            throw new BadRequestException("false");
+            return new ResponseEntity<>("false", HttpStatus.OK);
         } else {
-            return ResponseEntity.ok("true");
-        }
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberRequestDto dto) {
-        MemberResponseDto findDto = memberService.login(dto);
-
-        if (findDto != null) {
-            /**
-             * 추가로 JWT 관리하는 코드가 들어가야 합니다.
-             */
-            return new ResponseEntity<>(findDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(false, HttpStatus.OK);
+            return new ResponseEntity<>("true", HttpStatus.OK);
         }
     }
 
@@ -65,6 +49,5 @@ public class MemberController {
     public String update(@RequestBody MemberUpdateDto dto) {
         return memberService.update(dto);
     }
-
 
 }
