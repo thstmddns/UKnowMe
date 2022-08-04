@@ -3,6 +3,7 @@ package com.ssafy.uknowme.web.service;
 import com.ssafy.uknowme.model.dto.MatchingDto.MatchingRequestDto;
 import com.ssafy.uknowme.model.dto.MatchingDto.MatchingResponseDto;
 import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.Room;
 import com.ssafy.uknowme.web.repository.MatchingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,15 @@ public class  MatchingServiceImpl implements  MatchingService{
         }
         return matchingResponseDto;
     }
+
+//    @Override
+//    @Transactional
+//    public boolean create1vs1MatchingRoom(MatchingRequestDto dto) throws Exception {
+//
+//
+//
+//
+//    }
 
     @Override
     public MatchingResponseDto get2vs2MatchingMemberInfo(MatchingRequestDto dto) throws Exception {

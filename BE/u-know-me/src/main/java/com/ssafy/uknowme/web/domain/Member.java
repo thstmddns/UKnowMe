@@ -1,11 +1,7 @@
 package com.ssafy.uknowme.web.domain;
 
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
 import com.ssafy.uknowme.web.domain.enums.Role;
-
-
-import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = @Index(columnList = "id", unique = true))
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue
@@ -32,7 +30,7 @@ public class Member extends BaseEntity {
     /**
      * 로그인할 ID
      */
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String id;
 
     /**

@@ -6,5 +6,6 @@ import com.ssafy.uknowme.model.dto.MatchingDto.MatchingResponseDto;
 
 public interface MatchingService {
     MatchingResponseDto get1vs1MatchingMemberInfo(MatchingRequestDto dto) throws Exception;
+    //boolean create1vs1MatchingRoom(MatchingRequestDto dto) throws Exception;
     MatchingResponseDto get2vs2MatchingMemberInfo(MatchingRequestDto dto) throws Exception;
 }
