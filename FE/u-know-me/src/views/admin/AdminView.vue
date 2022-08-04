@@ -7,11 +7,11 @@
         </div>
         <hr>
         <div class="admin-toolbar-bottom">
-          <div class="admin-btn admin-member" @click="adminBtn = 0">회원 관리</div>
-          <div class="admin-btn admin-notice" @click="adminBtn = 1">공지사항</div>
-          <div class="admin-btn admin-avatar" @click="adminBtn = 2">아바타 관리</div>
-          <div class="admin-btn admin-balance" @click="adminBtn = 3">밸런스 게임</div>
-          <div class="admin-btn amdin-helper" @click="adminBtn = 4">도우미 키워드</div>
+          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 0}" @click="adminBtn = 0">회원 관리</div>
+          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 1}" @click="adminBtn = 1">공지사항</div>
+          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 2}" @click="adminBtn = 2">아바타 관리</div>
+          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 3}" @click="adminBtn = 3">밸런스 게임</div>
+          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 4}" @click="adminBtn = 4">도우미 키워드</div>
         </div>
       </div>
       <button class="admin-logout-btn">로그아웃&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
@@ -80,7 +80,7 @@ hr {
   position: relative;
   width: 300px;
   height: 100%;
-  background-color: #dcddfe;
+  background-color: #f0f1ff;
 }
 .admin-toolbar-container {
   text-align: center;
@@ -91,6 +91,9 @@ hr {
   justify-content: center;
   font-size: 20px;
 }
+.admin-toolbar-bottom {
+  margin: 10% 0;
+}
 .admin-logout-btn {
   position: absolute;
   bottom: 1%;
@@ -99,21 +102,33 @@ hr {
   height: 40px;
   padding: 10px 10px;
   margin: 10px;
-  border: none;
+  border: 2px solid #c1c3fc;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  background: #f1f1ff;
+  background: #ffffff;
   cursor: pointer;
 }
+.admin-logout-btn:hover {
+  background: #c1c3fc;
+  color: #fff;
+}
 .admin-btn {
-  margin: 10%;
+  margin: 5% 0;
+  padding: 5%;
   font-size: 20px;
   cursor: pointer;
+}
+.admin-btn:hover {
+  background-color: #c1c3fc;
+}
+.admin-btn-active {
+  background-color: #c1c3fc;
+  font-weight: 600;
 }
 .admin-content {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-color:pink;
+  /* background-color:pink; */
 }
 </style>
