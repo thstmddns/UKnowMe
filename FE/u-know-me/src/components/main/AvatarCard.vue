@@ -7,7 +7,7 @@
       <h4 id="avatar-name">{{avatar.name}}</h4>
       <button class="avatar-button">선택</button>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -16,7 +16,6 @@ export default {
   props: {
     avatar : Object,
   },
-
 }
 </script>
 

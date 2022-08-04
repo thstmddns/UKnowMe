@@ -1,7 +1,7 @@
 <template>
   <div class="admin-table">
     <div class="notice">공지사항</div>
-    <button class="notice-btn" @click="admin.noticeAddBtn = true">글쓰기</button>
+    <button class="admin-btn admin-notice-btn" @click="admin.noticeAddBtn = true">글쓰기</button>
     <div class="notice-table">
       <table>
         <thead>
@@ -126,23 +126,13 @@ table{
   font-size: 30px;
   font-weight: 550;
 }
-.notice-btn {
+.admin-notice-btn {
   position: relative;
   top: 1%;
   left: 90%;
   width: 100px;
   height: 40px;
-  padding: 10px;
   margin: 0  0 15px 0;
-  border: 2px solid #c1c3fc;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-}
-.notice-btn:hover {
-  background: #c1c3fc;
-  color: #fff;
 }
 .notice-table{
   background-color: #f0f1ff;

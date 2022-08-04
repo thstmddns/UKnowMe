@@ -7,14 +7,14 @@
         </div>
         <hr>
         <div class="admin-toolbar-bottom">
-          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 0}" @click="adminBtn = 0">회원 관리</div>
-          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 1}" @click="adminBtn = 1">공지사항</div>
-          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 2}" @click="adminBtn = 2">아바타 관리</div>
-          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 3}" @click="adminBtn = 3">밸런스 게임</div>
-          <div class="admin-btn" :class="{'admin-btn-active' : adminBtn == 4}" @click="adminBtn = 4">도우미 키워드</div>
+          <div class="admin-select" :class="{'admin-select-active' : adminBtn == 0}" @click="adminBtn = 0">회원 관리</div>
+          <div class="admin-select" :class="{'admin-select-active' : adminBtn == 1}" @click="adminBtn = 1">공지사항</div>
+          <div class="admin-select" :class="{'admin-select-active' : adminBtn == 2}" @click="adminBtn = 2">아바타 관리</div>
+          <div class="admin-select" :class="{'admin-select-active' : adminBtn == 3}" @click="adminBtn = 3">밸런스 게임</div>
+          <div class="admin-select" :class="{'admin-select-active' : adminBtn == 4}" @click="adminBtn = 4">도우미 키워드</div>
         </div>
       </div>
-      <button class="admin-logout-btn">로그아웃&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      <button class="admin-btn admin-logout-btn">로그아웃&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
     </div>
     <div class="admin-content">
       <admin-member
@@ -100,28 +100,22 @@ hr {
   right: 1%;
   width: 100px;
   height: 40px;
-  padding: 10px 10px;
   margin: 10px;
-  border: 2px solid #c1c3fc;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
 }
 .admin-logout-btn:hover {
   background: #c1c3fc;
   color: #fff;
 }
-.admin-btn {
+.admin-select {
   margin: 5% 0;
   padding: 5%;
   font-size: 20px;
   cursor: pointer;
 }
-.admin-btn:hover {
+.admin-select:hover {
   background-color: #c1c3fc;
 }
-.admin-btn-active {
+.admin-select-active {
   background-color: #c1c3fc;
   font-weight: 600;
 }
@@ -130,5 +124,17 @@ hr {
   width: 100vw;
   height: 100vh;
   /* background-color:pink; */
+}
+.admin-btn {
+  padding: 10px;
+  border: 2px solid #c1c3fc;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.admin-btn:hover {
+  background: #c1c3fc;
+  color: #fff;
 }
 </style>
