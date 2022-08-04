@@ -3,10 +3,13 @@ import sr from '@/api/spring-rest'
 import router from '@/router'
 import axios from 'axios'
 import { useLandStore } from './land'
+import { useCookies } from "vue3-cookies";
+
+const { cookies } = useCookies();
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
-    token: '',
+    token: cookies.get('UkmL') || '',
     currentUser: {},
     profile: {},
     authError: null,
@@ -24,7 +27,7 @@ export const useAccountStore = defineStore('account', {
     },
     saveToken(token) {
       this.token = token
-      localStorage.setItem('id_token', token)
+      cookies.set('UkmL', token, '2h')
     },
     removeToken() {
       this.token = ''
@@ -60,8 +63,9 @@ export const useAccountStore = defineStore('account', {
       })
         .then(res => {
           console.log(res);
-          // const token = res.data.key
-          // this.saveToken(token)
+          // const token = 'res.data.access_token'
+          const token = 'access_token'
+          this.saveToken(token)
           // this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
           // router.push({ name: 'home' })
