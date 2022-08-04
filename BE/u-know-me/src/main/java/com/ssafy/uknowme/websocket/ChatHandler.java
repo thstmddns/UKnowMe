@@ -1,29 +1,15 @@
-package com.ssafy.uknowme.sockjs;
+package com.ssafy.uknowme.websocket;
 
-import com.ssafy.uknowme.model.dto.MatchingDto.MatchingRequestDto;
-import com.ssafy.uknowme.model.dto.MatchingDto.MatchingResponseDto;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.collections.map.MultiValueMap;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.*;
-
 
 @CrossOrigin
 @Component
@@ -31,7 +17,9 @@ import java.util.*;
 public class ChatHandler extends TextWebSocketHandler {
 
 
-    static List<User> connectUser = new ArrayList<>();  //오픈비두 서버에서 정보가 전달된 유저
+    static List<User> connectUser = new ArrayList<>();  // waitingUserList 에서 넘어온 유저
+
+    static List<User> waitingUserList = new ArrayList<>();  //오픈비두 서버에서 연결되어서 대기 중인 유저
 
     static List<User> ManList = new ArrayList<>(); // watingUser 에서 넘어온 남자 리스트
 
@@ -42,14 +30,16 @@ public class ChatHandler extends TextWebSocketHandler {
     static double nowlon; // 현재 남자의 lon (경도)
     private static List<WebSocketSession> list = new ArrayList<>();
 
-    /* Client가 접속 시 호출되는 메서드 */
-
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("payload : " + payload);
-        JSONObject jObject = new JSONObject(message);
+        //log.info("payload : " + payload);
+        String parseMessage = payload.toString();
 
+        log.info("parseMessage : " + payload);
+        JSONObject jObject = new JSONObject(payload);
+        log.info(jObject.toString());
+        log.info("payload : " + parseMessage);
 
         connectUser.add(new User(
                 Integer.parseInt(jObject.getString("seq")),
@@ -62,24 +52,12 @@ public class ChatHandler extends TextWebSocketHandler {
                 Double.parseDouble(jObject.getString("lat")),
                 Double.parseDouble( jObject.getString("lon")),
                 new int[Integer.parseInt(jObject.getString("smoke"))],
-                new int[Integer.parseInt(jObject.getString("machingSmoke"))]
-
-
+                new int[Integer.parseInt(jObject.getString("machingSmoke"))],
+                session
         ));
 
-        int[] smokeo = {0}; // 상관없음
-        int[] smokex = {1}; // 담배핌
-        connectUser.add(new User(1, "yesol1", "예솔1", 'W', 25, 23, 24, 0.2, 0.2, smokeo, smokeo));
-        connectUser.add(new User(1, "yesol1", "예솔1", 'M', 25, 23, 24, 0.2, 0.2, smokeo, smokeo));
-        connectUser.get(0).setNickname(String.valueOf(message));
         addGenderList(connectUser);
         startMatching1vs1();
-        deleteoutUser();
-
-
-        for(WebSocketSession sess: list) {
-            sess.sendMessage(message);
-        }
     }
 
 
@@ -90,11 +68,6 @@ public class ChatHandler extends TextWebSocketHandler {
         System.out.println(list.toString());
 
         log.info(session + " 클라이언트 접속"+list.toString() );
-
-
-
-
-
     }
 
     /* Client가 접속 해제 시 호출되는 메서드드 */
@@ -103,24 +76,29 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
         log.info(session + " 클라이언트 접속 해제");
+
         list.remove(session);
+
+      for (int cnt=  0 ; cnt<connectUser.size(); cnt++){
+          if(connectUser.get(cnt).getSession() == session){
+              connectUser.remove(cnt);
+          }
+      }
+
+
+        for (int cnt=  0 ; cnt<ManList.size(); cnt++){
+            if(ManList.get(cnt).getSession() == session){
+                ManList.remove(cnt);
+            }
+        }
+
+        for (int cnt=  0 ; cnt<WomanList.size(); cnt++){
+            if(WomanList.get(cnt).getSession() == session){
+                WomanList.remove(cnt);
+            }
+        }
     }
 
-
-    public static void deleteoutUser() {
-        for (int mancnt = 0; mancnt <= ManList.size(); mancnt++) {
-            //TODO : [openvidu] 서버와 통신해서 소켓에 사람 남아 있는지 확인할 것. 아래 코드를 참조하면 됩니다.
-            //if ManList.get(mancnt).getSeq()가 여기 없으면
-            // ManList.remove(ManList.get(mancnt));
-
-        }
-        for (int womancnt = 0; womancnt <= WomanList.size(); womancnt++) {
-            //TODO : [openvidu] 서버와 통신해서 소켓에 사람 남아 있는지 확인할 것. 아래 코드를 참조하면 됩니다.
-            //if WomanList.get(womancnt).getSeq()가 여기 없으면
-            // ManList.remove(WomanList.get(womancnty));
-
-        }
-    }
 
     //유저를 남자 리스트, 여자 리스트에 넣는 메소드
     public static void addGenderList(List<User> watingUser) {
@@ -128,14 +106,16 @@ public class ChatHandler extends TextWebSocketHandler {
         watingUser.forEach((user) -> {
             if (user.getGender() == 'M') {
                 ManList.add(user);
+
             } else {
                 WomanList.add(user);
             }
         });
+        connectUser.clear();
     }
 
     //매칭 시작하는 메소드
-    public static void startMatching1vs1() {
+    public static void startMatching1vs1() throws InterruptedException {
         for (int mancnt = 0; mancnt <= ManList.size(); mancnt++) {
             List<User> UserTmpWomanList = new ArrayList<>(); //남자 기준의 임시 여자 리스트 생성
             try {
@@ -150,8 +130,7 @@ public class ChatHandler extends TextWebSocketHandler {
                             UserTmpWomanList.add(WomanList.get(womancnt));
                         }
                     } catch (IndexOutOfBoundsException e) {
-                        //TODO : logger 로 교체
-                        System.out.println("여자리스트가 끝나버렸습니다.");
+                        log.info("여자리스트가 끝났습니다");
                         break;
                     }
                 }
@@ -166,9 +145,11 @@ public class ChatHandler extends TextWebSocketHandler {
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-                //TODO : logger 로 교체
-                System.out.println("남자리스트가 끝나버렸습니다.");
+
+                log.info("남자리스트가 끝났습니다");
                 break;
+            }catch (IOException e){
+                log.info("입출력 Exception 발생");
             }
         }
     }
@@ -185,32 +166,24 @@ public class ChatHandler extends TextWebSocketHandler {
             if (user1.getMatchoptions()[i] == 2 & user2.getOptions()[i] == 1) return false;
             if (user1.getMatchoptions()[i] == 1 & user2.getOptions()[i] == 2) return false;
         }
-
         return true;
     }
 
 
     //매칭성공한 사람들을 현재 리스트에서 제거
-    public static boolean startConnect(User user1, User user2) {
-        // TODO : [openvidu] 현재 웹소켓에 이사람들이 접속해 있는지 확인하깋
-
+    public static boolean startConnect(User user1, User user2) throws IOException {
         //현재 남자, 여자 list 에서 빼기
         ManList.remove(user1);
         WomanList.remove(user2);
 
-        //TODO : connectlist 에서 삭제하기
+        String roomSeq = UUID.randomUUID().toString();
+        for(WebSocketSession sess: list) {
+            if(user1.getSession() == sess | user2.getSession()==sess){
+                TextMessage tx = new TextMessage(roomSeq);
+                sess.sendMessage(tx);
+            }
+        }
 
-        //TODO : TEST CODE 추후 삭제필
-        System.out.println(user1.getNickname() + " " + user2.getNickname());
-
-        //방번호규칙 : 현재시간 + 유저ID
-        Date today = new Date();
-        Locale currentLocale = new Locale("KOREAN", "KOREA");
-        String pattern = "yyyyMMddHHmmss";
-        SimpleDateFormat formatter = new SimpleDateFormat(pattern,
-                currentLocale);
-        //TODO : TEST CODE 추후 삭제필
-        System.out.println("ROOM NUMBER : " + formatter.format(today) + user1.getId());
         return true;
 
     }

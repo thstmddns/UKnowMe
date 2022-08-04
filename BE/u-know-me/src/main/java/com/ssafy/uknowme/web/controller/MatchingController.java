@@ -37,6 +37,21 @@ public class MatchingController {
 
     }
 
+
+//    @ApiOperation(value = "1대1 매칭 시 전달받을 정보를 담은 API", notes = "사용자의 id 를 통해 사용자의 정보를 조회한다")
+//    @PostMapping("/create/1vs1")
+//    public ResponseEntity<?> create1vs1MatchingUser(@RequestBody MatchingRequestDto dto) throws Exception {
+//
+//        boolean response = matchingService.create1vs1MatchingRoom(dto);
+//        if(matchingMemberDto.getNickname()!=null & matchingMemberDto.getBirth() !=null
+//                &matchingMemberDto.getSmoke() !=null & matchingMemberDto.getGender() != null){
+//            return new ResponseEntity(matchingMemberDto, HttpStatus.OK);
+//        }else{
+//            return new ResponseEntity(matchingMemberDto, HttpStatus.NO_CONTENT);
+//        }
+//
+//    }
+
     @ApiOperation(value = "2대2 매칭 시 전달받을 정보를 담은 API", notes = "사용자의 id 를 통해 사용자의 정보를 조회한다")
     @PostMapping("/2vs2")
     public ResponseEntity<?> get2vs2MatchingUserInfo(@RequestBody MatchingRequestDto dto) throws Exception {

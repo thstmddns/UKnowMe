@@ -45,12 +45,20 @@ dependencies {
 //	testImplementation 'org.springframework.security:spring-security-test'
 
 	//websocket 라이브러리
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 
 	//jsonObject
 	implementation group: 'org.json', name: 'json', version: '20090211'
-
+	implementation 'org.json:json:20190722'
 
 }
 
