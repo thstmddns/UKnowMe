@@ -8,10 +8,9 @@ COPY gradle $APP_HOME/gradle
 COPY --chown=gradle:gradle . /home/gradle/src
 USER root
 RUN chown -R gradle /home/gradle/src
-    
-RUN gradle build || return 0
+
 COPY . .
-RUN gradle clean build
+RUN gradle clean build --exclude-task test
     
 # actual container
 FROM openjdk:8-jdk-alpine
