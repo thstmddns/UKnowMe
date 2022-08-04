@@ -12,6 +12,7 @@ export const useAccountStore = defineStore('account', {
     authError: null,
     isAdmin: false,
     findUserId: '',
+    findUserfindPassword: '',
   }),
   getters: {
     isLoggedIn: state => !!state.token,
@@ -55,10 +56,10 @@ export const useAccountStore = defineStore('account', {
       axios({
         url: sr.members.login(),
         method: 'post',
-        data: {...credentials}
+        data: {...credentials},
       })
         .then(res => {
-          console.log(res.data);
+          console.log(res);
           // const token = res.data.key
           // this.saveToken(token)
           // this.fetchCurrentUser()
@@ -145,7 +146,7 @@ export const useAccountStore = defineStore('account', {
     },
     findId(credentials) {
       console.log({...credentials})
-       // axios({
+      //  axios({
       //   url: sr.accounts.findId(),
       //   method: 'post',
       //   data: {...credentials},
@@ -160,6 +161,18 @@ export const useAccountStore = defineStore('account', {
     },
     findPassword(credentials) {
       console.log({...credentials})
+      //  axios({
+      //   url: sr.accounts.findPassword(),
+      //   method: 'post',
+      //   data: {...credentials},
+      // })
+      //   .then((res) => {
+      //     console.log(res)
+      //     this.findUserfindPassword = res
+      //   })
+      //   .error(err => {
+      //     console.error(err.response)
+      //   })
     },
     fetchCurrentUser() {
       if (this.isLoggedIn) {

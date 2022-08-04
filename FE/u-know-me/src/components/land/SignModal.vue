@@ -8,6 +8,7 @@
         'find-id-modal': btnCh===4,
         'find-password-modal': btnCh===5,
         'find-id-result-modal': btnCh===6,
+        'find-password-result-modal': btnCh===7,
       }">
       <div class="close-btn" @click="btnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
@@ -20,13 +21,15 @@
         'find-id-modal-content': btnCh===4,
         'find-password-modal-content': btnCh===5,
         'find-id-result-modal-content': btnCh===6,
+        'find-password-result-modal-content': btnCh===7,
       }">
         <SignIn v-if="btnCh===1"/>
         <SignUp v-if="btnCh===2"/>
         <SnsLogin v-if="btnCh===3"/>
         <FindId v-if="btnCh===4"/>
-        <!-- <FindPassword v-if="btnCh===5"/> -->
+        <FindPassword v-if="btnCh===5"/>
         <FindIdResult v-if="btnCh===6"/>
+        <FindPasswordResult v-if="btnCh===7"/>
       </div>
     </div>
   </div>
@@ -38,7 +41,8 @@ import SignUp from '@/components/land/modal/SignUp.vue'
 import SnsLogin from '@/components/land/modal/SnsLogin.vue'
 import FindId from '@/components/land/modal/FindId.vue'
 import FindIdResult from '@/components/land/modal/FindIdResult.vue'
-// import FindPassword from '@/components/land/modal/FindPassword.vue'
+import FindPassword from '@/components/land/modal/FindPassword.vue'
+import FindPasswordResult from '@/components/land/modal/FindPasswordResult.vue'
 import { storeToRefs } from 'pinia'
 import { useLandStore } from '@/stores/land/land'
 
@@ -49,8 +53,9 @@ export default {
     SignUp,
     SnsLogin,
     FindId,
-    // FindPassword,
+    FindPassword,
     FindIdResult,
+    FindPasswordResult,
   },
   setup() {
     const land = useLandStore()
@@ -101,6 +106,9 @@ export default {
 .find-password-modal {
   height: 620px;
 }
+/* .find-password-result-modal {
+  height: 488px;
+} */
 .sign-modal-content {
   padding: 32px 62px;
 }
@@ -125,6 +133,9 @@ export default {
   padding: 32px 62px;
 }
 .find-password-modal-content {
+  padding: 32px 62px;
+}
+.find-password-result-modal-content {
   padding: 32px 62px;
 }
 .close-btn {
