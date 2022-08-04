@@ -1,6 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
 
+import com.ssafy.uknowme.model.dto.NoticeListResponseDto;
 import com.ssafy.uknowme.model.dto.NoticeResponseDto;
 import com.ssafy.uknowme.model.dto.NoticeSaveRequestDto;
 import com.ssafy.uknowme.model.dto.NoticeUpdateRequestDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -41,7 +43,6 @@ public class NoticeServiceImpl {
     }
 
     @Transactional
-
     public Integer update(int noticeSeq, NoticeUpdateRequestDto requestDto) {
         Notice notice = (Notice) noticeRepository.findBySeq(noticeSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
@@ -57,8 +58,12 @@ public class NoticeServiceImpl {
 
     @Transactional
     public void delete (int noticeSeq) {
+        Notice notice = noticeRepository.findBySeq(noticeSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        noticeRepository.delete(notice);
+    }
 
-            Notice notice = noticeRepository.findBySeq(noticeSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
-            noticeRepository.delete(notice);
+    @Transactional(readOnly = true)
+    public List<Notice> findAll(){
+        return noticeRepository.findAll();
     }
 }
