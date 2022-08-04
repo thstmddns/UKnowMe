@@ -14,5 +14,5 @@ services:
   web-back:
     build: ./BE/u-know-me
     ports:
-      - "8000:8080"
+      - "8080:8080"
     restart: unless-stopped
