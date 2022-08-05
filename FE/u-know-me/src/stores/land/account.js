@@ -9,7 +9,8 @@ const { cookies } = useCookies();
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
-    token: cookies.get('UkmL') || '',
+    a_token: cookies.get('UkmL') || '',
+    r_token: cookies.get('RUKmL') || '',
     currentUser: {},
     profile: {},
     authError: null,
@@ -18,20 +19,25 @@ export const useAccountStore = defineStore('account', {
     findUserfindPassword: '',
   }),
   getters: {
-    isLoggedIn: state => !!state.token,
-    authHeader: state => ({ Authorization: `Token ${state.token}`}),
+    isLoggedIn: state => !!state.a_token,
+    authHeader: state => ({ Authorization: `Bearer ${state.token}`}),
   },
   actions: {
     getToken() {
-      return localStorage.getItem('id_token')
+      this.a_token = cookies.get('UkmL')
+      this.r_token = cookies.get('RUkmL')
     },
-    saveToken(token) {
-      this.token = token
-      cookies.set('UkmL', token, '2h')
+    saveToken(a_token, r_token) {
+      this.a_token = a_token
+      this.r_token = r_token
+      cookies.set('UkmL', a_token, '2h')
+      cookies.set('RUkmL', r_token, '7d')
     },
     removeToken() {
-      this.token = ''
-      localStorage.setItem('id_token', '')
+      this.a_token = ''
+      this.r_token = ''
+      cookies.remove('UkmL')
+      cookies.remove('RUkmL')
     },
     signup(credentials, birth) {
       if (birth.day.length === 1) {
@@ -60,15 +66,16 @@ export const useAccountStore = defineStore('account', {
         url: sr.members.login(),
         method: 'post',
         data: {...credentials},
+        withCredentials: true,
       })
         .then(res => {
           console.log(res);
-          // const token = 'res.data.access_token'
-          const token = 'access_token'
-          this.saveToken(token)
+          const access_token = res.headers.authorization.split(' ')[1]
+          const refresh_token = res.headers.temp
+          this.saveToken(access_token, refresh_token)
           // this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
-          // router.push({ name: 'home' })
+          // router.push({ name: 'main' })
         })
         .catch(err => {
           console.error(err.response.data)
@@ -77,7 +84,7 @@ export const useAccountStore = defineStore('account', {
     },
     logout() {
       axios({
-        url: sr.accounts.logout(),
+        url: sr.members.logout(),
         method: 'post',
         // data: {},
         headers: this.authHeader,
