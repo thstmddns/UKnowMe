@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notice extends BaseEntity {
+public class    Notice extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "notice_seq")
@@ -43,5 +43,9 @@ public class Notice extends BaseEntity {
         this.content = content;
         this.member = member;
         this.hit = hit;
+    }
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
