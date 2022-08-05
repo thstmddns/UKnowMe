@@ -1,11 +1,11 @@
 <template>
   <div class="button-list">
-    <button class="main-btn" @click="main.logoutBtn = true">
+    <button class="main-btn" @click="main.btnCh = 1">
       로그아웃&#160;&#160;&#160;<i
         class="fa-solid fa-arrow-right-from-bracket"
       ></i>
     </button>
-    <button class="main-btn" @click="main.informBtn = true">
+    <button class="main-btn" @click="main.btnCh = 2">
       정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
     </button>
   </div>
@@ -188,7 +188,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  z-index: 100;
+  z-index: 1;
   padding: 5px;
   cursor: pointer;
 }

@@ -44,13 +44,13 @@ export default {
 </script>
 
 <style>
-.inform-modal-bg {
+/* .inform-modal-bg {
   width: 100vw;
   height: 100vh;
   z-index: 1;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
-}
+} */
 
 .inform-modal {
   position: relative;
