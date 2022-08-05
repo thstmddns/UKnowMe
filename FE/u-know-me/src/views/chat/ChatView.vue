@@ -1,69 +1,67 @@
 <template>
-<div>
-  <div id="main-container" class="container">
-    <div id="join" v-if="!session">
-      <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
-        <div class="form-group">
-          <p>
-            <label>Participant</label>
-            <input
-              v-model="myUserName"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p>
-            <label>Session</label>
-            <input
-              v-model="mySessionId"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">
-              Join!
-            </button>
-          </p>
+  <div>
+    <div id="main-container" class="container">
+      <div id="join" v-if="!session">
+        <div id="join-dialog" class="jumbotron vertical-center">
+          <h1>Join a video session</h1>
+          <div class="form-group">
+            <p>
+              <label>Participant</label>
+              <input
+                v-model="myUserName"
+                class="form-control"
+                type="text"
+                required
+              />
+            </p>
+            <p>
+              <label>Session</label>
+              <input
+                v-model="mySessionId"
+                class="form-control"
+                type="text"
+                required
+              />
+            </p>
+            <p class="text-center">
+              <button class="btn btn-lg btn-success" @click="joinSession()">
+                Join!
+              </button>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
-      <div>
-        <div class="preview">
-          <video class="input_video" width="1280px" height="720px" style="visibility: hidden;"></video>
-          <canvas class="guides" style="display: none"></canvas>
+      <div id="session" v-if="session">
+        <div id="session-header">
+          <h1 id="session-title">{{ mySessionId }}</h1>
+          <input
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSession"
+            value="Leave session"
+          />
         </div>
-      </div>
-      <div class="video-container">
-        <div class="video-item" id="my-video">
-          <p>My Video</p>
+        <div class="video-container">
+          <div class="video-item" id="my-video">
+            <div class="preview">
+              <canvas class="guides" style="position: absolute"></canvas>
+              <video class="input_video" style=""></video>
+            </div>
+            <div><p>My Video</p></div>
+          </div>
+          <user-video
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"
+          />
         </div>
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click="updateMainVideoStreamManager(sub)"
-        />
       </div>
     </div>
+    <chat-something />
   </div>
-  <chat-something />
-</div>
 </template>
 
 <script>
@@ -269,7 +267,7 @@ export default {
 
 <style>
 h1 {
-  margin:0;
+  margin: 0;
 }
 #main-container {
   width: 100vw;
@@ -280,10 +278,6 @@ h1 {
     #ffffff 100%
   );
 }
-#avatarCanvas {
-  border: 3px solid purple;
-  height: auto;
-}
 
 .video-container {
   display: flex;
@@ -292,13 +286,35 @@ h1 {
   align-items: center;
 }
 .video-item {
+  position: relative;
   flex-grow: 1;
   text-align: center;
 }
 .video-item video {
-  height: 480px;
-  width: 640px;
+  width: 49vw !important;
+  height: auto;
   border: 3px solid purple;
 }
-
+.video-item canvas {
+  width: 49vw !important;
+  height: auto !important;
+  border: 3px solid purple;
+}
+.preview {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  left: 5%;
+  top: 5%;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+.preview .guides {
+  width: 100% !important;
+}
+.preview video {
+  width: 100% !important;
+  height: auto;
+}
 </style>
