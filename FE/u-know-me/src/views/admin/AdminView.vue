@@ -1,4 +1,5 @@
 <template>
+<notice-add v-if="admin.noticeAddBtn == true"/>
   <div class="admin">
     <div class="admin-toolbar">
       <div class="admin-toolbar-container">
@@ -42,9 +43,9 @@
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '@/stores/admin/admin'
 import AdminMember from '@/components/admin/AdminMember.vue'
-import AdminNotice from '@/components/admin/AdminNotice.vue'
+import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
-import AdminBalance from '@/components/admin/AdminBalance.vue'
+import AdminBalance from '@/components/admin/balance/AdminBalance.vue'
 import AdminHelper from '@/components/admin/AdminHelper.vue'
 
 
@@ -61,7 +62,7 @@ export default {
       adminBtn
     }
   }
-
+  
 }
 </script>
 
@@ -70,6 +71,17 @@ hr {
   border: 0;
   height: 5px;
   background-color: #c1c3fc;
+}
+table{
+  width:100%;
+  table-layout: fixed;
+}
+.num {
+  width: 40px;
+}
+.admin-table {
+  width: 90%;
+  margin: 5%;
 }
 .admin {
   display: flex;

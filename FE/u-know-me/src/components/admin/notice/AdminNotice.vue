@@ -1,6 +1,7 @@
 <template>
   <div class="admin-table">
     <div class="notice">공지사항</div>
+    {{ admin.noticeAddBtn}}
     <button class="admin-btn admin-notice-btn" @click="admin.noticeAddBtn = true">글쓰기</button>
     <div class="notice-table">
       <table>
@@ -97,16 +98,11 @@
 
 <script>
 import { useAdminStore } from "@/stores/admin/admin";
-import NoticeAdd from "@/components/admin/modal/NoticeAdd.vue";
+import NoticeAdd from "@/components/admin/notice/NoticeAdd.vue";
 
 export default {
   name: "AdminNotice",
   components: { NoticeAdd },
-  data() {
-    return {
-      noticeAddBtn: false,
-    };
-  },
   setup() {
     const admin = useAdminStore();
     return {
@@ -118,10 +114,6 @@ export default {
 </script>
 
 <style>
-table{
-  width:100%;
-  table-layout: fixed;
-}
 .notice {
   font-size: 30px;
   font-weight: 550;
@@ -149,10 +141,6 @@ table{
 .notice-table-content::-webkit-scrollbar-thumb {
   background: #c1c3fc;
   border-radius: 10px;
-}
-.admin-table {
-  width: 90%;
-  margin: 5%;
 }
 th{
   padding: 20px 15px;

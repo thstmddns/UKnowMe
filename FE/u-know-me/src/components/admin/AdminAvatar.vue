@@ -44,7 +44,6 @@ export default {
   margin: 0  0 15px 0;
 }
 .admin-avatar-collection {
-  width: 1200px;
   height: 700px;
   overflow-x:auto;
   margin: auto;
@@ -58,7 +57,6 @@ export default {
   border-radius: 10px;
 }
 .admin-avatar-card-container {
-
 }
 .admin-avatar-card {
   display: inline-block;

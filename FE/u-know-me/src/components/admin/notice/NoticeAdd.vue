@@ -23,13 +23,13 @@
 
 <script>
 import { storeToRefs } from "pinia";
-import { useAdimStore } from "@/stores/admin/admin";
+import { useAdminStore } from "@/stores/admin/admin";
 
 export default {
   name: "NoticeAdd",
   components: {},
   setup() {
-    const admin = useAdimStore();
+    const admin = useAdminStore();
     const { noticeAddBtn } = storeToRefs(admin);
     return {
       admin,

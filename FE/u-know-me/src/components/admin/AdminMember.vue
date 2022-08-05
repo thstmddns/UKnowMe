@@ -1,11 +1,11 @@
 <template>
   <div class="admin-table">
-    <div class="member">회원 관리(((이게 신고자와 피신고자로 들어오는데 여기서는 누적 횟수를 보여줘야 하는 건가?, 계정 정지는 관리자가 직접?)))</div>
+    <div class="member">회원 관리</div>
     <div class="member-table">
       <table>
         <thead>
           <tr>
-            <th>번호</th>
+            <th class="num">번호</th>
             <th>유저 아이디</th>
             <th>가입일</th>
             <th>신고 누적 횟수</th>
@@ -18,21 +18,7 @@
       <table>
         <tbody>
           <tr>
-            <td>번호</td>
-            <td>아이디</td>
-            <td>가입일</td>
-            <td>신고 누적 횟수</td>
-            <td>계정 상태</td>
-          </tr>
-          <tr>
-            <td>번호</td>
-            <td>아이디</td>
-            <td>가입일</td>
-            <td>신고 누적 횟수</td>
-            <td>계정 상태</td>
-          </tr>
-          <tr>
-            <td>번호</td>
+            <td class="num">번호</td>
             <td>아이디</td>
             <td>가입일</td>
             <td>신고 누적 횟수</td>
@@ -51,10 +37,6 @@ export default {
 </script>
 
 <style>
-table{
-  width:100%;
-  table-layout: fixed;
-}
 .member {
   font-size: 30px;
   font-weight: 550;
@@ -75,10 +57,6 @@ table{
 .member-table-content::-webkit-scrollbar-thumb {
   background: #c1c3fc;
   border-radius: 10px;
-}
-.admin-table {
-  width: 90%;
-  margin: 5%;
 }
 th{
   padding: 20px 15px;

@@ -22,14 +22,14 @@ export default {
   height: auto;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  border-radius: 5px; /* 5px rounded corners */
-  margin: 4%;
+  border-radius: 5px;
+  margin: 3%;
 }
 .admin-avatar-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 .admin-avatar-name {
-  padding: 2px 16px;
+  /* padding: 2px 16px; */
   background-color: #f0f1ff;
   display: flex;
   justify-content: center;
