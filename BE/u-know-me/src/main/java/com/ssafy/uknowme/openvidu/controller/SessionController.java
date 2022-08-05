@@ -35,6 +35,7 @@ public class SessionController {
 
     private final String SECRET;
 
+
     public SessionController(@Value("${openvidu.url}") String url, @Value("${openvidu.secret}") String secret) {
         this.OPENVIDU_URL = url;
         this.SECRET = secret;
