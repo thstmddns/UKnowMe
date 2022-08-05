@@ -3,7 +3,6 @@ package com.ssafy.uknowme.web.service;
 import com.ssafy.uknowme.model.dto.MemberRequestDto;
 import com.ssafy.uknowme.model.dto.MemberResponseDto;
 import com.ssafy.uknowme.model.dto.MemberUpdateDto;
-import com.ssafy.uknowme.web.domain.Member;
 
 public interface MemberService {
 
@@ -11,7 +10,7 @@ public interface MemberService {
 
     MemberResponseDto login(MemberRequestDto dto);
 
-    String update(MemberUpdateDto memberUpdateDto);
+    boolean update(MemberUpdateDto memberUpdateDto);
 
     boolean existsById(String memberId);
 
