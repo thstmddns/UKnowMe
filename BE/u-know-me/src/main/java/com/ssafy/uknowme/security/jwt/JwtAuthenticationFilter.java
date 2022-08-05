@@ -13,9 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,9 +59,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-        String jwtToken = jwtService.createToken(principalDetails.getUsername(), (60 * 1000) * 10);
+        Map<String, String> tokenSet = jwtService.createTokenSet(principalDetails.getUsername());
 
-        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + jwtToken);
+        String accessToken = tokenSet.get("accessToken");
+        String refreshToken = tokenSet.get("refreshToken");
+
+        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + accessToken);
+
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        response.addCookie(cookie);
     }
 
     @Override
