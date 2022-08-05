@@ -8,7 +8,7 @@
     <div class="love-btn">
       <div class="match-circle">
         <div id="container">
-          <div class="heart-img" @click="matchBtn = !matchBtn">
+          <div class="heart-img" @click="chat.heartClick()">
             <img src="@/assets/main/heart.png" alt="" />
           </div>
           <div class="circle" style="animation-delay: 0s"></div>
@@ -50,7 +50,14 @@
 </template>
 
 <script>
+import {useChatStore} from "@/stores/chat/chat";
+
 export default {
+  setup() {
+    const chat = useChatStore();
+
+    return {chat};
+  }
 };
 </script>
 

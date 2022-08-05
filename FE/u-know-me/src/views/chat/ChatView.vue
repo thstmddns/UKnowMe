@@ -69,6 +69,8 @@ import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
 import Avatar from "@/assets/chat/avatar";
+import {useChatStore} from "@/stores/chat/chat";
+import {storeToRefs} from "pinia"
 
 import ChatSomething from "@/components/chat/ChatSomething";
 
@@ -86,13 +88,18 @@ export default {
     ChatSomething,
   },
 
+  setup() {
+    const chat = useChatStore();
+    
+    let {OV, session, mainStreamManager, publisher, subscribers} = storeToRefs(chat);
+
+    chat.socketConnect();
+
+    return {chat, OV, session, mainStreamManager, publisher, subscribers};
+  },
+
   data() {
     return {
-      OV: undefined,
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
 
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
