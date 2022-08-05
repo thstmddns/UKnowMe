@@ -9,10 +9,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+//TODO : 한명만 접속했을때 예외처리 , 하트 두명다 누른거 맞는지 확ㅇ니
 @CrossOrigin
 @Component
 @Log4j2
@@ -38,7 +38,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 //방있으면 그 안에 들어가기
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
 
-                    if (room1vs1.get(roomcnt).getRoomNum().equals(jObject.get("room_seq"))) {
+                    if (room1vs1.get(roomcnt).getRoomNum().equals(jObject.get("room_seq").toString())) {
                         room1vs1.get(roomcnt).setUser2Session(session);
                         return;
                     }
@@ -56,6 +56,7 @@ public class ChatHandler extends TextWebSocketHandler {
                         log.info("리스트를 벗어나 버렸습니다.");
                     }
                 }
+                break;
         }
     }
 
@@ -87,20 +88,19 @@ public class ChatHandler extends TextWebSocketHandler {
                 System.out.println("방ㅂㅂ " + room1vs1.toString());
             }
         }
-        list.remove(session);
     }
 
     public void sendLike(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException {
         if (session.equals(room1vs1.get(roomcnt).getUser1Session())) {
             room1vs1.get(roomcnt).setUser1Like(true);
-            if (room1vs1.get(roomcnt).isUser1Like() == true) {
+            if (room1vs1.get(roomcnt).isUser2Like() == true) {
                 room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
                 room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
                 return;
             }
         } else {
             room1vs1.get(roomcnt).setUser2Like(true);
-            if (room1vs1.get(roomcnt).isUser2Like() == true) {
+            if (room1vs1.get(roomcnt).isUser1Like() == true) {
                 room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
                 room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
                 return;
