@@ -5,10 +5,11 @@
       <table>
         <thead>
           <tr>
-            <th>신고자 이름</th>
-            <th>피신고자 이름</th>
-            <th>신고 시간</th>
-            <th>계정 정지 버튼?</th>
+            <th>번호</th>
+            <th>유저 아이디</th>
+            <th>가입일</th>
+            <th>신고 누적 횟수</th>
+            <th>계정 상태</th>
           </tr>
         </thead>
       </table>
@@ -17,10 +18,25 @@
       <table>
         <tbody>
           <tr>
-            <td>박진경</td>
-            <td>이동민</td>
-            <td>지금은 새벽 두시.... 울고싶다..</td>
-            <td>다중 선택 박스로 삭제하는 법 알아보기</td>
+            <td>번호</td>
+            <td>아이디</td>
+            <td>가입일</td>
+            <td>신고 누적 횟수</td>
+            <td>계정 상태</td>
+          </tr>
+          <tr>
+            <td>번호</td>
+            <td>아이디</td>
+            <td>가입일</td>
+            <td>신고 누적 횟수</td>
+            <td>계정 상태</td>
+          </tr>
+          <tr>
+            <td>번호</td>
+            <td>아이디</td>
+            <td>가입일</td>
+            <td>신고 누적 횟수</td>
+            <td>계정 상태</td>
           </tr>
         </tbody>
       </table>

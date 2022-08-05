@@ -1,10 +1,10 @@
 <template>
   <div class="admin-table">
-    <div class="member">회원 관리</div>
+    <div class="member">아바타 관리</div>
     <button class="admin-btn admin-avatar">아바타 추가</button>
     <div class="admin-avatar-collection">
       <div class="admin-avatar-card-container">
-        <admin-avatar-card
+        <admin-avatar-card class="admin-avatar-card"
           v-for="(avatar, i) in avatars.avatar"
           :avatar="avatar"
           :key="i"
@@ -45,9 +45,9 @@ export default {
 }
 .admin-avatar-collection {
   width: 1200px;
-  height:600px;
+  height: 700px;
   overflow-x:auto;
-  margin-top: 0px;
+  margin: auto;
   border: 1px solid #f0f1ff;
 }
 .admin-avatar-collection::-webkit-scrollbar {
@@ -58,6 +58,9 @@ export default {
   border-radius: 10px;
 }
 .admin-avatar-card-container {
-  display: flex;
+
+}
+.admin-avatar-card {
+  display: inline-block;
 }
 </style>
