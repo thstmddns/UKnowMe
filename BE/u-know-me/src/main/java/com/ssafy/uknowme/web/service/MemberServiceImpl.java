@@ -8,6 +8,9 @@ import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,9 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository repository;
@@ -70,14 +74,28 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public String update(MemberUpdateDto memberUpdateDto) {
+    public boolean update(MemberUpdateDto memberUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 로그인한 회원이 아니면 수정을 허용하지 말아야 한다.
+        if (authentication == null) {
+            log.info("로그인한 회원이 아닙니다.");
+            return false;
+        }
+
+        // 본인이 아니면 수정을 허용하지 말아야 한다.
+        if (!authentication.getName().equals(memberUpdateDto.getId())) {
+            log.info("본인만 정보를 변경할 수 있습니다.");
+            return false;
+        }
+
         Member member = findById(memberUpdateDto);
 
         member.updateMember(memberUpdateDto.getName(), memberUpdateDto.getNickname(),
                 memberUpdateDto.getTel(), memberUpdateDto.getSmoke(), memberUpdateDto.getAddress(),
                 memberUpdateDto.getNaverId(), memberUpdateDto.getKakaoId());
 
-        return null;
+        return true;
     }
 
     @Override

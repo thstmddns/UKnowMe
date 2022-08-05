@@ -51,7 +51,11 @@ public class MemberController {
 
     @ApiOperation(value="멤버 정보 수정 API", notes="사용자가 자신의 계정 정보를 수정하고자 할 때 사용하는 API입니다.")
     @PutMapping("/update")
-    public String update(@RequestBody MemberUpdateDto dto) {
-        return memberService.update(dto);
+    public ResponseEntity<?> update(@RequestBody MemberUpdateDto dto) {
+        if (memberService.update(dto)) {
+            return new ResponseEntity<>("true", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
+        }
     }
 }
