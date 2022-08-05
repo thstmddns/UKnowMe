@@ -10,7 +10,7 @@ const { cookies } = useCookies();
 export const useAccountStore = defineStore('account', {
   state: () => ({
     a_token: cookies.get('UkmL') || '',
-    r_token: cookies.get('RUKmL') || '',
+    r_token: cookies.get('RUkmL') || '',
     currentUser: {},
     profile: {},
     authError: null,
@@ -20,7 +20,10 @@ export const useAccountStore = defineStore('account', {
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
-    authHeader: state => ({ Authorization: `Bearer ${state.token}`}),
+    authHeader: state => ({ 
+      Authorization: `Bearer ${state.a_token}`,
+      Refresh: state.r_token
+    }),
   },
   actions: {
     getToken() {
@@ -61,7 +64,6 @@ export const useAccountStore = defineStore('account', {
     },
     login(credentials) {
       console.log({...credentials})
-      // router.push({ name: 'main' })
       axios({
         url: sr.members.login(),
         method: 'post',
@@ -75,7 +77,7 @@ export const useAccountStore = defineStore('account', {
           this.saveToken(access_token, refresh_token)
           // this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
-          // router.push({ name: 'main' })
+          router.push({ name: 'main' })
         })
         .catch(err => {
           console.error(err.response.data)
