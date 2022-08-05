@@ -55,8 +55,9 @@ export default {
   methods: {
     click() {
       //socket test
+      console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
-      const webSocket = new WebSocket("ws://localhost:8080/ws...");
+      const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/chat");
 
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리

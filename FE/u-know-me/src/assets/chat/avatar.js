@@ -61,14 +61,13 @@ function load() {
 
     function animate() {
         requestAnimationFrame(animate);
-
+        orbitControls.update();
+        
         if (currentVrm) {
             // Update model to render physics
             currentVrm.update(clock.getDelta());
         }
         renderer.render(scene, orbitCamera);
-
-        orbitControls.update();
     }
     animate();
 
