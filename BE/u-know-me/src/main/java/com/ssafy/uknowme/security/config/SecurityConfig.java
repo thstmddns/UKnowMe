@@ -53,11 +53,10 @@ public class SecurityConfig {
                     .addFilter(jwtAuthenticationFilter)
                     .addFilter(jwtAuthorizationFilter)
                     .authorizeRequests()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**").permitAll()
+                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**", "/ws/chat", "/ws/matching").permitAll()
                 .and()
                     .authorizeRequests()
-                    // 이 부분 수정 필요합니다! 웹 소켓 테스트를 위해 잠깐 permitAll()로 수정했는데 추후에 권한 부여해야 합니다!
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                 .and().build();
     }
 
