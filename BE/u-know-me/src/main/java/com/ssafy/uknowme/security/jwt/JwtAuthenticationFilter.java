@@ -65,8 +65,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = tokenSet.get("refreshToken");
 
         response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + accessToken);
+        response.addHeader("temp", refreshToken);
 
         Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setMaxAge(14 * 24 * 60 * 60);
+
         response.addCookie(cookie);
     }
 
