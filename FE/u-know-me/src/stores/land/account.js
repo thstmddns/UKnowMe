@@ -73,7 +73,7 @@ export const useAccountStore = defineStore('account', {
     },
     logout() {
       axios({
-        url: sr.accounts.logout(),
+        url: sr.members.logout(),
         method: 'post',
         // data: {},
         headers: this.authHeader,

@@ -2,8 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useMainStore = defineStore('main', {
   state: () => ({
-    logoutBtn: false,
-    informBtn: false,
+    btnCh: 0,
   }),
   getters: {
 
