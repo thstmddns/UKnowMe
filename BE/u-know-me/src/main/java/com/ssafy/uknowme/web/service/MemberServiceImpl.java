@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public boolean join(MemberRequestDto dto) {
+    public boolean join(MemberJoinRequestDto dto) {
         if (existsById(dto.getId())) {
             return false;
         } if (existsByNickname(dto.getNickname())) {
@@ -54,7 +54,6 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
     }
-
 
     @Override
     public boolean update(MemberUpdateDto memberUpdateDto) {
