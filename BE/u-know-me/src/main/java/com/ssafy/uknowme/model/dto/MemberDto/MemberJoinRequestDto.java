@@ -1,6 +1,5 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.MemberDto;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +8,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class MemberRequestDto {
-    private int seq;
-
+public class MemberJoinRequestDto {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     @Pattern(regexp = "^[a-z]{1}[a-z0-9]{3,19}$")
     private String id;
@@ -44,6 +41,4 @@ public class MemberRequestDto {
 
     @NotBlank(message = "주소는 필수 입력 값입니다.")
     private String address;
-
-    private String role;
 }
