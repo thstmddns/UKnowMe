@@ -21,21 +21,11 @@
       <ErrorMessage class="error-message" name="informModifyNickName"/>
     </div>
     <div>
-      <div><label for="informModifyYear">생년월일</label></div>
+      <div><label for="informModifyBirth">생년월일</label></div>
       <div>
-        <Field class="sort-input" type="text" name="informModifyYear" id="informModifyYear" placeholder="년(4자)" v-model="birth.year" :rules="validateBirthYear"/>
-        <Field class="sort-input" name="informModifyMonth" id="informModifyMonth" v-model="birth.month" as="select" :rules="validateBirthMonth">
-          <option
-             v-for="(month, idx) in months"
-            :key="idx"
-            :value="months_val[idx]"
-          >{{ month }}</option>
-        </Field>
-        <Field class="sort-input" type="text" name="informModifyDay" id="informModifyDay" placeholder="일" style="margin:0;" v-model="birth.day" :rules="validateBirthDay"/>
+        <Field type="text" name="informModifyBirth" id="informModifyBirth" placeholder="생년월일(6자리)" v-model="credentials.birth" :rules="validateBirthBirth" class="disabled-input-bg" disabled />
       </div>
-      <ErrorMessage v-if="if_birth===0" class="error-message" name="informModifyYear"/>
-      <ErrorMessage v-if="if_birth===1"  class="error-message" name="informModifyMonth"/>
-      <ErrorMessage v-if="if_birth===2"  class="error-message" name="informModifyDay"/>
+      <ErrorMessage class="error-message" name="informModifyBirth"/>
     </div>
     <div>
       <div><label for="informModifyGender">성별</label></div>
@@ -101,15 +91,12 @@ export default {
   },
   data() {
     return {
-      months: ['월', '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      months_val: ['', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
       genders: ['성별', '남자', '여자'],
       genders_val: ['', 'M', 'F'],
       regions: ['지역', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '대전광역시', '광주광역시', '울산광역시', '세종특별자치시', '강원도', '경기도', '충청남도', '충청북도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'],
       regions_val: ['', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '대전광역시', '광주광역시', '울산광역시', '세종특별자치시', '강원도', '경기도', '충청남도', '충청북도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'],
       smokes: ['선택', '흡연', '비흡연'],
       smokes_val: ['', 'Y', 'N'],
-      if_birth: 0,
     }
   },
   methods: {
@@ -168,38 +155,14 @@ export default {
       }
       return true;
     },
-    validateBirthYear(value) {
+    validateBirth(value) {
       if (!value) {
-        this.if_birth = 0
-        return '태어난 년도 4자리를 정확하게 입력하세요.';
+        return '생년월일 6자리를 정확하게 입력하세요.';
       }
-      const year = /^[1-2]{1}[0-9]{1}[0-9]{1}[0-9]{1}$/
-      if (!year.test(value)) {
-        this.if_birth = 0
-        return '태어난 년도 4자리를 정확하게 입력하세요.';
+      const birth = /^[0-9]{6}$/
+      if (!birth.test(value)) {
+        return '생년월일 6자리를 정확하게 입력하세요.';
       }
-      this.if_birth = 1
-      return true;
-    },
-    validateBirthMonth(value) {
-      if (!value) {
-        this.if_birth = 1
-        return '태어난 월을 선택하세요.';
-      }
-      this.if_birth = 2
-      return true;
-    },
-    validateBirthDay(value) {
-      if (!value) {
-        this.if_birth = 2
-        return '태어난 일(날짜)를 정확하게 입력하세요';
-      }
-      const day = Number(value)
-      if (!(day > 0 && day <= 31)) {
-        this.if_birth = 2
-        return '태어난 날짜를 정확하게 입력하세요.';
-      }
-      this.if_birth = 0
       return true;
     },
     validateTel(value) {
@@ -215,11 +178,6 @@ export default {
   },
   setup() {
     const account = useAccountStore()
-    const birth = ref({
-      year: '',
-      month: '',
-      day: '',
-    })
     const credentials = ref({
       id: '',
       name: '',
@@ -233,7 +191,6 @@ export default {
     return {
       account,
       credentials,
-      birth,
     }
   }
 }
