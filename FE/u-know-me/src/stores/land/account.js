@@ -3,6 +3,7 @@ import sr from '@/api/spring-rest'
 import router from '@/router'
 import axios from 'axios'
 import { useLandStore } from './land'
+import { useMainStore } from '../main/main'
 import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();
@@ -230,6 +231,16 @@ export const useAccountStore = defineStore('account', {
         .catch(err => {
           console.error(err.response)
         })
+    },
+    certificatePassword(password) {
+      const main = useMainStore()
+      console.log(password);
+      main.btnCh = 3
+      main.pBtnCh = 1
+    },
+    modifyInform(credentials) {
+      console.log({...credentials});
+      
     }
   },
 })
