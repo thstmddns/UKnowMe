@@ -1,5 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
+import com.ssafy.uknowme.model.dto.FindIdRequestDto;
+import com.ssafy.uknowme.model.dto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
@@ -15,6 +17,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Slf4j
@@ -166,6 +170,22 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return true;
+    }
+
+    @Override
+    public FindIdResponseDto findId(FindIdRequestDto requestDto) {
+
+        Optional<Member> optionalMember = repository.findByNameAndTel(requestDto.getName(), requestDto.getTel());
+
+        if (!optionalMember.isPresent()) return null;
+
+        Member member = optionalMember.get();
+
+        FindIdResponseDto responseDto = new FindIdResponseDto();
+
+        responseDto.setId(member.getId());
+
+        return responseDto;
     }
 }
 

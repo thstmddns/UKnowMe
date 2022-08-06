@@ -68,7 +68,7 @@ public class SecurityConfig {
                     .addFilter(jwtAuthorizationFilter)
                     .authorizeRequests()
                     .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/ws/chat", "/ws/matching").permitAll()
+                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching").permitAll()
                     .anyRequest().authenticated()
                 .and().build();
     }
