@@ -58,4 +58,14 @@ public class MemberController {
             return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @ApiOperation(value="회원 탈퇴 API", notes="사용자가 본인의 계정을 삭제하고 싶을 때 사용하는 API입니다.")
+    @DeleteMapping
+    public ResponseEntity<?> delete() {
+        if (memberService.delete()) {
+            return new ResponseEntity<>("true", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
