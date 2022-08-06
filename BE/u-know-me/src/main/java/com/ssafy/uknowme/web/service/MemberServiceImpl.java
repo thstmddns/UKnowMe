@@ -1,7 +1,9 @@
 package com.ssafy.uknowme.web.service;
 
+import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.ValidatePasswordRequestDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
@@ -110,6 +112,58 @@ public class MemberServiceImpl implements MemberService {
         Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
         member.delete();
+
+        return true;
+    }
+
+    @Override
+    public MemberInfoResponseDto getMemberInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            log.info("로그인한 회원이 아닙니다.");
+            return null;
+        }
+
+        String id = authentication.getName();
+
+        Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
+
+        MemberInfoResponseDto responseDto = new MemberInfoResponseDto();
+
+        responseDto.setSeq(member.getSeq());
+        responseDto.setId(member.getId());
+        responseDto.setName(member.getName());
+        responseDto.setNickname(member.getNickname());
+        responseDto.setAddress(member.getAddress());
+        responseDto.setBirth(member.getBirth());
+        responseDto.setSmoke(member.getSmoke());
+        responseDto.setGender(member.getGender());
+        responseDto.setTel(member.getTel());
+
+        return responseDto;
+    }
+
+    @Override
+    public boolean validatePassword(ValidatePasswordRequestDto dto) {
+
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            log.info("로그인한 회원이 아닙니다.");
+            return false;
+        }
+
+        String id = authentication.getName();
+
+        Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
+
+        if (!encoder.matches(dto.getPassword(), member.getPassword())) {
+            log.info("비밀번호가 다릅니다.");
+            return false;
+        }
 
         return true;
     }

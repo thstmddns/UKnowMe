@@ -1,7 +1,9 @@
 package com.ssafy.uknowme.web.service;
 
+import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.ValidatePasswordRequestDto;
 
 public interface MemberService {
 
@@ -16,4 +18,8 @@ public interface MemberService {
     boolean existsByTel(String memberTel);
 
     boolean delete();
+
+    MemberInfoResponseDto getMemberInfo();
+
+    boolean validatePassword(ValidatePasswordRequestDto dto);
 }
