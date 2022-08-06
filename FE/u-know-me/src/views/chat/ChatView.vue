@@ -68,7 +68,6 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
-import Avatar from "@/assets/chat/avatar";
 import {useChatStore} from "@/stores/chat/chat";
 import {storeToRefs} from "pinia"
 
@@ -90,17 +89,14 @@ export default {
 
   setup() {
     const chat = useChatStore();
-    
-    let {OV, session, mainStreamManager, publisher, subscribers} = storeToRefs(chat);
-
+    let {OV, session, mainStreamManager, publisher, subscribers, videoDevices} = storeToRefs(chat);
     chat.socketConnect();
 
-    return {chat, OV, session, mainStreamManager, publisher, subscribers};
+    return {chat, OV, session, mainStreamManager, publisher, subscribers, videoDevices};
   },
 
   data() {
     return {
-
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
     };
@@ -109,6 +105,11 @@ export default {
     joinSession() {
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
+
+      // --- Init Video Device ---
+      this.OV.getDevices().then(devices => {
+        this.videoDevices = devices.filter(device => device.kind === 'videoinput');
+      });
 
       // --- Init a session ---
       this.session = this.OV.initSession();
@@ -142,7 +143,8 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            var avatarVideo = Avatar.load();
+            const chat = useChatStore();
+            var avatarVideo = chat.avatarLoad();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
