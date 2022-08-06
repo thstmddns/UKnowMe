@@ -13,17 +13,17 @@ export const useAccountStore = defineStore('account', {
     a_token: cookies.get('UkmL') || '',
     r_token: cookies.get('RUkmL') || '',
     currentUser: {},
-    profile: {},
     authError: null,
     isAdmin: false,
     findUserId: '',
     findUserfindPassword: '',
+    correctPassword: 0,
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
     authHeader: state => ({ 
       Authorization: `Bearer ${state.a_token}`,
-      Refresh: state.r_token
+      refreshToken: state.r_token
     }),
   },
   actions: {
@@ -76,7 +76,7 @@ export const useAccountStore = defineStore('account', {
           const access_token = res.headers.authorization.split(' ')[1]
           const refresh_token = res.headers.temp
           this.saveToken(access_token, refresh_token)
-          // this.fetchCurrentUser()
+          this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
           router.push({ name: 'main' })
         })
@@ -191,7 +191,7 @@ export const useAccountStore = defineStore('account', {
     fetchCurrentUser() {
       if (this.isLoggedIn) {
         axios({
-          url: sr.accounts.currentUserInfo(),
+          url: sr.members.member(),
           method: 'get',
           headers: this.authHeader,
         })
@@ -205,19 +205,6 @@ export const useAccountStore = defineStore('account', {
             }
           })
       }
-    },
-    fetchProfile({ username }) {
-      axios({
-        url: sr.accounts.profile(username),
-        method: 'get',
-        headers: this.authHeader,
-      })
-        .then(res => {
-          this.profile = res.data
-        })
-        .catch(err => {
-          console.error(err.response)
-        })
     },
     fetchIsAdmin({ username }) {
       axios({
@@ -233,14 +220,81 @@ export const useAccountStore = defineStore('account', {
         })
     },
     certificatePassword(password) {
+      console.log({password});
       const main = useMainStore()
-      console.log(password);
-      main.btnCh = 3
-      main.pBtnCh = 1
+      if (this.currentUser === {}) {
+        this.fetchCurrentUser()
+      }
+      axios({
+        url: sr.members.member(),
+        method: 'get',
+        data: { password },
+        headers: this.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          main.btnCh = 3
+          main.pBtnCh = 1
+        })
+        .catch(err => {
+          console.error(err.response)
+          alert('비밀번호가 일치하지 않습니다.')
+        })
+    },
+    modifyCertificatePassword(password) {
+      console.log({password});
+      if (this.currentUser === {}) {
+        this.fetchCurrentUser()
+      }
+      axios({
+        url: sr.members.member(),
+        method: 'get',
+        data: { password },
+        headers: this.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.correctPassword = 1
+        })
+        .catch(err => {
+          console.error(err.response)
+          this.correctPassword = 0
+        })
     },
     modifyInform(credentials) {
       console.log({...credentials});
-      
-    }
+      // const main = useMainStore()
+      // axios({
+      //   url: sr.members.member(),
+      //   method: 'put',
+      //   data: {...credentials},
+      //   headers: this.authHeader,
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     main.btnCh = 0
+      //     alert('성공적으로 정보가 변경되었습니다.')
+      //   })
+      //   .catch(err => {
+      //     console.error(err.response)
+      //   })
+    },
+    chagePassword(password) {
+      console.log(password);
+      // axios({
+      //   url: sr.members.member(),
+      //   method: 'put',
+      //   data: { password },
+      //   headers: this.authHeader,
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     main.btnCh = 0
+      //     alert('성공적으로 비밀번호가 변경되었습니다.')
+      //   })
+      //   .catch(err => {
+      //     console.error(err.response)
+      //   })
+    },
   },
 })

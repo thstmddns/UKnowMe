@@ -9,11 +9,13 @@ const NOTICES = 'notice/'
 
 export default {
   members: {
+    member: () => HOST + 'member',
     login: () => HOST + MEMBERS + 'login',
-    logout: () => HOST + MEMBERS + 'logout',
+    // logout: () => HOST + MEMBERS + 'logout',
     signup: () => HOST + MEMBERS + 'join',
     findId: () => HOST + MEMBERS + 'find/id',
     findPassword: () => HOST + MEMBERS + 'find/password',
+    update: () => HOST + MEMBERS + 'update',
     account: memberSeq => HOST + MEMBERS + `${memberSeq}`,
     idDuplicate: () => HOST + MEMBERS + 'check/id',
     nickNameDuplicate: () => HOST + MEMBERS + 'check/nickname',

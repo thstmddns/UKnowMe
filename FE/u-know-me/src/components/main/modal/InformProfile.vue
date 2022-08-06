@@ -15,8 +15,7 @@
     <div>
       <div><label for="informModifyNickName">닉네임</label></div>
       <div>
-        <Field class="middle-input" type="text" name="informModifyNickName" id="informModifyNickName" placeholder="닉네임을 입력해주세요." v-model="credentials.nickname" :rules="validateNickname" />
-        <button type="button">중복 확인</button>
+        <Field type="text" name="informModifyNickName" id="informModifyNickName" placeholder="닉네임을 입력해주세요." v-model="credentials.nickname" :rules="validateNickname" class="disabled-input-bg" disabled />
       </div>
       <ErrorMessage class="error-message" name="informModifyNickName"/>
     </div>
@@ -78,7 +77,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { useAccountStore } from '@/stores/land/account'
 
@@ -178,16 +176,8 @@ export default {
   },
   setup() {
     const account = useAccountStore()
-    const credentials = ref({
-      id: '',
-      name: '',
-      nickname: '',
-      gender: '',
-      birth: '',
-      tel: '',
-      smoke: '',
-      address: '',
-    })
+    const credentials = account.currentUser
+    console.log(credentials);
     return {
       account,
       credentials,
