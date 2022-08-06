@@ -3,13 +3,13 @@
     <div>
       <div><label for="informModifyId">아이디</label></div>
       <div>
-        <Field type="text" name="informModifyId" id="informModifyId" placeholder="아이디를 입력해 주세요." v-model="credentials.id" :rules="validateId" />
+        <Field type="text" name="informModifyId" id="informModifyId" placeholder="아이디를 입력해 주세요." v-model="credentials.id" :rules="validateId" class="disabled-input-bg" disabled />
       </div>
       <ErrorMessage class="error-message" name="informModifyId"/>
     </div>
     <div>
       <div><label for="informModifyName">이름</label></div>
-      <div><Field type="text" name="informModifyName" id="informModifyName" placeholder="한글/영문으로 입력해주세요." v-model="credentials.name" :rules="validatename" /></div>
+      <div><Field type="text" name="informModifyName" id="informModifyName" placeholder="한글/영문으로 입력해주세요." v-model="credentials.name" :rules="validatename" class="disabled-input-bg" disabled /></div>
       <ErrorMessage class="error-message" name="informModifyName"/>
     </div>
     <div>
@@ -40,7 +40,7 @@
     <div>
       <div><label for="informModifyGender">성별</label></div>
       <div>
-        <Field name="informModifyGender" id="informModifyGender" v-model="credentials.gender" as="select" :rules="isRequired">
+        <Field name="informModifyGender" id="informModifyGender" v-model="credentials.gender" as="select" :rules="isRequired" class="disabled-input-bg" disabled >
           <option
             v-for="(gender, idx) in genders"
             :key="idx"
@@ -79,7 +79,7 @@
     <div>
       <div><label for="informModifyPhoneNumber">휴대전화</label></div>
       <div>
-        <Field type="text" name="informModifyPhoneNumber" id="informModifyPhoneNumber" placeholder="-없이 입력해주세요." v-model="credentials.tel" :rules="validateTel" />
+        <Field type="text" name="informModifyPhoneNumber" id="informModifyPhoneNumber" placeholder="-없이 입력해주세요." v-model="credentials.tel" :rules="validateTel" class="disabled-input-bg" disabled />
       </div>
       <ErrorMessage class="error-message" name="informModifyPhoneNumber"/>
     </div>
@@ -313,5 +313,8 @@ export default {
 .error-message {
   font-size: 4px;
   color: red
+}
+#informModifyForm .disabled-input-bg {
+  background-color: #efefef;
 }
 </style>
