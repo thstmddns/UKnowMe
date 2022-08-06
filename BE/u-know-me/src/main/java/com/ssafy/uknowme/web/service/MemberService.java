@@ -14,4 +14,6 @@ public interface MemberService {
     boolean existsByNickname(String memberNickname);
 
     boolean existsByTel(String memberTel);
+
+    boolean delete();
 }

@@ -56,4 +56,8 @@ public abstract class BaseEntity {
     public BaseEntity() {
         this.deleteYn = DeleteState.N;
     }
+
+    public void delete() {
+        this.deleteYn = DeleteState.Y;
+    }
 }

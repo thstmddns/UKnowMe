@@ -30,6 +30,20 @@ public class SecurityConfig {
 
     private final MemberRepository memberRepository;
 
+    private final String[] PERMIT_ALL_SWAGGER = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,9 +67,8 @@ public class SecurityConfig {
                     .addFilter(jwtAuthenticationFilter)
                     .addFilter(jwtAuthorizationFilter)
                     .authorizeRequests()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**", "/ws/chat", "/ws/matching").permitAll()
-                .and()
-                    .authorizeRequests()
+                    .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
+                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/ws/chat", "/ws/matching").permitAll()
                     .anyRequest().authenticated()
                 .and().build();
     }
