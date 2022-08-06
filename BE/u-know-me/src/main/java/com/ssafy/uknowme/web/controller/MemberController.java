@@ -1,8 +1,8 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.ssafy.uknowme.model.dto.FindIdResponseDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.*;
-import com.ssafy.uknowme.model.dto.FindIdRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
 import com.ssafy.uknowme.web.exception.BadRequestException;
 import com.ssafy.uknowme.web.service.MemberService;
 import io.swagger.annotations.ApiOperation;
