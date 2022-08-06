@@ -1,14 +1,11 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.MemberResponseDto;
-import com.ssafy.uknowme.model.dto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
 
 public interface MemberService {
 
-    boolean join(MemberRequestDto dto);
-
-    MemberResponseDto login(MemberRequestDto dto);
+    boolean join(MemberJoinRequestDto dto);
 
     boolean update(MemberUpdateDto memberUpdateDto);
 
