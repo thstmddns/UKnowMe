@@ -1,6 +1,8 @@
 package com.ssafy.uknowme.web.controller;
 
+import com.ssafy.uknowme.model.dto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.*;
+import com.ssafy.uknowme.model.dto.FindIdRequestDto;
 import com.ssafy.uknowme.web.exception.BadRequestException;
 import com.ssafy.uknowme.web.service.MemberService;
 import io.swagger.annotations.ApiOperation;
@@ -78,5 +80,18 @@ public class MemberController {
         } else {
             return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @ApiOperation(value="아이디 찾기 API", notes="사용자가 본인의 이름과 전화번호를 이용해 아이디를 찾을 수 있는 API입니다.")
+    @GetMapping("/find/id")
+    public ResponseEntity<?> findId(@RequestBody FindIdRequestDto requestDto) {
+        FindIdResponseDto responseDto = memberService.findId(requestDto);
+
+        if (responseDto == null) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }
+
     }
 }
