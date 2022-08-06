@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,20 +25,10 @@ public abstract class BaseEntity {
     @LastModifiedDate
     private LocalDateTime updateDate;
 
-    /**
-     * 생성 멤버. 현재는 UUID값이 들어간다. 추후에 시큐리티와 연동 예정 -> 리팩토링 필요!
-     */
     @CreatedBy
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(nullable = false, updatable = false, name = "create_member_seq")
     private String createMember;
 
-    /**
-     * 수정 멤버. 현재는 UUID값이 들어간다. 추후에 시큐리티와 연동 예정 -> 리팩토링 필요!
-     */
     @LastModifiedBy
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "update_member_seq")
     private String updateMember;
 
     @Enumerated(EnumType.STRING)
@@ -44,16 +36,33 @@ public abstract class BaseEntity {
 
     @PrePersist
     public void prePersist() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         createDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
+
+        if (authentication != null) {
+            createMember = authentication.getName();
+            updateMember = authentication.getName();
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         updateDate = LocalDateTime.now();
+
+        if (authentication != null) {
+            updateMember = authentication.getName();
+        }
     }
 
     public BaseEntity() {
         this.deleteYn = DeleteState.N;
+    }
+
+    public void delete() {
+        this.deleteYn = DeleteState.Y;
     }
 }

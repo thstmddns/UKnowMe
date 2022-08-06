@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberLoginRequestDto;
 import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        MemberRequestDto dto = toMemberRequestDto(request);
+        MemberLoginRequestDto dto = toMemberRequestDto(request);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getId(), dto.getPassword());
 
@@ -44,9 +46,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @param request HttpServletRequest
      * @return 성공 시 MemberRequestDto, 실패 시 null
      */
-    private MemberRequestDto toMemberRequestDto(HttpServletRequest request) {
+    private MemberLoginRequestDto toMemberRequestDto(HttpServletRequest request) {
         try {
-            return new ObjectMapper().readValue(request.getInputStream(), MemberRequestDto.class);
+            return new ObjectMapper().readValue(request.getInputStream(), MemberLoginRequestDto.class);
         } catch (Exception e) {
             return null;
         }
@@ -57,9 +59,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-        String jwtToken = jwtService.createToken(principalDetails.getUsername(), (60 * 1000) * 10);
+        Map<String, String> tokenSet = jwtService.createTokenSet(principalDetails.getUsername());
 
-        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + jwtToken);
+        String accessToken = tokenSet.get("accessToken");
+        String refreshToken = tokenSet.get("refreshToken");
+
+        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + accessToken);
+        response.addHeader("temp", refreshToken);
+
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setMaxAge(14 * 24 * 60 * 60);
+
+        response.addCookie(cookie);
     }
 
     @Override
