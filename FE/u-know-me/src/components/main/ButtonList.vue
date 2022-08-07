@@ -17,7 +17,7 @@
     </div> -->
 
   <div class="match-circle">
-    <div id="container">
+    <div id="love-container">
       <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
       <div class="heart-img" @click="click">
         <img src="@/assets/main/heart.png" alt="" />
@@ -156,7 +156,7 @@ export default {
   bottom: 50px;
   display: grid;
 }
-#container {
+#love-container {
   width: 200px;
   height: 200px;
   display: grid;

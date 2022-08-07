@@ -1,63 +1,60 @@
 <template>
-  <div>
-    <div id="main-container" class="container">
-      <div id="join" v-if="!session">
-        <div id="join-dialog" class="jumbotron vertical-center">
-          <h1>Join a video session</h1>
-          <div class="form-group">
-            <p>
-              <label>Participant</label>
-              <input
-                v-model="myUserName"
-                class="form-control"
-                type="text"
-                required
-              />
-            </p>
-            <p>
-              <label>Session</label>
-              <input
-                v-model="mySessionId"
-                class="form-control"
-                type="text"
-                required
-              />
-            </p>
-            <p class="text-center">
-              <button class="btn btn-lg btn-success" @click="joinSession()">
-                Join!
-              </button>
-            </p>
-          </div>
+  <div class="chat-body" id="main-container">
+    <div id="join" v-if="!session">
+      <div id="join-dialog" class="jumbotron vertical-center">
+        <h1>Join a video session</h1>
+        <div class="form-group">
+          <p>
+            <label>Participant</label>
+            <input
+              v-model="myUserName"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p>
+            <label>Session</label>
+            <input
+              v-model="mySessionId"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p class="text-center">
+            <button class="btn btn-lg btn-success" @click="joinSession()">
+              Join!
+            </button>
+          </p>
         </div>
       </div>
-
-      <div id="session" v-if="session">
-        <div id="session-header">
-          <h1 id="session-title">{{ mySessionId }}</h1>
-          <input
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonLeaveSession"
-            @click="leaveSession"
-            value="Leave session"
-          />
-        </div>
-        <div class="video-container">
-          <div class="video-item" id="my-video">
-            <div class="preview">
-              <canvas class="guides" style="position: absolute"></canvas>
-              <video class="input_video" style=""></video>
-            </div>
-            <div><p>My Video</p></div>
+    </div>
+    <div id="session" v-if="session">
+      <div id="session-header">
+        <h1 id="session-title">{{ mySessionId }}</h1>
+        <input
+          class="btn btn-large btn-danger"
+          type="button"
+          id="buttonLeaveSession"
+          @click="leaveSession"
+          value="Leave session"
+        />
+      </div>
+      <div class="video-container">
+        <div class="video-item" id="my-video">
+          <div class="preview">
+            <canvas class="guides" style="position: absolute"></canvas>
+            <video class="input_video" style=""></video>
           </div>
-          <user-video
-            v-for="sub in subscribers"
-            :key="sub.stream.connection.connectionId"
-            :stream-manager="sub"
-            @click="updateMainVideoStreamManager(sub)"
-          />
+          <div><p>My Video</p></div>
         </div>
+        <user-video
+          v-for="sub in subscribers"
+          :key="sub.stream.connection.connectionId"
+          :stream-manager="sub"
+          @click="updateMainVideoStreamManager(sub)"
+        />
       </div>
     </div>
     <chat-something />
@@ -68,8 +65,8 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
-import {useChatStore} from "@/stores/chat/chat";
-import {storeToRefs} from "pinia"
+import { useChatStore } from "@/stores/chat/chat";
+import { storeToRefs } from "pinia";
 
 import ChatSomething from "@/components/chat/ChatSomething";
 
@@ -89,10 +86,25 @@ export default {
 
   setup() {
     const chat = useChatStore();
-    let {OV, session, mainStreamManager, publisher, subscribers, videoDevices} = storeToRefs(chat);
+    let {
+      OV,
+      session,
+      mainStreamManager,
+      publisher,
+      subscribers,
+      videoDevices,
+    } = storeToRefs(chat);
     chat.socketConnect();
 
-    return {chat, OV, session, mainStreamManager, publisher, subscribers, videoDevices};
+    return {
+      chat,
+      OV,
+      session,
+      mainStreamManager,
+      publisher,
+      subscribers,
+      videoDevices,
+    };
   },
 
   data() {
@@ -107,8 +119,10 @@ export default {
       this.OV = new OpenVidu();
 
       // --- Init Video Device ---
-      this.OV.getDevices().then(devices => {
-        this.videoDevices = devices.filter(device => device.kind === 'videoinput');
+      this.OV.getDevices().then((devices) => {
+        this.videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
       });
 
       // --- Init a session ---
@@ -278,8 +292,12 @@ export default {
 h1 {
   margin: 0;
 }
-#main-container {
-  width: 100vw;
+#join, #session {
+  flex: 1;
+}
+.chat-body {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   background: radial-gradient(
     61.17% 61.17% at 50% 50%,
@@ -292,22 +310,26 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
 }
 .video-item {
   position: relative;
-  flex-grow: 1;
+  margin: 20px;
+  flex: 1;
   text-align: center;
 }
 .video-item video {
-  width: 49vw !important;
-  height: auto;
-  border: 3px solid purple;
-}
-.video-item canvas {
-  width: 49vw !important;
   height: auto !important;
   border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100% !important;
+}
+.video-item canvas {
+  height: auto !important;
+  border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100% !important;
 }
 .preview {
   position: absolute;
