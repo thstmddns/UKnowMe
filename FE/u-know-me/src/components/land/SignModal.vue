@@ -67,7 +67,7 @@ export default {
         nickName: 0,
         tel: 0,
       },
-      this.account.sendTel = 0
+      this.account.$reset()
     },
   },
   setup() {

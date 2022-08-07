@@ -155,16 +155,14 @@ export const useAccountStore = defineStore('account', {
       console.log(Google);
     },
     findId(credentials) {
-      console.log({...credentials})
       const land = useLandStore()
        axios({
         url: sr.members.findId(),
         method: 'get',
-        data: {...credentials},
+        params: {...credentials},
       })
         .then((res) => {
-          console.log(res)
-          this.findUserId = res
+          this.findUserId = res.data.id
           land.btnCh = 6
         })
         .error(err => {

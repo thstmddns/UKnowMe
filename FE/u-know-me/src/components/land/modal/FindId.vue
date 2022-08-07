@@ -2,7 +2,7 @@
   <div class="sign-head signin-head">
     <i class="fa-solid fa-id-card"></i>&#160;아이디 찾기
   </div>
-  <form id="findIdForm" action="POST" @submit.prevent="account.findId(credentials)">
+  <form id="findIdForm" action="GET" @submit.prevent="account.findId(credentials)">
     <div>
       <div><label for="findIdName">이름</label></div>
       <div><input type="text" name="findIdName" id="findIdName" placeholder="이름을 입력해주세요." v-model="credentials.name"/></div>
