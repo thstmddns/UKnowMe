@@ -218,12 +218,10 @@ export const useAccountStore = defineStore('account', {
     certificatePassword(password) {
       console.log({password});
       const main = useMainStore()
-      if (this.currentUser === {}) {
-        this.fetchCurrentUser()
-      }
+      this.fetchCurrentUser()
       axios({
-        url: sr.members.member(),
-        method: 'get',
+        url: sr.members.validatePassword(),
+        method: 'post',
         data: { password },
         headers: this.authHeader,
       })
@@ -239,12 +237,9 @@ export const useAccountStore = defineStore('account', {
     },
     modifyCertificatePassword(password) {
       console.log({password});
-      if (this.currentUser === {}) {
-        this.fetchCurrentUser()
-      }
       axios({
-        url: sr.members.member(),
-        method: 'get',
+        url: sr.members.validatePassword(),
+        method: 'post',
         data: { password },
         headers: this.authHeader,
       })
@@ -261,7 +256,7 @@ export const useAccountStore = defineStore('account', {
       console.log({...credentials});
       // const main = useMainStore()
       // axios({
-      //   url: sr.members.member(),
+      //   url: sr.members.update(),
       //   method: 'put',
       //   data: {...credentials},
       //   headers: this.authHeader,
