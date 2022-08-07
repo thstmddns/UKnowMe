@@ -13,7 +13,9 @@ export const useAccountStore = defineStore('account', {
     a_token: cookies.get('UkmL') || '',
     r_token: cookies.get('RUkmL') || '',
     currentUser: {},
-    authError: null,
+    authError: {
+      login: 0,
+    },
     isAdmin: false,
     findUserId: '',
     findUserfindPassword: '',
@@ -68,7 +70,6 @@ export const useAccountStore = defineStore('account', {
         })
         .catch(err => {
           console.error(err.response.data)
-          this.authError = err.response.data
         })
     },
     login(credentials) {
@@ -86,11 +87,12 @@ export const useAccountStore = defineStore('account', {
           this.saveToken(access_token, refresh_token)
           this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
+          this.authError.login = 0
           router.push({ name: 'main' })
         })
         .catch(err => {
           console.error(err.response.data)
-          this.authError = err.response.data
+          this.authError.login = 1
         })
     },
     logout() {
