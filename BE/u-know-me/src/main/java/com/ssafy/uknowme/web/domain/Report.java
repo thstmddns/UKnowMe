@@ -48,4 +48,10 @@ public class Report extends BaseEntity {
         this.accusedMember = accusedMember;
         this.state = state;
     }
+
+    public void updateReport(ReportState state){
+        this.state = state;
+    }
+
+
 }

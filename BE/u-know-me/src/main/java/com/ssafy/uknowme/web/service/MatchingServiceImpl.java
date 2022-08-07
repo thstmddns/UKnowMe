@@ -37,14 +37,6 @@ public class  MatchingServiceImpl implements  MatchingService{
         return matchingResponseDto;
     }
 
-//    @Override
-//    @Transactional
-//    public boolean create1vs1MatchingRoom(MatchingRequestDto dto) throws Exception {
-//
-//
-//
-//
-//    }
 
     @Override
     public MatchingResponseDto get2vs2MatchingMemberInfo(MatchingRequestDto dto) throws Exception {
