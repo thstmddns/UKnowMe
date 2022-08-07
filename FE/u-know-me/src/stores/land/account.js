@@ -4,6 +4,7 @@ import router from '@/router'
 import axios from 'axios'
 import { useLandStore } from './land'
 import { useCookies } from "vue3-cookies";
+import { useMainStore } from '../main/main'
 
 const { cookies } = useCookies();
 
@@ -277,6 +278,26 @@ export const useAccountStore = defineStore('account', {
       } else {
         this.checkSign.tel = 0
       }
+    },
+    deleteAccount() {
+      const main = useMainStore()
+      axios({
+        url: sr.members.member(),
+        method: 'delete',
+        headers: this.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.removeToken()
+          this.isAdmin = false
+          alert('회원탈퇴가 성공적으로 되었습니다.')
+          main.$reset()
+          router.push({ name: 'home' })
+        })
+        .catch(err => {
+          console.error(err.response)
+          alert('회원탈퇴에 실패하셨습니다.')
+        })
     }
   },
 })
