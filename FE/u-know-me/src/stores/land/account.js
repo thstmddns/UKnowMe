@@ -295,44 +295,36 @@ export const useAccountStore = defineStore('account', {
       //   })
     },
     duplicateId(id) {
-      if (id === 'user99') {
-        this.checkSign.id = 1
-      } else {
-        this.checkSign.id = 0
-      }
-      // axios({
-      //   url: sr.members.idDuplicate(),
-      //   method: 'get',
-      //   data: { id }
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     this.checkSign.id = 1
-      //   })
-      //   .catch(err => {
-      //     console.error(err.response)
-      //     this.checkSign.id = 0
-      //   })
+      console.log({ id });
+      axios({
+        url: sr.members.idDuplicate(),
+        method: 'get',
+        params: { id }
+      })
+        .then(res => {
+          console.log(res);
+          this.checkSign.id = 1
+        })
+        .catch(err => {
+          console.error(err.response)
+          this.checkSign.id = 0
+        })
     },
     duplicateNickname(nickname) {
-      if (nickname === 'user99') {
-        this.checkSign.nickName = 1
-      } else {
-        this.checkSign.nickName = 0
-      }
-      // axios({
-      //   url: sr.members.nickNameDuplicate(),
-      //   method: 'get',
-      //   data: { nickname }
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     this.checkSign.nickName = 1
-      //   })
-      //   .catch(err => {
-      //     console.error(err.response)
-      //     this.checkSign.nickName = 0
-      //   })
+      console.log({ nickname });
+      axios({
+        url: sr.members.nickNameDuplicate(),
+        method: 'get',
+        params: { nickname }
+      })
+        .then(res => {
+          console.log(res);
+          this.checkSign.nickName = 1
+        })
+        .catch(err => {
+          console.error(err.response)
+          this.checkSign.nickName = 0
+        })
     },
     sendNumTel(tel) {
       tel
