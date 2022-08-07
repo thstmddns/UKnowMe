@@ -1,20 +1,20 @@
 <template>
-  <div class="notice-add-modal-bg">
-    <div class="notice-add-modal">
-      <div class="notice-add-modal-title">
-        <h2 class="notice-add-title">로그아웃</h2>
+  <div class="notice-form-modal-bg">
+    <div class="notice-form-modal">
+      <div class="notice-form-modal-title">
+        <h2 class="notice-form-title">로그아웃</h2>
         <div @click="noticeAddBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
       </div>
       
-      <div class="notice-add-modal-content">
+      <div class="notice-form-modal-content">
         <h3>로그아웃 하시겠습니까?</h3>
       </div>
 
-      <div class="notice-add-btn-list">
-        <button class="notice-add-btn">아니오</button>
-        <button class="notice-add-btn">예</button>
+      <div class="notice-form-btn-list">
+        <button class="notice-form-btn">아니오</button>
+        <button class="notice-form-btn">예</button>
       </div>
 
     </div>
@@ -26,7 +26,7 @@ import { storeToRefs } from "pinia";
 import { useAdminStore } from "@/stores/admin/admin";
 
 export default {
-  name: "NoticeAdd",
+  name: "NoticForm",
   components: {},
   setup() {
     const admin = useAdminStore();
@@ -40,15 +40,16 @@ export default {
 </script>
 
 <style>
-.notice-add-modal-bg {
+.notice-form-modal-bg {
   width: 100vw;
   height: 100vh;
   z-index: 9;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
+  top: 0;
 }
 
-.notice-add-modal {
+.notice-form-modal {
   position: relative;
   width: 25%;
   height: 250px;
@@ -60,28 +61,28 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.notice-add-modal-title {
+.notice-form-modal-title {
   margin: 0 8%;
   display: flex;
   justify-content: space-between;
 }
 
-.notice-add-title {
+.notice-form-title {
   float: left;
   color: #A056FF;
 }
 
-.notice-add-modal-content {
+.notice-form-modal-content {
   padding: 10px 62px 25px ;
   text-align: center;
 }
 
-.notice-add-btn-list {
+.notice-form-btn-list {
   display: flex;
   justify-content: center;
 }
 
-.notice-add-btn {
+.notice-form-btn {
   width: 100px;
   height: 40px;
   background: #A056FF;
@@ -93,7 +94,7 @@ export default {
   cursor: pointer;
 }
 
-.notice-add-btn:hover {
+.notice-form-btn:hover {
   transition: all 150ms linear;
   opacity: .85;
 }

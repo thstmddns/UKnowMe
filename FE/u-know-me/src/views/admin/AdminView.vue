@@ -1,5 +1,4 @@
 <template>
-<notice-add v-if="admin.noticeAddBtn == true"/>
   <div class="admin">
     <div class="admin-toolbar">
       <div class="admin-toolbar-container">
@@ -24,6 +23,7 @@
       <admin-notice
         v-if="adminBtn == 1"
       />
+      <notice-form v-if="admin.noticeAddBtn == true"/>
       <admin-avatar
         v-if="adminBtn == 2"
       />
@@ -47,12 +47,12 @@ import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
 import AdminBalance from '@/components/admin/balance/AdminBalance.vue'
 import AdminHelper from '@/components/admin/AdminHelper.vue'
-
+import NoticeForm from "@/components/admin/notice/NoticeForm.vue";
 
 export default {
   name : "AdminPage",
   components : {
-    AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper
+    AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper, NoticeForm
   },
   setup() {
     const admin = useAdminStore()

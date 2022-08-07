@@ -93,16 +93,15 @@
       </table>
     </div>
   </div>
-  <notice-add v-if="admin.noticeAddBtn == true"/>
 </template>
 
 <script>
 import { useAdminStore } from "@/stores/admin/admin";
-import NoticeAdd from "@/components/admin/notice/NoticeAdd.vue";
+
 
 export default {
   name: "AdminNotice",
-  components: { NoticeAdd },
+  components: {  },
   setup() {
     const admin = useAdminStore();
     return {
