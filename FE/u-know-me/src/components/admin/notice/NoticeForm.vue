@@ -2,19 +2,14 @@
   <div class="notice-form-modal-bg">
     <div class="notice-form-modal">
       <div class="notice-form-modal-title">
-        <h2 class="notice-form-title">로그아웃</h2>
+        <h2 class="notice-form-title">공지사항 등록</h2>
         <div @click="noticeAddBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
       </div>
       
       <div class="notice-form-modal-content">
-        <h3>로그아웃 하시겠습니까?</h3>
-      </div>
-
-      <div class="notice-form-btn-list">
-        <button class="notice-form-btn">아니오</button>
-        <button class="notice-form-btn">예</button>
+        <h3>내용</h3>
       </div>
 
     </div>
@@ -61,7 +56,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.notice-form-modal-title {
+/* .notice-form-modal-title {
   margin: 0 8%;
   display: flex;
   justify-content: space-between;
@@ -97,5 +92,5 @@ export default {
 .notice-form-btn:hover {
   transition: all 150ms linear;
   opacity: .85;
-}
+} */
 </style>
