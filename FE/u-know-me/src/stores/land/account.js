@@ -5,7 +5,6 @@ import axios from 'axios'
 import { useLandStore } from './land'
 import { useMainStore } from '../main/main'
 import { useCookies } from "vue3-cookies";
-import { useMainStore } from '../main/main'
 
 const { cookies } = useCookies();
 
