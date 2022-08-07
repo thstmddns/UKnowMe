@@ -19,6 +19,7 @@ export const useChatStore = defineStore('chat', {
     subscribers: [],
     camera: null,
     videoDevices: null,
+    jsonData: null,
   }),
   getters: {
 
@@ -402,6 +403,7 @@ export const useChatStore = defineStore('chat', {
       const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/chat");
 
       this.webSocket = webSocket;
+      let toCam = this.toCam;
 
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
@@ -416,6 +418,12 @@ export const useChatStore = defineStore('chat', {
       // 2-2) 메세지 수신 이벤트 처리
       webSocket.onmessage = function (event) {
         console.log(`서버 웹소켓에게 받은 데이터: ${event.data}`);
+        const test = event.data.replace(/,\s*}$/, '}');
+        this.jsonData = JSON.parse(test);
+        console.log(this.jsonData);
+        if (this.jsonData.key == "uknowme") {
+          toCam();
+        }
       };
 
       // 2-3) 연결 종료 이벤트 처리
@@ -434,12 +442,11 @@ export const useChatStore = defineStore('chat', {
         "key" : "heart_1",
         "room" : "cavavsdv-sadvas-asdvas"
       }`);
-
-      this.toCam();
     },
 
     toCam() {
-      // this.camera.stop();
+      this.camera.stop();
+      this.camera.start();
 
       console.log(this.videoDevices);
 
