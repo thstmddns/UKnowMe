@@ -24,6 +24,10 @@
         <input type="password" name="signInPassword" id="signInPassword" placeholder="비밀번호" v-model="credentials.password"/>
       </div>
     </div>
+    <div class="text-left" style="margin:0;color:red;font-size:12px;" v-if="account.authError.login===1">
+      아이디 또는 비밀번호를 잘못 입력했습니다.
+      <br>입력하신 내용을 다시 확인해주세요.
+    </div>
     <div class="find-id-password">
       <span @click="land.btnCh=4">아이디/</span><span @click="land.btnCh=5">비밀번호 찾기</span>
     </div>
