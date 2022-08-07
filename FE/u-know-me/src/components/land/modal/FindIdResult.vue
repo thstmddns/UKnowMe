@@ -7,7 +7,7 @@
       아이디 찾기가 완료되었습니다.
     </div>
     <div class="find-result">
-      ID는 <span>봉구스밥버거{{ account.findUserId }}</span> 입니다.
+      ID는 <span>{{ account.findUserId }}</span> 입니다.
     </div>
     <div class="result-btn">
       <div class="flex justify-around">

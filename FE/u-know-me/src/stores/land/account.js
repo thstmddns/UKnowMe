@@ -157,19 +157,20 @@ export const useAccountStore = defineStore('account', {
       console.log(Google);
     },
     findId(credentials) {
-      console.log({...credentials})
-      //  axios({
-      //   url: sr.accounts.findId(),
-      //   method: 'post',
-      //   data: {...credentials},
-      // })
-      //   .then((res) => {
-      //     console.log(res)
-      //     this.findUserId = res
-      //   })
-      //   .error(err => {
-      //     console.error(err.response)
-      //   })
+      const land = useLandStore()
+       axios({
+        url: sr.members.findId(),
+        method: 'get',
+        params: {...credentials},
+      })
+        .then((res) => {
+          this.findUserId = res.data.id
+          land.btnCh = 6
+        })
+        .error(err => {
+          console.error(err.response)
+          alert('일치하는 사용자가 없습니다.')
+        })
     },
     findPassword(credentials) {
       console.log({...credentials})

@@ -2,20 +2,20 @@
   <div class="sign-head signin-head">
     <i class="fa-solid fa-id-card"></i>&#160;아이디 찾기
   </div>
-  <form id="findIdForm" action="POST" @submit.prevent="account.findId(credentials)">
+  <form id="findIdForm" action="GET" @submit.prevent="account.findId(credentials)">
     <div>
       <div><label for="findIdName">이름</label></div>
       <div><input type="text" name="findIdName" id="findIdName" placeholder="이름을 입력해주세요." v-model="credentials.name"/></div>
     </div>
     <div class="find-input">
       <div><label for="findIdTel">휴대폰 번호</label></div>
-      <div><input type="password" name="findIdTel" id="findIdTel" placeholder="-없이 입력해주세요." v-model="credentials.tel"/></div>
+      <div><input type="text" name="findIdTel" id="findIdTel" placeholder="-없이 입력해주세요." v-model="credentials.tel"/></div>
     </div>
     <button type="submit" class="sign-btn">아이디 찾기</button>
   </form>
   <div class="go-login">
-    <span @click="land.btnCh=6">아이디 찾았으</span> | 
-    <span @click="land.btnCh=1">로그인 창으로 돌아가기</span>
+    <span @click="land.btnCh=5">비밀번호 찾기 </span> &#160; 
+    <span @click="land.btnCh=1"> 로그인 창으로 돌아가기</span>
   </div>
 </template>
 
