@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useLandStore } from './land'
 import { useMainStore } from '../main/main'
 import { useCookies } from "vue3-cookies";
+import { useMainStore } from '../main/main'
 
 const { cookies } = useCookies();
 
@@ -18,6 +19,12 @@ export const useAccountStore = defineStore('account', {
     findUserId: '',
     findUserfindPassword: '',
     correctPassword: 0,
+    checkSign: {
+      id: 0,
+      nickName: 0,
+      tel: 0,
+    },
+    sendTel: 0,
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
@@ -44,6 +51,7 @@ export const useAccountStore = defineStore('account', {
       cookies.remove('RUkmL')
     },
     signup(credentials, birth) {
+      const land = useLandStore()
       if (birth.day.length === 1) {
         birth.day = '0'+ birth.day
       }
@@ -56,7 +64,8 @@ export const useAccountStore = defineStore('account', {
       })
         .then(res => {
           console.log(res);
-          // router.push({ name: 'home' })
+          alert('회원가입이 완료되었습니다. 새로운 환경에서 로그인 해주세요.')
+          land.btnCh=1
         })
         .catch(err => {
           console.error(err.response.data)
@@ -86,20 +95,8 @@ export const useAccountStore = defineStore('account', {
         })
     },
     logout() {
-      axios({
-        url: sr.members.logout(),
-        method: 'post',
-        // data: {},
-        headers: this.authHeader,
-      })
-        .then(() => {
-          this.removeToken()
-          this.isAdmin = false
-          router.push({ name: 'home' })
-        })
-        .error(err => {
-          console.error(err.response)
-        })
+      this.removeToken()
+      router.push({ name: 'home' })
     },
     socialLogin(sns, credentials) {
       const land = useLandStore()
@@ -296,5 +293,76 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
+    duplicateId(id) {
+      if (id === 'user99') {
+        this.checkSign.id = 1
+      } else {
+        this.checkSign.id = 0
+      }
+      // axios({
+      //   url: sr.members.idDuplicate(),
+      //   method: 'get',
+      //   data: { id }
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     this.checkSign.id = 1
+      //   })
+      //   .catch(err => {
+      //     console.error(err.response)
+      //     this.checkSign.id = 0
+      //   })
+    },
+    duplicateNickname(nickname) {
+      if (nickname === 'user99') {
+        this.checkSign.nickName = 1
+      } else {
+        this.checkSign.nickName = 0
+      }
+      // axios({
+      //   url: sr.members.nickNameDuplicate(),
+      //   method: 'get',
+      //   data: { nickname }
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     this.checkSign.nickName = 1
+      //   })
+      //   .catch(err => {
+      //     console.error(err.response)
+      //     this.checkSign.nickName = 0
+      //   })
+    },
+    sendNumTel(tel) {
+      tel
+      this.sendTel = 1
+    },
+    certicateTel(num) {
+      if (num === '0000') {
+        this.checkSign.tel = 1
+      } else {
+        this.checkSign.tel = 0
+      }
+    },
+    deleteAccount() {
+      const main = useMainStore()
+      axios({
+        url: sr.members.member(),
+        method: 'delete',
+        headers: this.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.removeToken()
+          this.isAdmin = false
+          alert('회원탈퇴가 성공적으로 되었습니다.')
+          main.$reset()
+          router.push({ name: 'home' })
+        })
+        .catch(err => {
+          console.error(err.response)
+          alert('회원탈퇴에 실패하셨습니다.')
+        })
+    }
   },
 })

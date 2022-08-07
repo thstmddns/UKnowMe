@@ -10,7 +10,7 @@
         'find-id-result-modal': btnCh===6,
         'find-password-result-modal': btnCh===7,
       }">
-      <div class="close-btn" @click="btnCh=0">
+      <div class="close-btn" @click="signModalClose()">
         <i class="fa-solid fa-xmark x-btn"></i>
       </div>
       <div
@@ -45,6 +45,8 @@ import FindPassword from '@/components/land/modal/FindPassword.vue'
 import FindPasswordResult from '@/components/land/modal/FindPasswordResult.vue'
 import { storeToRefs } from 'pinia'
 import { useLandStore } from '@/stores/land/land'
+import { useAccountStore } from '@/stores/land/account'
+
 
 export default {
   name: 'SignModal',
@@ -57,12 +59,25 @@ export default {
     FindIdResult,
     FindPasswordResult,
   },
+  methods: {
+    signModalClose() {
+      this.btnCh = 0;
+      this.account.checkSign = {
+        id: 0,
+        nickName: 0,
+        tel: 0,
+      },
+      this.account.sendTel = 0
+    },
+  },
   setup() {
     const land = useLandStore()
+    const account = useAccountStore()
     const { btnCh } = storeToRefs(land)
     return {
       land,
-      btnCh
+      btnCh,
+      account,
     }
   },
 }
