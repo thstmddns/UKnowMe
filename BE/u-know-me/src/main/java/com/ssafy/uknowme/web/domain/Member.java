@@ -1,5 +1,6 @@
 package com.ssafy.uknowme.web.domain;
 
+import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import lombok.AccessLevel;
@@ -121,16 +122,8 @@ public class Member extends BaseEntity {
         this.matchCount = matchCount;
     }
 
-    public void updateMember(String name, String nickname, String tel, String smoke, String address,
-                             String naverId, String kakaoId) {
-        this.name = name;
-        this.nickname = nickname;
-        this.tel = tel;
-        this.smoke = smoke;
-        this.address = address;
-        this.naverId = naverId;
-        this.kakaoId = kakaoId;
+    public void updateMember(MemberUpdateDto dto) {
+        this.smoke = dto.getSmoke();
+        this.address = dto.getAddress();
     }
-
-
 }

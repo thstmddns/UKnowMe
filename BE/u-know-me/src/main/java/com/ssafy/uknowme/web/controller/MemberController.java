@@ -32,7 +32,7 @@ public class MemberController {
 
     @ApiOperation(value="아이디 중복 검사 API", notes="사용자가 회원 가입 시 아이디 중복 검사에 이용하는 API입니다.")
     @GetMapping("/check/id")
-    public ResponseEntity<?> checkIdDuplication(@RequestBody DuplicatedIdRequestDto dto) throws BadRequestException {
+    public ResponseEntity<?> checkIdDuplication(@ModelAttribute DuplicatedIdRequestDto dto) throws BadRequestException {
         if (memberService.existsById(dto.getId())) {
             return new ResponseEntity<>("false", HttpStatus.OK);
         } else {
@@ -42,7 +42,7 @@ public class MemberController {
 
     @ApiOperation(value="닉네임 중복 검사 API", notes="사용자가 회원 가입 시 닉네임 중복 검사에 이용하는 API입니다.")
     @GetMapping("/check/nickname")
-    public ResponseEntity<?> checkNickNameDuplication(@RequestBody DuplicatedNicknameRequestDto dto) throws BadRequestException {
+    public ResponseEntity<?> checkNickNameDuplication(@ModelAttribute DuplicatedNicknameRequestDto dto) throws BadRequestException {
         if (memberService.existsByNickname(dto.getNickname())) {
             return new ResponseEntity<>("false", HttpStatus.OK);
         } else {
@@ -67,7 +67,7 @@ public class MemberController {
     }
 
     @ApiOperation(value="비밀번호 검증 API", notes="비밀번호를 검증할 때 사용하는 API입니다. 마찬가지로 로그인해야 사용할 수 있습니다.")
-    @GetMapping("/validate/password")
+    @PostMapping("/validate/password")
     public ResponseEntity<?> validatePassword(@RequestBody ValidatePasswordRequestDto dto) {
         return new ResponseEntity<>(memberService.validatePassword(dto), HttpStatus.OK);
     }
@@ -84,7 +84,7 @@ public class MemberController {
 
     @ApiOperation(value="아이디 찾기 API", notes="사용자가 본인의 이름과 전화번호를 이용해 아이디를 찾을 수 있는 API입니다.")
     @GetMapping("/find/id")
-    public ResponseEntity<?> findId(@RequestBody FindIdRequestDto requestDto) {
+    public ResponseEntity<?> findId(@ModelAttribute FindIdRequestDto requestDto) {
         FindIdResponseDto responseDto = memberService.findId(requestDto);
 
         if (responseDto == null) {
