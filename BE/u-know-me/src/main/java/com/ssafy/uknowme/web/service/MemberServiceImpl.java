@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
                 .password(encoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .nickname(dto.getNickname())
-                .gender(dto.getBirth())
+                .gender(dto.getGender())
                 .birth(dto.getBirth())
                 .tel(dto.getTel())
                 .smoke(dto.getSmoke())
@@ -79,9 +79,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = repository.findById(memberUpdateDto.getId()).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
-        member.updateMember(memberUpdateDto.getName(), memberUpdateDto.getNickname(),
-                memberUpdateDto.getTel(), memberUpdateDto.getSmoke(), memberUpdateDto.getAddress(),
-                memberUpdateDto.getNaverId(), memberUpdateDto.getKakaoId());
+        member.updateMember(memberUpdateDto);
 
         return true;
     }

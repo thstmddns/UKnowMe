@@ -10,11 +10,6 @@ import lombok.Setter;
 public class MemberUpdateDto {
 
     private String id;
-    private String name;
-    private String nickname;
-    private String tel;
-    private String smoke;
     private String address;
-    private String naverId;
-    private String kakaoId;
+    private String smoke;
 }
