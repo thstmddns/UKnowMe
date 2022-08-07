@@ -19,6 +19,7 @@ export default {
     account: memberSeq => HOST + MEMBERS + `${memberSeq}`,
     idDuplicate: () => HOST + MEMBERS + 'check/id',
     nickNameDuplicate: () => HOST + MEMBERS + 'check/nickname',
+    validatePassword: () => HOST + MEMBERS + 'validate/password',
     kakaoLogin: () => HOST + MEMBERS + 'kakao/callback',
     naverLogin: () => HOST + MEMBERS + 'naver/callback',
     kakao: () => HOST + MEMBERS + 'add/kakao',

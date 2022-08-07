@@ -8,21 +8,21 @@
       <div>
         <div class="text-inform"><label for="informSecurePassword">현재 비밀번호</label></div>
         <div>
-          <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." v-model="password.current" :rules="validateCurrentPassword" /></div>
+          <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." v-model="password.currentPassword" :rules="validateCurrentPassword" /></div>
           <div class="text-left"><ErrorMessage class="error-message" name="informSecurePassword"/></div>
         </div>
       </div>
       <div>
         <div class="text-inform"><label for="informSecureNewPassword">새 비밀번호</label></div>
         <div>
-          <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.new" :rules="validatePassword" /></div>
+          <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.newPassword" :rules="validatePassword" /></div>
           <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewPassword"/></div>
         </div>
       </div>
       <div>
         <div class="text-inform"><label for="informSecureNewConfigPassword">새 비밀번호 확인</label></div>
         <div>
-          <div><Field type="password" name="informSecureNewConfigPassword" id="informSecureNewConfigPassword" placeholder="비밀번호를 재입력해주세요." v-model="password.newConfig" :rules="validateRePassword" /></div>
+          <div><Field type="password" name="informSecureNewConfigPassword" id="informSecureNewConfigPassword" placeholder="비밀번호를 재입력해주세요." :rules="validateRePassword" /></div>
           <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewConfigPassword"/></div>
         </div>
       </div>
@@ -56,10 +56,10 @@ export default {
       if (!value) {
         return '필수정보 입니다.';
       }
-      this.account.modifyCertificatePassword(value)
-      if (!this.account.correctPassword) {
-        return '현재 비밀번호와 일치하지 않습니다.'
-      }
+      // this.account.modifyCertificatePassword(value)
+      // if (!this.account.correctPassword) {
+      //   return '현재 비밀번호와 일치하지 않습니다.'
+      // }
       return true;
     },
     validatePassword(value) {
@@ -76,7 +76,7 @@ export default {
       if (!value) {
         return '필수정보 입니다.';
       }
-      if (this.password.new !==value) {
+      if (this.password.newPassword !==value) {
         return '비밀번호가 일치하지 않습니다.';
       }
       return true;
@@ -86,9 +86,8 @@ export default {
     const main = useMainStore();
     const account = useAccountStore();
     const password = ref({
-      current: '',
-      new: '',
-      newConfig: '',
+      currentPassword: '',
+      newPassword: '',
     })
     return {
       main,

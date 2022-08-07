@@ -1,5 +1,5 @@
 <template>
-  <Form id="informModifyForm" action="POST" @submit="account.modifyInform(credentials)">
+  <Form id="informModifyForm" action="POST" @submit="account.modifyInform({ address:credentials.address, smoke:credentials.smoke })">
     <div>
       <div><label for="informModifyId">아이디</label></div>
       <div>
@@ -177,7 +177,6 @@ export default {
   setup() {
     const account = useAccountStore()
     const credentials = account.currentUser
-    console.log(credentials);
     return {
       account,
       credentials,
