@@ -1,5 +1,5 @@
 package com.ssafy.uknowme.web.domain.enums;
 
 public enum Role {
-    USER, MANAGER
+    ROLE_USER, ROLE_MANAGER
 }

@@ -52,7 +52,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> member.getRole().toString());
+        authorities.add(() -> String.valueOf(member.getRole()));
         return authorities;
     }
 }
