@@ -40,4 +40,6 @@ public interface AvatarService {
      * @return 아바타 전체 리스트
      */
     List<AvatarResponseDto> findAllDto();
+
+    boolean deleteAvatar(int avatarSeq);
 }

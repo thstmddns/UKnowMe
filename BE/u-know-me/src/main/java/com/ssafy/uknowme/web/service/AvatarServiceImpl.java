@@ -4,6 +4,7 @@ import com.ssafy.uknowme.model.dto.AvatarDto.AvatarResponseDto;
 import com.ssafy.uknowme.model.dto.AvatarDto.AvatarSaveRequestDto;
 import com.ssafy.uknowme.web.domain.Avatar;
 import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.enums.DeleteState;
 import com.ssafy.uknowme.web.repository.AvatarRepository;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -85,34 +86,28 @@ public class AvatarServiceImpl implements AvatarService{
     @Transactional(readOnly = true)
     public Resource downloadVrmFileByAuthentication() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String loginId = authentication.getName();
-
-        Optional<Member> optionalMember = memberRepository.findById(loginId);
-
-        Member findMember = optionalMember.orElseThrow(NoSuchElementException::new);
+        Member findMember = getLoginMemberInfo();
 
         Avatar usingAvatar = findMember.getAvatar();
+
+        if (isDeleted(usingAvatar)) return null;
 
         String vrmFileName = usingAvatar.getVrm();
 
         return getUrlResource(vrmFileName);
     }
 
+
+
     @Override
     @Transactional(readOnly = true)
     public Resource downloadImageFileByAuthentication() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String loginId = authentication.getName();
-
-        Optional<Member> optionalMember = memberRepository.findById(loginId);
-
-        Member findMember = optionalMember.orElseThrow(NoSuchElementException::new);
+        Member findMember = getLoginMemberInfo();
 
         Avatar usingAvatar = findMember.getAvatar();
+
+        if (isDeleted(usingAvatar)) return null;
 
         String imageFileName = usingAvatar.getImage();
 
@@ -125,6 +120,8 @@ public class AvatarServiceImpl implements AvatarService{
 
         Avatar findAvatar = avatarRepository.findById(avatarSeq).orElseThrow(IllegalStateException::new);
 
+        if (isDeleted(findAvatar)) return null;
+
         return getUrlResource(findAvatar.getVrm());
     }
 
@@ -134,12 +131,46 @@ public class AvatarServiceImpl implements AvatarService{
 
         Avatar findAvatar = avatarRepository.findById(avatarSeq).orElseThrow(IllegalStateException::new);
 
+        if (isDeleted(findAvatar)) return null;
+
         return getUrlResource(findAvatar.getImage());
     }
 
     @Override
     public List<AvatarResponseDto> findAllDto() {
         return avatarRepository.findAllDto();
+    }
+
+    @Override
+    public boolean deleteAvatar(int avatarSeq) {
+
+        Optional<Avatar> optionalAvatar = avatarRepository.findById(avatarSeq);
+
+        if (!optionalAvatar.isPresent()) {
+            log.info("해당 SEQ의 아바타가 없습니다.");
+            return false;
+        }
+
+        Avatar avatar = optionalAvatar.get();
+
+        avatar.delete();
+
+        deleteFile(avatar.getImage());
+        deleteFile(avatar.getVrm());
+
+        return true;
+    }
+
+    private boolean deleteFile(String fileName) {
+        // 파일 객체를 생성한다.
+        File file = new File(getFullPath(fileName));
+
+        // 파일을 삭제한다.
+        return file.delete();
+    }
+
+    private boolean isDeleted(Avatar usingAvatar) {
+        return usingAvatar.getDeleteYn().equals(DeleteState.Y);
     }
 
     private UrlResource getUrlResource(String fileName) {
@@ -168,5 +199,17 @@ public class AvatarServiceImpl implements AvatarService{
         String extension = originFilename.substring(originExtensionIndex);
 
         return uuid + extension;
+    }
+
+    private Member getLoginMemberInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 현재 로그인한 유저의 ID
+        String loginId = authentication.getName();
+
+        // ID를 이용하여 멤버 정보 획득
+        Optional<Member> optionalMember = memberRepository.findById(loginId);
+
+        return optionalMember.orElseThrow(NoSuchElementException::new);
     }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface AvatarRepository extends JpaRepository<Avatar, Integer> {
 
-    @Query("select new com.ssafy.uknowme.model.dto.AvatarDto.AvatarResponseDto(a.seq, a.name, a.frequency) from Avatar a")
+    @Query("select new com.ssafy.uknowme.model.dto.AvatarDto.AvatarResponseDto(a.seq, a.name, a.frequency) from Avatar a where a.deleteYn = 'N'")
     List<AvatarResponseDto> findAllDto();
 }

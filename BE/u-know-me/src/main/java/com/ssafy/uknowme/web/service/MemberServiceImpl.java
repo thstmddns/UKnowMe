@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
                 .tel(dto.getTel())
                 .smoke(dto.getSmoke())
                 .address(dto.getAddress())
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         repository.save(member);
