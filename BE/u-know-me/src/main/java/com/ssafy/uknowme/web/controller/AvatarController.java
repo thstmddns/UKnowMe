@@ -53,7 +53,7 @@ public class AvatarController {
         }
     }
 
-    @ApiOperation(value = "아바타 모델 다운로드 API", notes = "현재 로그인한 회원이 착용하고 있는 아바타를 다운로드합니다.")
+    @ApiOperation(value = "아바타 모델 다운로드 API", notes = "특정 SEQ의 아바타 모델을 다운로드합니다.")
     @GetMapping(value="/{avatarSeq}/vrm")
     public ResponseEntity<?> downloadVrmFileBySeq(@PathVariable int avatarSeq) {
         Resource resource = avatarService.downloadVrmFileBySeq(avatarSeq);
@@ -65,7 +65,7 @@ public class AvatarController {
         }
     }
 
-    @ApiOperation(value = "아바타 썸네일 이미지 다운로드 API", notes = "현재 로그인한 회원이 착용하고 있는 아바타의 이미지를 다운로드합니다.")
+    @ApiOperation(value = "아바타 썸네일 이미지 다운로드 API", notes = "특정 SEQ의 아바타의 이미지를 다운로드합니다.")
     @GetMapping(value="/{avatarSeq}/image")
     public ResponseEntity<?> downloadImageFileBySeq(@PathVariable int avatarSeq) {
         Resource resource = avatarService.downloadImageFileBySeq(avatarSeq);
