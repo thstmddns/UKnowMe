@@ -68,7 +68,9 @@ const router = createRouter({
 // router.beforeEach(async(to, from, next) => {
 //   const account = useAccountStore()
 //   // 이전 페이지에서 발생한 에러메시지 삭제
-//   account.authError = null
+//   account.authError = {
+//     login: 0,
+//   },
 //   const noAuthPages = ['home', 'NotFound404']
 
 //   const isAuthRequired = !noAuthPages.includes(to.name)

@@ -68,6 +68,7 @@ export default {
         tel: 0,
       },
       this.account.sendTel = 0
+      this.account.authError.login = 0
     },
   },
   setup() {
@@ -103,9 +104,9 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.signin-modal {
+/* .signin-modal {
   height: 550px;
-}
+} */
 .signup-modal {
   height: 92%;
 }
