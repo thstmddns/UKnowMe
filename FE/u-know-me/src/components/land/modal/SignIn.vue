@@ -129,7 +129,7 @@ export default {
     const account = useAccountStore()
     const land = useLandStore()
     const credentials = ref({
-      id: account.findUserId,
+      id: '',
       password: '',
     })
 

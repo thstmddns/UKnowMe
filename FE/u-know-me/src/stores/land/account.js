@@ -230,8 +230,12 @@ export const useAccountStore = defineStore('account', {
       })
         .then(res => {
           console.log(res);
-          main.btnCh = 3
-          main.pBtnCh = 1
+          if (res.data) {
+            main.btnCh = 3
+            main.pBtnCh = 1
+          } else {
+            alert('비밀번호를 다시 확인해주세요')
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -335,23 +339,25 @@ export const useAccountStore = defineStore('account', {
     },
     deleteAccount() {
       const main = useMainStore()
-      axios({
-        url: sr.members.member(),
-        method: 'delete',
-        headers: this.authHeader,
-      })
-        .then(res => {
-          console.log(res);
-          this.removeToken()
-          this.isAdmin = false
-          alert('회원탈퇴가 성공적으로 되었습니다.')
-          main.$reset()
-          router.push({ name: 'home' })
+      if (confirm('정말로 탈퇴하시겠습니까?')) {
+        axios({
+          url: sr.members.member(),
+          method: 'delete',
+          headers: this.authHeader,
         })
-        .catch(err => {
-          console.error(err.response)
-          alert('회원탈퇴에 실패하셨습니다.')
-        })
+          .then(res => {
+            console.log(res);
+            this.removeToken()
+            this.isAdmin = false
+            alert('회원탈퇴가 성공적으로 되었습니다.')
+            main.$reset()
+            router.push({ name: 'home' })
+          })
+          .catch(err => {
+            console.error(err.response)
+            alert('회원탈퇴에 실패하셨습니다.')
+          })
+      }
     }
   },
 })
