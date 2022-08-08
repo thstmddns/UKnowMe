@@ -393,6 +393,8 @@ export const useChatStore = defineStore('chat', {
       avatarCanvas.style.display = 'inline-block'
       var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
 
+      avatarVideo.autoPlay
+
       return avatarVideo;
     },
 
@@ -446,12 +448,24 @@ export const useChatStore = defineStore('chat', {
 
     toCam() {
       this.camera.stop();
-      this.camera.start();
+      
+      document.querySelector(".preview").remove();
+      document.getElementById("avatarCanvas").remove();
 
-      console.log(this.videoDevices);
+      let videoElement = document.querySelector(".my-real-video");
+
+      videoElement.style.display = "block";
+
+      let camera = new Camera.Camera(videoElement, {
+        width: 640,
+        height: 480,
+      });
+      camera.start();
+
+      console.log("디바이스 카메라 리스트 : "+this.videoDevices);
 
       let newPublisher = this.OV.initPublisher('html-element-id', {
-        videoSource: this.videoDevices[1].deviceId, // The source of video. If undefined default webcam
+        videoSource: this.videoDevices[0].deviceId, // The source of video. If undefined default webcam
         publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
         publishVideo: true, // Whether you want to start publishing with your video enabled or not
       });

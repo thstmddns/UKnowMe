@@ -43,6 +43,7 @@
       </div>
       <div class="video-container">
         <div class="video-item" id="my-video">
+          <video class="my-real-video" style="display:none;"></video>
           <div class="preview">
             <canvas class="guides" style="position: absolute"></canvas>
             <video class="input_video" style=""></video>
@@ -292,7 +293,8 @@ export default {
 h1 {
   margin: 0;
 }
-#join, #session {
+#join,
+#session {
   flex: 1;
 }
 .chat-body {
@@ -314,22 +316,26 @@ h1 {
 .video-item {
   position: relative;
   margin: 20px;
-  flex: 1;
   text-align: center;
 }
-.video-item video {
-  height: auto !important;
-  border: 3px solid purple;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100% !important;
-}
 .video-item canvas {
-  height: auto !important;
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100% !important;
+  width: 640px;
+  height: 480px;
+}
+.video-item video {
+  border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 640px;
+  height: 480px;
+}
+.my-real-video {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
 }
 .preview {
   position: absolute;
@@ -343,6 +349,7 @@ h1 {
 }
 .preview .guides {
   width: 100% !important;
+  height: auto;
 }
 .preview video {
   width: 100% !important;
