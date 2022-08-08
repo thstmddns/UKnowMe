@@ -1,5 +1,5 @@
 <template>
-  <Form id="informModifyForm" action="POST" @submit="account.modifyInform({ address:credentials.address, smoke:credentials.smoke })">
+  <Form id="informModifyForm" action="POST" @submit="account.modifyInform({ address:credentials.address, id:credentials.id,smoke:credentials.smoke })">
     <div>
       <div><label for="informModifyId">아이디</label></div>
       <div>
