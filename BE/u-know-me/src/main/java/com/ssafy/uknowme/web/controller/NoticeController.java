@@ -1,10 +1,8 @@
 package com.ssafy.uknowme.web.controller;
 
 
-import com.ssafy.uknowme.model.dto.NoticeListResponseDto;
-import com.ssafy.uknowme.model.dto.NoticeResponseDto;
-import com.ssafy.uknowme.model.dto.NoticeSaveRequestDto;
-import com.ssafy.uknowme.model.dto.NoticeUpdateRequestDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeSaveRequestDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeUpdateRequestDto;
 import com.ssafy.uknowme.web.domain.Notice;
 import com.ssafy.uknowme.web.repository.NoticeRepository;
 import com.ssafy.uknowme.web.service.NoticeServiceImpl;
@@ -28,7 +26,7 @@ public class NoticeController {
     @Autowired
     private NoticeRepository noticeRepository;
 
-    @PostMapping("/save")
+    @PostMapping("/create")
     public boolean save(@RequestBody NoticeSaveRequestDto requestDto) {
         noticeService.save(requestDto);
         return true;

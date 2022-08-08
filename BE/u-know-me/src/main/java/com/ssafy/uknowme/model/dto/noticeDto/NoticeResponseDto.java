@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.noticeDto;
 
 import com.ssafy.uknowme.web.domain.Notice;
 import lombok.Getter;
