@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class MemberUpdateDto {
-
     private String id;
-    private String address;
     private String smoke;
+    private String address;
 }
