@@ -295,15 +295,17 @@ export const useAccountStore = defineStore('account', {
       //   })
     },
     duplicateId(id) {
-      console.log({ id });
       axios({
         url: sr.members.idDuplicate(),
         method: 'get',
         params: { id }
       })
         .then(res => {
-          console.log(res);
-          this.checkSign.id = 1
+          if (res.data) {
+            this.checkSign.id = 1
+          } else {
+            this.checkSign.id = 0
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -311,15 +313,18 @@ export const useAccountStore = defineStore('account', {
         })
     },
     duplicateNickname(nickname) {
-      console.log({ nickname });
       axios({
         url: sr.members.nickNameDuplicate(),
         method: 'get',
         params: { nickname }
       })
         .then(res => {
-          console.log(res);
-          this.checkSign.nickName = 1
+          if (res.data) {
+            this.checkSign.nickName = 1
+          } else {
+            this.checkSign.nickName = 0
+            alert('중복된 닉네임이 있습니다.')
+          }
         })
         .catch(err => {
           console.error(err.response)
