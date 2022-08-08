@@ -43,14 +43,11 @@
     <div>
       <img id="naver_login_icon" class="sns-login" src="@/assets/land/naver_login_icon.png" alt="naver_login_icon" style="display:none;">
       <div id="naver_id_login"></div>
+      <input @click="naverTokenSave()" type="text" id="aT" style="display:none;">
     </div>
-    <img @click="account.kakaoLogin()" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
-    <section class="test">
-      <div @click="GoogleLoginBtn">
-        <img class="sns-login" src="@/assets/land/google_login_icon.png" alt="google_login_icon">
-      </div>
-      <div id="my-signin2" style="display:none;"></div>
-    </section>
+    <div>
+      <img @click="account.kakaoLogin()" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
+    </div>
   </div>
 </template>
 
@@ -60,11 +57,16 @@ import { useAccountStore } from '@/stores/land/account'
 import { useLandStore } from '@/stores/land/land'
 
 const client_id = "5OSOWuXn6DTVQB4_h5Pc" 
-const callbackUrl = "http://localhost:8080/test"
+const callbackUrl = "http://localhost:8080/ntpu"
 
 export default {
   name: 'SignIn',
   methods: {
+    naverTokenSave() {
+      this.account.snsToken.naver = document.getElementById('aT').value
+      this.account.naverLogin()
+    },
+    // 팝업창 띄우기
     // openFindPage(pageNum) {
     //   let popUpName = '팝팝파파팝'
     //   if (pageNum === 0) {
@@ -85,6 +87,8 @@ export default {
     // var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
     // return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
     // },
+    // !팝업창 띄우기
+    // 구글 로그인 #1
     GoogleLoginBtn() {
       var self = this;
 
@@ -124,6 +128,7 @@ export default {
       console.log('삐용삐용 에러입니다.');
       console.log(error);
     },
+    // 구글 로그인 #2
   },
   setup() {
     const account = useAccountStore()
@@ -150,12 +155,15 @@ export default {
       naver_id_login_anchor.firstChild.src = naver_login_icon.src
       naver_id_login_anchor.firstChild.className += 'sns-login'
       // !naver
+      // google
+      // !google
     })
-
+    const aa = ref('')
     return {
       account,
       credentials,
       land,
+      aa,
     }
   }
 }
@@ -175,7 +183,7 @@ export default {
   align-items: center;
 }
 .sns-login {
-  /* width: 80px; */
+  width: 188px;
   height: 48px;
   margin-right: 12px;
 }

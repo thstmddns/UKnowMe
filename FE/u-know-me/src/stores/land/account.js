@@ -26,6 +26,10 @@ export const useAccountStore = defineStore('account', {
       tel: 0,
     },
     sendTel: 0,
+    snsToken: {
+      naver: cookies.get('snT') || '',
+      kakao: cookies.get('skT') || '',
+    }
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
@@ -33,6 +37,10 @@ export const useAccountStore = defineStore('account', {
       Authorization: `Bearer ${state.a_token}`,
       refreshToken: state.r_token
     }),
+    snsLoginToken: state => ({
+      naver: state.snsToken.naver,
+      kakao: state.snsToken.kakao,
+    })
   },
   actions: {
     getToken() {
@@ -99,17 +107,15 @@ export const useAccountStore = defineStore('account', {
       this.removeToken()
       router.push({ name: 'home' })
     },
-    socialLogin(sns, credentials) {
-      const land = useLandStore()
-      if (!credentials) {
-        console.log('sns 로그인하기')
-      } else {
-        console.log('최초 1회 로그인하기')
-        land.btnCh=3
+    socialLogin(sns) {
+      if (sns === 'naver') {
+        console.log(this.snsLoginToken.naver);
+      } else if (sns === 'kakao') {
+        console.log(this.snsLoginToken.kakao);
       }
     },
-    naverLogin(token) {
-      console.log(token)
+    naverLogin() {
+      this.socialLogin('naver')
       // axios({
       //   url: sr.accounts.naverLogin(),
       //   method: 'post',
@@ -123,15 +129,18 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
-    kakaoLogin() {
+     kakaoLogin() {
+      const self = this
       const js_key = "29f50216ed786d04f88f2f1aafdd49cc"
       const Kakao = window.Kakao
       Kakao.init(js_key);
       function loginWithKakao() {
         Kakao.Auth.login({
           success: function(authObj) {
-            alert(JSON.stringify(authObj))
-            console.log(authObj);
+            // alert(JSON.stringify(authObj))
+            cookies.set('skT', authObj.access_token, `${authObj.expires_in}s`)
+            self.snsToken.kakao = authObj.access_token
+            self.socialLogin('kakao')
           },
           fail: function(err) {
             alert(JSON.stringify(err))
@@ -151,10 +160,6 @@ export const useAccountStore = defineStore('account', {
       //   .error(err => {
       //     console.error(err.response)
       //   })
-    },
-    googleLogin() {
-      const Google = window.gapi
-      console.log(Google);
     },
     findId(credentials) {
       const land = useLandStore()
