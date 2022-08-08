@@ -1,14 +1,15 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.memberDto.MemberResponseDto;
-import com.ssafy.uknowme.model.dto.memberDto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.MemberDto.ValidatePasswordRequestDto;
 
 public interface MemberService {
 
-    boolean join(MemberRequestDto dto);
-
-    MemberResponseDto login(MemberRequestDto dto);
+    boolean join(MemberJoinRequestDto dto);
 
     boolean update(MemberUpdateDto memberUpdateDto);
 
@@ -17,4 +18,12 @@ public interface MemberService {
     boolean existsByNickname(String memberNickname);
 
     boolean existsByTel(String memberTel);
+
+    boolean delete();
+
+    MemberInfoResponseDto getMemberInfo();
+
+    boolean validatePassword(ValidatePasswordRequestDto dto);
+
+    FindIdResponseDto findId(FindIdRequestDto dto);
 }
