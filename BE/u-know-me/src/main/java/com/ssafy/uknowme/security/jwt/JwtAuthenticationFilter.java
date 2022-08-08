@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
 import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

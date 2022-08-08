@@ -1,8 +1,8 @@
-package com.ssafy.uknowme.web.service;
+package com.ssafy.uknowme.web.service.member;
 
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.MemberResponseDto;
-import com.ssafy.uknowme.model.dto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberResponseDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberUpdateDto;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;

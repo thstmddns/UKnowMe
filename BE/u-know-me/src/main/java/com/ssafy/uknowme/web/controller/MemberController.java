@@ -1,9 +1,9 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.ssafy.uknowme.model.dto.MemberRequestDto;
-import com.ssafy.uknowme.model.dto.MemberUpdateDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
+import com.ssafy.uknowme.model.dto.memberDto.MemberUpdateDto;
 import com.ssafy.uknowme.web.exception.BadRequestException;
-import com.ssafy.uknowme.web.service.MemberService;
+import com.ssafy.uknowme.web.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

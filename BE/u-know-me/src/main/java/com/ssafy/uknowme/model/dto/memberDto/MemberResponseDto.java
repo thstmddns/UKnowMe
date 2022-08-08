@@ -1,20 +1,19 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.memberDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class MemberUpdateDto {
-
+public class MemberResponseDto {
+    private int seq;
     private String id;
+    private String password;
     private String name;
     private String nickname;
+    private String gender;
+    private String birth;
     private String tel;
     private String smoke;
     private String address;
-    private String naverId;
-    private String kakaoId;
 }

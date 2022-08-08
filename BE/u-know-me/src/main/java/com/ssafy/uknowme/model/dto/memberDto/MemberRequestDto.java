@@ -1,6 +1,5 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.memberDto;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

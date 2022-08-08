@@ -1,15 +1,17 @@
-package com.ssafy.uknowme.web.service;
+package com.ssafy.uknowme.web.service.notice;
 
 
-import com.ssafy.uknowme.model.dto.NoticeListResponseDto;
-import com.ssafy.uknowme.model.dto.NoticeResponseDto;
-import com.ssafy.uknowme.model.dto.NoticeSaveRequestDto;
-import com.ssafy.uknowme.model.dto.NoticeUpdateRequestDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeResponseDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeSaveRequestDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeUpdateRequestDto;
+import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.Notice;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import com.ssafy.uknowme.web.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +35,14 @@ public class NoticeServiceImpl {
     }
 
     public Notice toEntity(NoticeSaveRequestDto dto) {
-        Optional<Member> findMember = memberRepository.findById(dto.getMemberSeq());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        Member member = principal.getMember();
+
         return Notice.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
-                .member(findMember.orElseThrow(() -> new IllegalStateException("멤버 정보가 없습니다.")))
+                .member(member)
                 .hit(0)
                 .build();
     }
