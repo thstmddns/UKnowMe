@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -29,6 +31,20 @@ public class SecurityConfig {
     private final JwtService jwtService;
 
     private final MemberRepository memberRepository;
+
+    private final String[] PERMIT_ALL_SWAGGER = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
 
 
     @Bean
@@ -53,9 +69,8 @@ public class SecurityConfig {
                     .addFilter(jwtAuthenticationFilter)
                     .addFilter(jwtAuthorizationFilter)
                     .authorizeRequests()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**", "/ws/chat", "/ws/matching").permitAll()
-                .and()
-                    .authorizeRequests()
+                    .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
+                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching").permitAll()
                     .anyRequest().authenticated()
                 .and().build();
     }

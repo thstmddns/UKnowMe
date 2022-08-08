@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.model.dto.memberDto;
+package com.ssafy.uknowme.model.dto.MemberDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

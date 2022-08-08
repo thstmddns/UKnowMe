@@ -1,8 +1,11 @@
 package com.ssafy.uknowme.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.MemberLoginRequestDto;
 import com.ssafy.uknowme.security.auth.PrincipalDetails;
+import com.ssafy.uknowme.security.exception.DeletedMemberException;
+import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.enums.DeleteState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,11 +37,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        MemberRequestDto dto = toMemberRequestDto(request);
+        MemberLoginRequestDto dto = toMemberRequestDto(request);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getId(), dto.getPassword());
 
-        return authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+        if (isDeletedMember(authentication)) throw new DeletedMemberException("삭제된 회원입니다.");
+
+        return authentication;
+    }
+
+    private boolean isDeletedMember(Authentication authentication) {
+        PrincipalDetails details = (PrincipalDetails) authentication.getPrincipal();
+
+        Member member = details.getMember();
+
+        return member.getDeleteYn() == DeleteState.Y;
     }
 
     /**
@@ -46,9 +61,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * @param request HttpServletRequest
      * @return 성공 시 MemberRequestDto, 실패 시 null
      */
-    private MemberRequestDto toMemberRequestDto(HttpServletRequest request) {
+    private MemberLoginRequestDto toMemberRequestDto(HttpServletRequest request) {
         try {
-            return new ObjectMapper().readValue(request.getInputStream(), MemberRequestDto.class);
+            return new ObjectMapper().readValue(request.getInputStream(), MemberLoginRequestDto.class);
         } catch (Exception e) {
             return null;
         }
