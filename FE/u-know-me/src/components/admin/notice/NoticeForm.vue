@@ -3,15 +3,19 @@
     <div class="notice-form-modal">
       <div class="notice-form-modal-title">
         <h2 class="notice-form-title">공지사항 등록</h2>
-        <div @click="noticeAddBtn = false">
+        <div @click="noticeFormBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
       </div>
-      
-      <div class="notice-form-modal-content">
-        <h3>내용</h3>
-      </div>
-
+      <form id="noticeForm" action="POST" @submit.prevent="admin.addNotice(notice)">
+        <div>
+          <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목" v-model="notice.title">
+        </div>
+        <div>
+          <input type="text" name="noticeContent" id="noticeContent" placeholder="내용" v-model="notice.content">
+        </div>
+        <button type="submit">저장</button>
+      </form>
     </div>
   </div>
 </template>
@@ -19,16 +23,23 @@
 <script>
 import { storeToRefs } from "pinia";
 import { useAdminStore } from "@/stores/admin/admin";
+import { ref } from 'vue'
 
 export default {
   name: "NoticForm",
   components: {},
   setup() {
-    const admin = useAdminStore();
-    const { noticeAddBtn } = storeToRefs(admin);
+    const admin = useAdminStore()
+    const { noticeFormBtn } = storeToRefs(admin)
+    const notice = ref({
+      title: '',
+      content: '',
+    })
+
     return {
       admin,
-      noticeAddBtn,
+      noticeFormBtn,
+      notice,
     };
   },
 };
@@ -42,6 +53,7 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
+  left: 0;
 }
 
 .notice-form-modal {

@@ -23,7 +23,9 @@
       <admin-notice
         v-if="adminBtn == 1"
       />
-      <notice-form v-if="admin.noticeAddBtn == true"/>
+      <notice-form v-if="admin.noticeFormBtn == true"/>
+      <notice-modal v-if="admin.noticeBtn != 0"/>
+
       <admin-avatar
         v-if="adminBtn == 2"
       />
@@ -47,12 +49,13 @@ import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
 import AdminBalance from '@/components/admin/balance/AdminBalance.vue'
 import AdminHelper from '@/components/admin/AdminHelper.vue'
-import NoticeForm from "@/components/admin/notice/NoticeForm.vue";
+import NoticeForm from "@/components/admin/notice/NoticeForm.vue"
+import NoticeModal from "@/components/admin/notice/NoticeModal.vue"
 
 export default {
   name : "AdminPage",
   components : {
-    AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper, NoticeForm
+    AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper, NoticeForm, NoticeModal
   },
   setup() {
     const admin = useAdminStore()
@@ -80,7 +83,7 @@ table{
   width: 40px;
 }
 .admin-table {
-  width: 90%;
+  /* width: 90%; */
   margin: 5%;
 }
 .admin {

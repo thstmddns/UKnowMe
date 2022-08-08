@@ -1,12 +1,11 @@
 <template>
   <div class="notice-detail-modal-title">
-    <h2 class="notice-detail-title">{{admin.notice}}</h2>
+    <h2 class="notice-detail-title">제목</h2>
   </div>
   <div class="notice-detail-modal-content">
     <h2 class="notice-detail-content">내용</h2>
   </div>
-  <button class="admin-btn" @click="admin.noticeBtn = 2">수정</button>
-  <button class="admin-btn">삭제</button>
+  <button class="admin-btn">저장</button>
 </template>
 
 <script>
@@ -29,6 +28,5 @@ export default {
 </script>
 
 <style>
-
 
 </style>
