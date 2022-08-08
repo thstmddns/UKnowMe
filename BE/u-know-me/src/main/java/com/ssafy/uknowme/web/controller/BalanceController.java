@@ -5,7 +5,7 @@ import com.ssafy.uknowme.model.dto.balanceDto.BalanceListResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceSaveRequestDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceUpdateRequestDto;
-import com.ssafy.uknowme.web.service.balance.BalanceServiceImpl;
+import com.ssafy.uknowme.web.service.BalanceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

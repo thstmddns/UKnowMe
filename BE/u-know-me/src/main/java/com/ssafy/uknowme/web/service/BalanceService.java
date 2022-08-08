@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.web.service.balance;
+package com.ssafy.uknowme.web.service;
 
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceListResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceResponseDto;

@@ -5,7 +5,7 @@ import com.ssafy.uknowme.model.dto.noticeDto.NoticeSaveRequestDto;
 import com.ssafy.uknowme.model.dto.noticeDto.NoticeUpdateRequestDto;
 import com.ssafy.uknowme.web.domain.Notice;
 import com.ssafy.uknowme.web.repository.NoticeRepository;
-import com.ssafy.uknowme.web.service.notice.NoticeServiceImpl;
+import com.ssafy.uknowme.web.service.NoticeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

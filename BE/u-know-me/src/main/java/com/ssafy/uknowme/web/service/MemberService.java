@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.web.service.member;
+package com.ssafy.uknowme.web.service;
 
 import com.ssafy.uknowme.model.dto.memberDto.MemberRequestDto;
 import com.ssafy.uknowme.model.dto.memberDto.MemberResponseDto;

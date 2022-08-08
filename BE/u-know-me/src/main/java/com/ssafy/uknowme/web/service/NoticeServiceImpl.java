@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.web.service.notice;
+package com.ssafy.uknowme.web.service;
 
 
 import com.ssafy.uknowme.model.dto.noticeDto.NoticeResponseDto;
