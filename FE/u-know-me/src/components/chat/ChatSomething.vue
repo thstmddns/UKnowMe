@@ -1,21 +1,19 @@
 <template>
   <!-- <h1>버튼 리스트</h1> -->
-  <div class="chat-content-left">
-    <div class="chat-guide">
-      <div class="chat-text"></div>
+  <div class="chat-content-wrap">
+    <div class="chat-content-left">
+      <div class="sketch"></div>
     </div>
 
-    <div class="love-btn">
-      <div class="match-circle">
-        <div id="container">
-          <div class="heart-img" @click="matchBtn = !matchBtn">
-            <img src="@/assets/main/heart.png" alt="" />
-          </div>
-          <div class="circle" style="animation-delay: 0s"></div>
-          <div class="circle" style="animation-delay: 1s"></div>
-          <div class="circle" style="animation-delay: 2s"></div>
-          <div class="circle" style="animation-delay: 3s"></div>
+    <div class="chat-content-center">
+      <div id="love-container">
+        <div class="heart-img" @click="chat.heartClick()">
+          <img src="@/assets/main/heart.png" alt="" />
         </div>
+        <div class="circle" style="animation-delay: 0s"></div>
+        <div class="circle" style="animation-delay: 1s"></div>
+        <div class="circle" style="animation-delay: 2s"></div>
+        <div class="circle" style="animation-delay: 3s"></div>
       </div>
     </div>
 
@@ -40,7 +38,10 @@
           <button class="chat-btn game-btn">
             <i class="fa-solid fa-gamepad"></i>
           </button>
-          <button @click="$router.push({ name: 'main' })" class="chat-btn-lg out-btn">
+          <button
+            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
+            class="chat-btn-lg out-btn"
+          >
             나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
@@ -50,7 +51,14 @@
 </template>
 
 <script>
+import { useChatStore } from "@/stores/chat/chat";
+
 export default {
+  setup() {
+    const chat = useChatStore();
+
+    return { chat };
+  },
 };
 </script>
 
@@ -58,12 +66,39 @@ export default {
 .flex {
   display: flex;
 }
-.chat-content-left {
+.chat-content-wrap {
   display: flex;
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  bottom: 0px;
+  height: max-content;
+}
+.chat-content-left {
+  min-width: 400px;
+  height: 200px;
+  /* background-color: blanchedalmond; */
+  display: flex;
+  flex: 1;
+}
+.chat-content-right {
+  min-width: 400px;
+  height: 200px;
+  /* background-color: blanchedalmond; */
+  display: flex;
+  flex: 1;
+}
+.chat-content-center {
+  min-width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  position: relative;
+}
+.love-btn {
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  position: relative;
 }
 .chat-guide {
   width: 40%;
@@ -79,28 +114,18 @@ export default {
   border-radius: 20px;
   margin-top: 32px;
 }
-.love-btn {
-  width: 20%;
-  height: 200px;
-}
-.chat-content-right {
-  width: 40%;
-  min-width: 600px;
-  height: 200px;
-  /* background-color: blanchedalmond; */
-  display: flex;
-}
-
 .sketch {
-  width: 40%;
+  min-width: 150px;
   height: 70%;
   margin: auto 20px;
   background-color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+  flex: 1;
 }
 
 .chat-btn-list {
+  min-width: 270px;
   margin: auto 20px;
 }
 

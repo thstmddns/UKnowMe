@@ -9,8 +9,8 @@ export default {
 </script>
 
 <style>
-body {
-  margin: 0;
+html, body, #app {
+  height: 100;
 }
 button {
   width: 130px;

@@ -17,7 +17,7 @@
     </div> -->
 
   <div class="match-circle">
-    <div id="container">
+    <div id="love-container">
       <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
       <div class="heart-img" @click="click">
         <img src="@/assets/main/heart.png" alt="" />
@@ -57,12 +57,15 @@ export default {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
-      const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/chat");
+      const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/matching");
 
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
       webSocket.onopen = () => {
         console.log("웹소켓서버와 연결 성공");
+
+        webSocket.send(`{"seq" :"1","id":"ssafy","nickname":"예남3" ,"gender":"M" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`);
+        webSocket.send(`{"seq" :"1","id":"ssafy","nickname":"예솔3" ,"gender":"W" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`);
       };
 
       // 2-2) 메세지 수신 이벤트 처리
@@ -153,7 +156,7 @@ export default {
   bottom: 50px;
   display: grid;
 }
-#container {
+#love-container {
   width: 200px;
   height: 200px;
   display: grid;
