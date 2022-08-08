@@ -70,7 +70,9 @@ public class SecurityConfig {
                     .addFilter(jwtAuthorizationFilter)
                     .authorizeRequests()
                     .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching").permitAll()
+                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching" ,
+                            "/report/**").permitAll()
+                        //TODO : 후에 report 지워야함 (오른쪽 눌러서 ROLLBACK 시켜놓을것)
                     .anyRequest().authenticated()
                 .and().build();
     }

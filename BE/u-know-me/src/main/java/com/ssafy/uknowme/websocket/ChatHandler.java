@@ -21,7 +21,7 @@ public class ChatHandler extends TextWebSocketHandler {
     private static List<WebSocketSession> list = new ArrayList<>();
 
     final TextMessage UKNOWME = new TextMessage("{\n" +
-            "        \"key\" : \"uknowme\",\n" +
+            "        \"key\" : \"uknowme\"\n" +
             "    }");
 
     final TextMessage ROOM_BREAK = new TextMessage("{\n" +
