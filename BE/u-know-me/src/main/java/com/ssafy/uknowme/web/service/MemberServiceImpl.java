@@ -133,15 +133,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberInfoResponseDto responseDto = new MemberInfoResponseDto();
 
-        responseDto.setSeq(member.getSeq());
-        responseDto.setId(member.getId());
-        responseDto.setName(member.getName());
-        responseDto.setNickname(member.getNickname());
-        responseDto.setAddress(member.getAddress());
-        responseDto.setBirth(member.getBirth());
-        responseDto.setSmoke(member.getSmoke());
-        responseDto.setGender(member.getGender());
-        responseDto.setTel(member.getTel());
+        responseDto.convertFromEntity(member);
 
         return responseDto;
     }

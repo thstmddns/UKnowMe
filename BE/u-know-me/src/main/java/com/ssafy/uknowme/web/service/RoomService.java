@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
 import com.ssafy.uknowme.model.dto.RoomDto.FindRoomRequestDto;
-import com.ssafy.uknowme.model.dto.RoomDto.FindRoomResponseDto;
+import com.ssafy.uknowme.model.dto.RoomDto.RoomInfoResponseDto;
 import com.ssafy.uknowme.model.dto.RoomDto.RoomSaveRequestDto;
 
 public interface RoomService {
@@ -18,7 +18,7 @@ public interface RoomService {
      * @param dto
      * @return FindRoomResponseDto
      */
-    FindRoomResponseDto findRoom(FindRoomRequestDto dto);
+    RoomInfoResponseDto findRoom(FindRoomRequestDto dto);
 
     /**
      * 해당 SEQ의 방에 balanceCount를 1 증가시키는 메서드입니다.
