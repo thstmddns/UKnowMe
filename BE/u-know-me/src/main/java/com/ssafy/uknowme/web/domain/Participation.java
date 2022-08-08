@@ -50,4 +50,12 @@ public class Participation extends BaseEntity {
         this.likeDate = likeDate;
         this.disconnectDate = disconnectDate;
     }
+
+    public void like() {
+        this.likeDate = LocalDateTime.now();
+    }
+
+    public void disconnect() {
+        this.disconnectDate = LocalDateTime.now();
+    }
 }
