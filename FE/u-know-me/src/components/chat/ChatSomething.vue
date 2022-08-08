@@ -39,7 +39,7 @@
             <i class="fa-solid fa-gamepad"></i>
           </button>
           <button
-            @click="$router.push({ name: 'main' })"
+            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
             class="chat-btn-lg out-btn"
           >
             나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i>

@@ -31,19 +31,15 @@
       </div>
     </div>
     <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
       <div class="video-container">
         <div class="video-item" id="my-video">
-          <video class="my-real-video" style="display:none;"></video>
+          <video class="my-real-video" style="display: none"></video>
+          <video
+            id="test-video"
+            style="display: none"
+            autoplay
+            controls
+          ></video>
           <div class="preview">
             <canvas class="guides" style="position: absolute"></canvas>
             <video class="input_video" style=""></video>
@@ -116,6 +112,8 @@ export default {
   },
   methods: {
     joinSession() {
+      const chat = useChatStore();
+
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
 
@@ -158,9 +156,9 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            const chat = useChatStore();
+            
             var avatarVideo = chat.avatarLoad();
-
+            
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
@@ -179,6 +177,11 @@ export default {
             // --- Publish your stream ---
 
             this.session.publish(this.publisher);
+
+            setTimeout(function () {
+              console.log("Works!");
+              chat.startHolistic();
+            }, 1000);
           })
           .catch((error) => {
             console.log(
@@ -189,20 +192,7 @@ export default {
           });
       });
 
-      window.addEventListener("beforeunload", this.leaveSession);
-    },
-
-    leaveSession() {
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
-      if (this.session) this.session.disconnect();
-
-      this.session = undefined;
-      this.mainStreamManager = undefined;
-      this.publisher = undefined;
-      this.subscribers = [];
-      this.OV = undefined;
-
-      window.removeEventListener("beforeunload", this.leaveSession);
+      window.addEventListener("beforeunload", chat.leaveSession);
     },
 
     updateMainVideoStreamManager(stream) {

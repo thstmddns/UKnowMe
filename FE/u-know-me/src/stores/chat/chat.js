@@ -8,6 +8,8 @@ import * as Holistic from "@mediapipe/holistic";
 import * as DrawConnectors from "@mediapipe/drawing_utils";
 import * as Camera from "@mediapipe/camera_utils";
 
+let currentVrm;
+
 export const useChatStore = defineStore('chat', {
   state: () => ({
     test: 0,
@@ -34,9 +36,6 @@ export const useChatStore = defineStore('chat', {
       renderer.domElement.id = "avatarCanvas";
 
       document.getElementById("my-video").prepend(renderer.domElement);
-
-      const clamp = Kalidokit.Utils.clamp;
-      const lerp = Kalidokit.Vector.lerp;
 
       // camera
       const orbitCamera = new THREE.PerspectiveCamera(
@@ -66,9 +65,6 @@ export const useChatStore = defineStore('chat', {
       const light = new THREE.DirectionalLight(0xffffff);
       light.position.set(1.0, 1.0, 1.0).normalize();
       scene.add(light);
-
-      /* THREEJS WORLD SETUP */
-      let currentVrm;
 
       // Main Render Loop
       const clock = new THREE.Clock();
@@ -139,6 +135,21 @@ export const useChatStore = defineStore('chat', {
           ),
         (error) => console.error(error)
       );
+
+      // capture
+      const avatarCanvas = document.getElementById("avatarCanvas");
+      avatarCanvas.style.display = 'inline-block'
+      // var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
+
+      const testVideo = document.getElementById("test-video");
+      testVideo.srcObject = avatarCanvas.captureStream();
+
+      return testVideo.srcObject.getVideoTracks()[0];
+    },
+
+    startHolistic() {
+      const clamp = Kalidokit.Utils.clamp;
+      const lerp = Kalidokit.Vector.lerp;
 
       ////////////////////////
       // Animate Rotation Helper function
@@ -387,15 +398,21 @@ export const useChatStore = defineStore('chat', {
       });
       this.camera.start();
       ////////////////////////
+    },
 
-      // capture
-      const avatarCanvas = document.getElementById("avatarCanvas");
-      avatarCanvas.style.display = 'inline-block'
-      var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
+    leaveSession() {
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
 
-      avatarVideo.autoPlay
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
 
-      return avatarVideo;
+      window.removeEventListener("beforeunload", this.leaveSession);
+
+      this.camera.stop();
     },
 
     socketConnect() {
@@ -465,7 +482,7 @@ export const useChatStore = defineStore('chat', {
       console.log("디바이스 카메라 리스트 : "+this.videoDevices);
 
       let newPublisher = this.OV.initPublisher('html-element-id', {
-        videoSource: this.videoDevices[0].deviceId, // The source of video. If undefined default webcam
+        videoSource: undefined, // The source of video. If undefined default webcam
         publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
         publishVideo: true, // Whether you want to start publishing with your video enabled or not
       });
