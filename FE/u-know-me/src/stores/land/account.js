@@ -332,8 +332,27 @@ export const useAccountStore = defineStore('account', {
         })
     },
     sendNumTel(tel) {
-      tel
-      this.sendTel = 1
+      // popup
+      function openTelPage(pn) {
+        window.open(`http://localhost:8080/test2?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
+      }
+      function getTelPopupFeatures() {
+      var popupWidth = 480;
+      var popupHeight = 450;
+      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
+      }
+      // !popup
+      const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+      if (!phoneJ.test(tel)) {
+        alert('형식에 맞지 않는 번호입니다.')
+      } else {
+        this.sendTel = 1
+        openTelPage(tel)
+      }
     },
     certicateTel(num) {
       if (num === '0000') {
@@ -363,6 +382,6 @@ export const useAccountStore = defineStore('account', {
             alert('회원탈퇴에 실패하셨습니다.')
           })
       }
-    }
+    },
   },
 })
