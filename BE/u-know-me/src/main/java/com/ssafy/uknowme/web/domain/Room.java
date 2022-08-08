@@ -15,7 +15,6 @@ import javax.persistence.*;
 public class Room extends BaseEntity {
 
     @Id
-    @GeneratedValue
     @Column(name = "room_seq")
     private String seq;
 
@@ -37,5 +36,9 @@ public class Room extends BaseEntity {
         this.seq = seq;
         this.balanceCount = balanceCount;
         this.type = type;
+    }
+
+    public void addBalanceCount() {
+        this.balanceCount++;
     }
 }
