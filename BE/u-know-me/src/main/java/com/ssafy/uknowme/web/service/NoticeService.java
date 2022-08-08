@@ -1,6 +1,6 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.NoticeUpdateRequestDto;
+import com.ssafy.uknowme.model.dto.noticeDto.NoticeUpdateRequestDto;
 
 public interface NoticeService {
 

@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.FindIdRequestDto;
-import com.ssafy.uknowme.model.dto.FindIdResponseDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
@@ -48,12 +48,12 @@ public class MemberServiceImpl implements MemberService {
                 .password(encoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .nickname(dto.getNickname())
-                .gender(dto.getBirth())
+                .gender(dto.getGender())
                 .birth(dto.getBirth())
                 .tel(dto.getTel())
                 .smoke(dto.getSmoke())
                 .address(dto.getAddress())
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         repository.save(member);
@@ -79,9 +79,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = repository.findById(memberUpdateDto.getId()).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
-        member.updateMember(memberUpdateDto.getName(), memberUpdateDto.getNickname(),
-                memberUpdateDto.getTel(), memberUpdateDto.getSmoke(), memberUpdateDto.getAddress(),
-                memberUpdateDto.getNaverId(), memberUpdateDto.getKakaoId());
+        member.updateMember(memberUpdateDto);
 
         return true;
     }

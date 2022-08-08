@@ -20,7 +20,7 @@ public class JwtService {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    private final long expireTime = 1000 * 30;
+    private final long expireTime = 1000 * 60 * 30;
 
     // 로그인서비스와 함께
     public Map<String, String> createTokenSet(String id) {
@@ -60,7 +60,7 @@ public class JwtService {
        return Jwts.builder()
                 .setSubject(id)
                 .signWith(keySpec, signatureAlgorithm)
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime * 6 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime * 24 * 14))
                 .compact();
     }
 

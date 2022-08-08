@@ -30,4 +30,8 @@ public class Keyword extends BaseEntity {
         this.seq = seq;
         this.keyword = keyword;
     }
+
+    public void update(String keyword) {
+        this.keyword = keyword;
+    }
 }

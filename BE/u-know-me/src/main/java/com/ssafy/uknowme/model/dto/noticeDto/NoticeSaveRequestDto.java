@@ -1,4 +1,4 @@
-package com.ssafy.uknowme.model.dto;
+package com.ssafy.uknowme.model.dto.noticeDto;
 
 
 import lombok.Getter;
@@ -10,7 +10,4 @@ import lombok.NoArgsConstructor;
 public class NoticeSaveRequestDto {
     private String title;
     private String content;
-    private int memberSeq;
-    private int hit;
-
 }

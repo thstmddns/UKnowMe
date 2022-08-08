@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.FindIdRequestDto;
-import com.ssafy.uknowme.model.dto.FindIdResponseDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
