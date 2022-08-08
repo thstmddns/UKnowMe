@@ -1,40 +1,42 @@
 <template>
-  <div>
-    <div class="inform-secure-head">비밀번호 변경</div>
-    <hr>
-  </div>
-  <Form id="informSecureForm" action="POST" class="text-center" @submit="account.chagePassword(password)">
+  <div id="modifyInform">
     <div>
-      <div>
-        <div class="text-inform"><label for="informSecurePassword">현재 비밀번호</label></div>
-        <div>
-          <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." v-model="password.currentPassword" :rules="validateCurrentPassword" /></div>
-          <div class="text-left"><ErrorMessage class="error-message" name="informSecurePassword"/></div>
-        </div>
-      </div>
-      <div>
-        <div class="text-inform"><label for="informSecureNewPassword">새 비밀번호</label></div>
-        <div>
-          <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.newPassword" :rules="validatePassword" /></div>
-          <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewPassword"/></div>
-        </div>
-      </div>
-      <div>
-        <div class="text-inform"><label for="informSecureNewConfigPassword">새 비밀번호 확인</label></div>
-        <div>
-          <div><Field type="password" name="informSecureNewConfigPassword" id="informSecureNewConfigPassword" placeholder="비밀번호를 재입력해주세요." :rules="validateRePassword" /></div>
-          <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewConfigPassword"/></div>
-        </div>
-      </div>
+      <div class="inform-secure-head">비밀번호 변경</div>
+      <hr>
     </div>
-    <div><button type="submit" class="inform-secure-btn">비밀번호 변경하기</button></div>
-  </Form>
-  <div>
-    <div class="inform-secure-head">회원탈퇴</div>
-    <hr>
-  </div>
-  <div class="text-center">
-    <button @click="account.deleteAccount()" class="inform-secure-btn">회원탈퇴</button>
+    <Form id="informSecureForm" action="POST" class="text-center" @submit="account.chagePassword(password)">
+      <div>
+        <div>
+          <div class="text-inform"><label for="informSecurePassword">현재 비밀번호</label></div>
+          <div>
+            <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." v-model="password.currentPassword" :rules="validateCurrentPassword" /></div>
+            <div class="text-left"><ErrorMessage class="error-message" name="informSecurePassword"/></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-inform"><label for="informSecureNewPassword">새 비밀번호</label></div>
+          <div>
+            <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.newPassword" :rules="validatePassword" /></div>
+            <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewPassword"/></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-inform"><label for="informSecureNewConfigPassword">새 비밀번호 확인</label></div>
+          <div>
+            <div><Field type="password" name="informSecureNewConfigPassword" id="informSecureNewConfigPassword" placeholder="비밀번호를 재입력해주세요." :rules="validateRePassword" /></div>
+            <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewConfigPassword"/></div>
+          </div>
+        </div>
+      </div>
+      <div><button type="submit" class="inform-secure-btn">비밀번호 변경하기</button></div>
+    </Form>
+    <div>
+      <div class="inform-secure-head">회원탈퇴</div>
+      <hr>
+    </div>
+    <div class="text-center">
+      <button @click="account.deleteAccount()" class="inform-secure-btn">회원탈퇴</button>
+    </div>
   </div>
 </template>
 
@@ -99,6 +101,24 @@ export default {
 </script>
 
 <style>
+#modifyInform {
+  height: calc(100% - 100px);
+  padding-right: 28px;
+  margin-right: -38px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#modifyInform::-webkit-scrollbar {
+  width: 10px;
+}
+#modifyInform::-webkit-scrollbar-thumb {
+  height: 30%;
+  background: #A056FF;
+  border-radius: 10px;
+}
+#modifyInform::-webkit-scrollbar-track {
+  background: rgba(160, 86, 255, .1);
+}
 .inform-secure-head {
   font-weight: 700;
   font-size: 24px;
