@@ -1,6 +1,5 @@
 package com.ssafy.uknowme.model.dto.balanceDto;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

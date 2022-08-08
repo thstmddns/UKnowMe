@@ -20,8 +20,6 @@ public class BalanceController {
 
     private final BalanceServiceImpl balanceService;
 
-
-
     @PostMapping("/create")
     public boolean save(@RequestBody BalanceSaveRequestDto requestDto) {
         balanceService.save(requestDto);
@@ -35,7 +33,7 @@ public class BalanceController {
     }
 
     @GetMapping("/random")
-    public BalanceResponseDto findByBalanceSeq () {
+    public BalanceResponseDto findByBalanceSeq() {
         BalanceResponseDto balanceResponseDto = balanceService.findByBalanceSeq();
         return balanceResponseDto;
     }

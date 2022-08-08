@@ -56,7 +56,7 @@ public class SecurityConfig {
                     .antMatchers("/member/login", "/member/join", "/member/check/**", "/swagger-ui/**", "/ws/chat", "/ws/matching").permitAll()
                 .and()
                     .authorizeRequests()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and().build();
     }
 

@@ -1,5 +1,4 @@
-package com.ssafy.uknowme.model.dto.keywordDto;
-
+package com.ssafy.uknowme.model.dto;
 
 import lombok.Builder;
 import lombok.Getter;
