@@ -261,21 +261,21 @@ export const useAccountStore = defineStore('account', {
     },
     modifyInform(credentials) {
       console.log({...credentials});
-      // const main = useMainStore()
-      // axios({
-      //   url: sr.members.update(),
-      //   method: 'put',
-      //   data: {...credentials},
-      //   headers: this.authHeader,
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     main.btnCh = 0
-      //     alert('성공적으로 정보가 변경되었습니다.')
-      //   })
-      //   .catch(err => {
-      //     console.error(err.response)
-      //   })
+      const main = useMainStore()
+      axios({
+        url: sr.members.update(),
+        method: 'put',
+        data: {...credentials},
+        headers: this.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          main.btnCh = 0
+          alert('성공적으로 정보가 변경되었습니다.')
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     chagePassword(password) {
       console.log(password);
