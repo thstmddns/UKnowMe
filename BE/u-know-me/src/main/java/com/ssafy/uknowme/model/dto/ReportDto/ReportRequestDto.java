@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class ReportRequestDto {
 
+
     int reportingMemberSeq;
     int accusedMemberSeq;
     ReportState reportState;

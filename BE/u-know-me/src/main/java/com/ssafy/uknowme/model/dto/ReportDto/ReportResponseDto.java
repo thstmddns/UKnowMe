@@ -1,5 +1,7 @@
 package com.ssafy.uknowme.model.dto.ReportDto;
 
+import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
+import com.ssafy.uknowme.web.domain.Report;
 import com.ssafy.uknowme.web.domain.enums.DeleteState;
 import com.ssafy.uknowme.web.domain.enums.ReportState;
 import jdk.nashorn.internal.objects.annotations.Constructor;
@@ -16,26 +18,44 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReportResponseDto {
 
-    int reportseq;
-    int reportingMemberSeq;
-    int accusedMemberSeq;
+    private int reportSeq;
 
-    String reportingMemberId;
-    String accusedMemberId;
+    private MemberInfoResponseDto reportingMember;
 
-    String reportingMemberNickname;
-    String accusedMemberNickname;
+    private MemberInfoResponseDto accusedMember;
 
-    ReportState state;
+    private ReportState state;
 
-    LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-    LocalDateTime updateDate;
+    private LocalDateTime updateDate;
 
     private String createMember;
 
     private String updateMember;
 
     private DeleteState deleteYn;
+
+
+    //TODO(명범): memberInfoResponseDto 받아오도록 리팩토링 해야합니다🚑
+
+    public void convertToEntity(Report report) {
+        MemberInfoResponseDto reportingMemberDto = new MemberInfoResponseDto();
+        MemberInfoResponseDto accusedMemberDto = new MemberInfoResponseDto();
+
+        /**
+         * DTO convertToEntity() 사용해서 데이터 주입하기
+         */
+
+        this.reportSeq = report.getSeq();
+        this.reportingMember = reportingMemberDto;
+        this.accusedMember = accusedMemberDto;
+        this.state = report.getState();
+        this.createDate = report.getCreateDate();
+        this.updateDate = report.getUpdateDate();
+        this.createMember = report.getCreateMember();
+        this.updateMember = report.getUpdateMember();
+        this.deleteYn = report.getDeleteYn();
+    }
 
 }

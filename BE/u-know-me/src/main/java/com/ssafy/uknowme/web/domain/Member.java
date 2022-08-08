@@ -1,6 +1,7 @@
 package com.ssafy.uknowme.web.domain;
 
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
+import com.ssafy.uknowme.web.domain.enums.ReportState;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -101,6 +103,20 @@ public class Member extends BaseEntity {
      */
     private int matchCount;
 
+
+    /**
+     * 신고차단상태
+     * Y : 신고 5회 먹은상태 -> 차단
+     * N : 신고 5회이상 x
+     */
+    @Enumerated(EnumType.STRING)
+    private ReportState reportState;
+
+    /**
+     * 신고 끝나는 날
+     */
+    private LocalDateTime reportLastDate;
+
     @Builder
     public Member(int seq, String id, String password, String name, String nickname,
                   String gender, String birth, String tel, String smoke, String address,
@@ -132,5 +148,12 @@ public class Member extends BaseEntity {
         this.kakaoId = kakaoId;
     }
 
+    public void updateReport(ReportState state){
+        this.reportState = state;
+    }
+
+    public void updateReportLastDate(LocalDateTime date){
+        this.reportLastDate = date;
+    }
 
 }

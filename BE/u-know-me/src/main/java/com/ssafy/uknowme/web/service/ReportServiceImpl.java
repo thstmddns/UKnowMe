@@ -4,6 +4,7 @@ import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
 import com.ssafy.uknowme.model.dto.ReportDto.*;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.Report;
+import com.ssafy.uknowme.web.domain.enums.ReportState;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import com.ssafy.uknowme.web.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,23 +25,34 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReportServiceImpl implements  ReportService{
+public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
     private final MemberRepository memberRepository;
+
     @Override
     public boolean report(ReportRequestDto dto) {
 
         Member reportingMember = memberRepository.getReferenceById(dto.getReportingMemberSeq());
-        log.info(reportingMember.getNickname());
-        Member AccusedMember = memberRepository.getReferenceById(dto.getAccusedMemberSeq());
-        //TODO : 명범님이 만들어놓은 Report 쓰고싶은데 어떻게 하는지를 모르겠네요,,
+        Member accusedMember = memberRepository.getReferenceById(dto.getAccusedMemberSeq());
+
         Report report = Report.builder()
                 .reportingMember(reportingMember)
-                .accusedMember(AccusedMember)
-                .state(dto.getReportState())
+                .accusedMember(accusedMember)
+                .state(ReportState.REPORT)
                 .build();
 
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
+        LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+
+        //이번 주 내의 신고 횟수가 5회 이상이면 피신고자의 member 의 ReportState 를 Report 로 바꾼다.
+        if (reportRepository.findAllByCreateDateBetween(startDatetime, endDatetime).size() >= 4) {
+            Member member = memberRepository.findById(dto.getAccusedMemberSeq()).orElseThrow(IllegalStateException::new);
+
+            member.updateReport(ReportState.REPORT);
+            member.updateReportLastDate(LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59, 59)));
+
+        }
         reportRepository.save(report);
 
         return true;
@@ -49,34 +64,18 @@ public class ReportServiceImpl implements  ReportService{
 
         List<ReportResponseDto> list = new ArrayList<>();
 
-        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
+        Member accusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
 
-        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
+        if (!accusedMember.getRole().toString().equals("MANAGER")) {
             throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
         }
 
-        for (Report report:reportList) {
-            list.add(new ReportResponseDto(
-                    report.getSeq(),
-                    report.getReportingMember().getSeq(),
-                    report.getAccusedMember().getSeq(),
+        for (Report report : reportList) {
+            ReportResponseDto responseDto = new ReportResponseDto();
 
-                    report.getReportingMember().getId(),
-                    report.getAccusedMember().getId(),
+            responseDto.convertToEntity(report);
 
-                    report.getReportingMember().getNickname(),
-                    report.getAccusedMember().getNickname(),
-
-                    report.getState(),
-
-                    report.getCreateDate(),
-                    report.getUpdateDate(),
-
-                    report.getCreateMember(),
-                    report.getUpdateMember(),
-
-                    report.getDeleteYn()
-            ));
+            list.add(responseDto);
         }
 
         return list;
@@ -92,25 +91,10 @@ public class ReportServiceImpl implements  ReportService{
             throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
         }
 
-        Optional<Report> report = reportRepository.findById(dto.getReportSeq());
+        Report report = reportRepository.findById(dto.getReportSeq()).orElseThrow(IllegalStateException::new);
+        ReportResponseDto reportResponseDto = new ReportResponseDto();
 
-         ReportResponseDto reportResponseDto = new ReportResponseDto();
-
-        reportResponseDto.setReportseq(report.get().getSeq());
-        reportResponseDto.setReportingMemberSeq(report.get().getReportingMember().getSeq());
-        reportResponseDto.setAccusedMemberSeq(report.get().getReportingMember().getSeq());
-        reportResponseDto.setReportingMemberId(report.get().getReportingMember().getId());
-        reportResponseDto.setAccusedMemberId(report.get().getReportingMember().getId());
-        reportResponseDto.setReportingMemberNickname(report.get().getReportingMember().getNickname());
-        reportResponseDto.setAccusedMemberNickname(report.get().getReportingMember().getNickname());
-        reportResponseDto.setState(report.get().getState());
-        reportResponseDto.setCreateDate(report.get().getCreateDate());
-        reportResponseDto.setUpdateDate(report.get().getUpdateDate());
-        reportResponseDto.setCreateMember(report.get().getCreateMember());
-        reportResponseDto.setUpdateMember(report.get().getUpdateMember());
-        reportResponseDto.setDeleteYn(report.get().getDeleteYn());
-
-
+        reportResponseDto.convertToEntity(report);
 
         return reportResponseDto;
 
@@ -134,7 +118,7 @@ public class ReportServiceImpl implements  ReportService{
 
         Optional<Report> report = reportRepository.findById(dto.getReportSeq());
 
-        if(!report.isPresent()) return false;
+        if (!report.isPresent()) return false;
         report.get().updateReport(dto.getState());
 
         return true;
