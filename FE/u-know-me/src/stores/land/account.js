@@ -196,6 +196,7 @@ export const useAccountStore = defineStore('account', {
         })
           .then(res => {
             this.currentUser = res.data
+            console.log(res.data);
           })
           .catch(err => {
             if (err.response.status == 401) {

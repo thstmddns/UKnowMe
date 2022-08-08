@@ -20,6 +20,7 @@ export const useChatStore = defineStore('chat', {
     publisher: undefined,
     subscribers: [],
     camera: null,
+    camera2: null,
     videoDevices: null,
     jsonData: null,
   }),
@@ -412,7 +413,12 @@ export const useChatStore = defineStore('chat', {
 
       window.removeEventListener("beforeunload", this.leaveSession);
 
-      this.camera.stop();
+      if(this.camera){
+        this.camera.stop();
+      }
+      if(this.camera2){
+        this.camera2.stop();
+      }
     },
 
     socketConnect() {
@@ -473,11 +479,11 @@ export const useChatStore = defineStore('chat', {
 
       videoElement.style.display = "block";
 
-      let camera = new Camera.Camera(videoElement, {
+      this.camera2 = new Camera.Camera(videoElement, {
         width: 640,
         height: 480,
       });
-      camera.start();
+      this.camera2.start();
 
       console.log("디바이스 카메라 리스트 : "+this.videoDevices);
 
