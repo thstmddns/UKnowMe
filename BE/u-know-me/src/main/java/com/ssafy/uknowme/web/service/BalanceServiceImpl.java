@@ -40,9 +40,6 @@ public class BalanceServiceImpl implements BalanceService{
 
 
     public Balance toEntity(BalanceSaveRequestDto dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Member member =principal.getMember();
         return Balance.builder()
                 .question(dto.getQuestion())
                 .answer1(dto.getAnswer1())
