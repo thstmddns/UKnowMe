@@ -65,4 +65,8 @@ public abstract class BaseEntity {
     public void delete() {
         this.deleteYn = DeleteState.Y;
     }
+
+    public boolean isDeleted() {
+        return this.deleteYn.equals(DeleteState.Y);
+    }
 }
