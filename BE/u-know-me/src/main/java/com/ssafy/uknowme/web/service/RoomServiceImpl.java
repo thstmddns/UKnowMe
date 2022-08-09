@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.service;
 
 import com.ssafy.uknowme.model.dto.RoomDto.FindRoomRequestDto;
-import com.ssafy.uknowme.model.dto.RoomDto.FindRoomResponseDto;
+import com.ssafy.uknowme.model.dto.RoomDto.RoomInfoResponseDto;
 import com.ssafy.uknowme.model.dto.RoomDto.RoomSaveRequestDto;
 import com.ssafy.uknowme.web.domain.Room;
 import com.ssafy.uknowme.web.domain.enums.RoomType;
@@ -33,17 +33,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public FindRoomResponseDto findRoom(FindRoomRequestDto dto) {
+    public RoomInfoResponseDto findRoom(FindRoomRequestDto dto) {
         Room room = roomRepository.findById(dto.getSeq()).orElseThrow(IllegalStateException::new);
 
         if (room.isDeleted()) {
             throw new IllegalStateException("삭제된 정보입니다.");
         }
 
-        FindRoomResponseDto responseDto = new FindRoomResponseDto();
-        responseDto.setSeq(room.getSeq());
-        responseDto.setType(room.getType());
-        responseDto.setBalanceCount(room.getBalanceCount());
+        RoomInfoResponseDto responseDto = new RoomInfoResponseDto();
+
+        responseDto.convertFromEntity(room);
 
         return responseDto;
     }

@@ -5,14 +5,10 @@ import com.ssafy.uknowme.model.dto.balanceDto.BalanceListResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceSaveRequestDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceUpdateRequestDto;
-import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import com.ssafy.uknowme.web.domain.Balance;
-import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,9 +36,6 @@ public class BalanceServiceImpl implements BalanceService{
 
 
     public Balance toEntity(BalanceSaveRequestDto dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Member member =principal.getMember();
         return Balance.builder()
                 .question(dto.getQuestion())
                 .answer1(dto.getAnswer1())

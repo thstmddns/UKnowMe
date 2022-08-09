@@ -1,7 +1,7 @@
 package com.ssafy.uknowme.web.controller;
 
 import com.ssafy.uknowme.model.dto.RoomDto.FindRoomRequestDto;
-import com.ssafy.uknowme.model.dto.RoomDto.FindRoomResponseDto;
+import com.ssafy.uknowme.model.dto.RoomDto.RoomInfoResponseDto;
 import com.ssafy.uknowme.web.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<?> findRoom(@ModelAttribute FindRoomRequestDto dto) {
-        FindRoomResponseDto responseDto = roomService.findRoom(dto);
+        RoomInfoResponseDto responseDto = roomService.findRoom(dto);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
