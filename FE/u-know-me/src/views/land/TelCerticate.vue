@@ -13,7 +13,7 @@
       </div>
       <div class="tel-body1-check">
         <div>
-          <div style="font-weight:600"><input type="checkbox" id="check1"><label for="check1"></label>본인확인을 하기 위한 필수사항에 전체 동의합니다.</div>
+          <div style="font-weight:600"><input type="checkbox" id="check1"><label @click="startClick()" for="check1"></label>본인확인을 하기 위한 필수사항에 전체 동의합니다.</div>
         </div>
         <div class="a-text">
           <div class="flex justify-between">
@@ -71,7 +71,16 @@ import { ref } from 'vue'
 export default {
   name: 'TelCerticate',
   methods: {
+    startClick() {
+      document.getElementById('check2').click()
+      document.getElementById('check3').click()
+      document.getElementById('check4').click()
+      document.getElementById('check5').click()
+      document.getElementById('check6').click()
+    },
     sendNum() {
+      opener.window.document.getElementById('tel-input').value = this.number
+      opener.window.document.getElementById('tel-input').click()
       window.close()
     },
     closeBtn() {
@@ -79,8 +88,8 @@ export default {
     }
   },
   setup() {
-    const btnCh = ref(1)
-    const number = ref(1234)
+    const btnCh = ref(0)
+    const number = ref('0000')
     return {
       btnCh,
       number
