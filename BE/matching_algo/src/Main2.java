@@ -4,12 +4,12 @@ public class Main2 {
     static final int PEOPLE_NUM = 4;
 
     //TODO : 웹소켓에 현재 상태 신호등 해주는 리스너 하나 만들 것
-    static List<User> watingUser = new ArrayList<>();  //오픈비두 서버에서 정보가 전달된 유저 ( seq,USER)
+
     static List<User> connectUser = new ArrayList<>();  //오픈비두 서버에서 정보가 전달된 유저
 
     static List<User> ManList = new ArrayList<>();
     static List<User> WomanList = new ArrayList<>();
-
+    
     static double nowlat;
     static double nowlon;
 
