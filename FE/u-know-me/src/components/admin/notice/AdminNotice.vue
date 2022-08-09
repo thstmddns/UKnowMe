@@ -16,11 +16,11 @@
             </tr>
           </thead>
           <tbody class="notice-table-content">
-            <tr>
-              <td>번호</td>
-              <td>박진경</td>
-              <td @click="admin.noticeBtn = 1">{{admin}}</td>
-              <td>지금 시간이다</td>
+            <tr v-for="(a, i) in admin.notices" :key="i" >
+              <td>{{i}}</td>
+              <td>{{a.name}}</td>
+              <td @click="aaa(i)">{{a.title}}</td>
+              <td>{{a.time}}</td>
               <td>다중 선택 박스로 삭제하는 법 알아보기</td>
             </tr>
           </tbody>
@@ -41,7 +41,13 @@ export default {
       admin,
     }
   },
-  
+  methods: {
+    aaa(i) {
+      this.admin.noticeBtn = 1
+      this.admin.notice = this.admin.notices[i]
+      console.log(this.admin.notice)
+    }
+  }
 }
 </script>
 

@@ -3,19 +3,23 @@
     <div class="notice-form-modal">
       <div class="notice-form-modal-title">
         <h2 class="notice-form-title">공지사항 등록</h2>
-        <div @click="noticeFormBtn = false">
+        <div class="close-btn" @click="noticeFormBtn = false">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
       </div>
-      <form id="noticeForm" action="POST" @submit.prevent="admin.addNotice(notice)">
-        <div>
-          <input type="text" name="noticeTitle" id="noticeTitle" placeholder="제목" v-model="notice.title">
-        </div>
-        <div>
-          <input type="text" name="noticeContent" id="noticeContent" placeholder="내용" v-model="notice.content">
-        </div>
-        <button type="submit">저장</button>
-      </form>
+      <div class="form">
+        <form id="noticeForm" action="POST" @submit.prevent="admin.addNotice(notice)">
+          <div class="form-group">
+            <input class="title-input" type="text" name="noticeTitle" id="noticeTitle" placeholder="제목" v-model="notice.title">
+          </div>
+          <div class="form-group">
+            <textarea class="content-input" type="text" name="noticeContent" id="noticeContent" placeholder="내용을 입력하세요" v-model="notice.content"></textarea>
+          </div>
+          <div class="save-btn">
+            <button class="admin-btn notice-save-btn" type="submit">저장</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +63,7 @@ export default {
 .notice-form-modal {
   position: relative;
   width: 25%;
-  height: 250px;
+  height: 400px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
@@ -68,7 +72,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-/* .notice-form-modal-title {
+.notice-form-modal-title {
   margin: 0 8%;
   display: flex;
   justify-content: space-between;
@@ -76,7 +80,7 @@ export default {
 
 .notice-form-title {
   float: left;
-  color: #A056FF;
+  color: #c1c3fc;
 }
 
 .notice-form-modal-content {
@@ -104,5 +108,39 @@ export default {
 .notice-form-btn:hover {
   transition: all 150ms linear;
   opacity: .85;
-} */
+}
+.form {
+  /* width: 100px; */
+  display: inline;
+  justify-content: center;
+}
+.form-group {
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+}
+.title-input {
+  width: 80%;
+  height: 30px;
+  border: 1px solid #c1c3fc;
+  padding-left: 14px; padding-right: 14px;
+}
+.content-input {
+  width: 80%;
+  height: 170px;
+  border: 1px solid #c1c3fc;
+  padding: 16px 14px;
+  background: #fff;
+}
+.save-btn {
+  display: flex;
+  justify-content: center;
+}
+.notice-save-btn {
+  width: 100px;
+  height: 40px;
+}
+textarea {
+  resize: none;
+}
 </style>

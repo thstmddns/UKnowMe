@@ -1,7 +1,7 @@
 <template>
   <div class="notice-detail-modal-bg">
       <div class="notice-detail-modal">
-        <div @click="noticeBtn = 0">
+        <div class="close-btn" @click="noticeBtn = 0">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
         <div>
@@ -49,7 +49,7 @@ export default {
 .notice-detail-modal {
   position: relative;
   width: 25%;
-  height: 250px;
+  height: 400px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
