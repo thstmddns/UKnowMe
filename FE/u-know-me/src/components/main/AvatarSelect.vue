@@ -12,17 +12,17 @@
 
 <script>
 import AvatarCard from "@/components/main/AvatarCard.vue";
-import { useAvatarStore } from '@/stores/main/avatar'
+import { useAvatarStore } from "@/stores/main/avatar";
 
 export default {
   name: "AvatarSelect",
   components: { AvatarCard },
   setup() {
-    const avatars = useAvatarStore()
+    const avatars = useAvatarStore();
     return {
-      avatars
-    }
-  }
+      avatars,
+    };
+  },
 };
 </script>
 
@@ -39,6 +39,11 @@ export default {
   overflow-y: auto;
   display: flex;
   justify-content: center;
+}
+@media screen and (max-width: 700px) {
+  .avatarCollection {
+    display: none;
+  }
 }
 .avatarCollection::-webkit-scrollbar {
   width: 10px;
