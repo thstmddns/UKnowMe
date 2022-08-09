@@ -29,8 +29,8 @@
     </div>
 
     <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기-->
-    <button class="matching-btn" v-if="matchBtn == false">
-      매칭을 시작해주세요
+    <button @click="main.btnCh=4" class="matching-btn" v-if="matchBtn == false">
+      옵션을 선택해주세요
     </button>
     <button class="matching-btn" v-if="matchBtn == true">매칭 중</button>
     <!--  -->

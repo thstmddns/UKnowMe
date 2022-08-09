@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-head">
+  <div class="sign-head text-center">
     <div>비밀번호 확인</div>
   </div>
   <div class="text-center imform-password-text">

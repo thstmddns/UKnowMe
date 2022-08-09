@@ -11,6 +11,7 @@
         'inform-modal': btnCh===3,
         'inform-modify-profile': btnCh===3&&main.pBtnCh===1,
         'inform-modify-secure': btnCh===3&&main.pBtnCh===2,
+        'matching-modal': btnCh===4,
       }">
       <div class="close-btn" @click="btnCh=0;main.pBtnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
@@ -22,10 +23,12 @@
         'inform-modal-content': btnCh===3,
         'inform-modify-profile-content': btnCh===3&&main.pBtnCh===1,
         'inform-modify-secure-content': btnCh===3&&main.pBtnCh===2,
+        'matching-modal-content': btnCh===4,
       }">
         <Logout v-if="btnCh===1"/>
         <InformPassword v-if="btnCh===2"/>
         <Inform v-if="btnCh===3"/>
+        <MatchingOption v-if="btnCh===4"/>
       </div>
     </div>
   </div>
@@ -35,6 +38,7 @@
 import Inform from '@/components/main/modal/InformModal.vue'
 import InformPassword from '@/components/main/modal/InformPassword.vue'
 import Logout from '@/components/main/modal/LogoutModal.vue'
+import MatchingOption from '@/components/main/modal/MatchingOption.vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main/main'
 
@@ -44,6 +48,7 @@ export default {
     Inform,
     InformPassword,
     Logout,
+    MatchingOption,
   },
   setup() {
     const main = useMainStore()
@@ -90,6 +95,9 @@ export default {
   width: 550px;
   /* height: 350px; */
 }
+.matching-modal {
+  width: 440px;
+}
 .inform-modify-profile {
   height: 80%;
 }
@@ -118,6 +126,11 @@ export default {
 .inform-modify-secure-content {
   padding: 32px 69px;
   text-align: left;
+  height: 92%;
+}
+.matching-modal-content {
+  padding: 32px 69px;
+  text-align: center;
   height: 92%;
 }
 .inform-modify-btn {
