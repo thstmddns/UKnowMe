@@ -10,7 +10,6 @@ import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.Notice;
 import com.ssafy.uknowme.web.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NoticeServiceImpl {
 
-    @Autowired
     private final NoticeRepository noticeRepository;
 
     @Transactional
@@ -36,7 +34,7 @@ public class NoticeServiceImpl {
 
     public Notice toEntity(NoticeSaveRequestDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principal = (PrincipalDetails) authentication.getDetails();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         Member member = principal.getMember();
 
         return Notice.builder()
@@ -55,12 +53,14 @@ public class NoticeServiceImpl {
 
         return noticeSeq;
     }
+
+    @Transactional(readOnly = true)
     public NoticeResponseDto findByNoticeSeq (int noticeSeq) {
         Notice entity = noticeRepository.findBySeq(noticeSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
         return new NoticeResponseDto(entity);
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public List<NoticeListResponseDto> findAll(){
         return noticeRepository.findAll().stream()
                 .map(NoticeListResponseDto::new)

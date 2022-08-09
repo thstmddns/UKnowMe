@@ -10,7 +10,6 @@ import lombok.Setter;
 public class MemberInfoResponseDto {
     private int seq;
     private String id;
-    private String password;
     private String name;
     private String nickname;
     private String gender;
@@ -22,7 +21,6 @@ public class MemberInfoResponseDto {
     public void convertFromEntity(Member member) {
         this.seq = member.getSeq();
         this.id = member.getId();
-        this.password = member.getPassword();
         this.name = member.getName();
         this.nickname = member.getNickname();
         this.gender = member.getGender();
