@@ -2,6 +2,7 @@ package com.ssafy.uknowme.web.domain;
 
 import com.ssafy.uknowme.web.domain.common.BaseEntity;
 import com.ssafy.uknowme.web.domain.enums.BlockState;
+import com.ssafy.uknowme.web.domain.enums.ReportState;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,4 +49,17 @@ public class Block extends BaseEntity {
         this.blockedMember = blockedMember;
         this.state = state;
     }
+
+    @Builder
+    public Block(Member blockingMember, Member blockedMember, BlockState state) {
+        this.seq = seq;
+        this.blockingMember = blockingMember;
+        this.blockedMember = blockedMember;
+        this.state = state;
+    }
+
+    public void updateBlock(BlockState state){
+        this.state = state;
+    }
+
 }
