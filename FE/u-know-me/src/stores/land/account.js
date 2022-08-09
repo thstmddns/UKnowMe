@@ -167,7 +167,7 @@ export const useAccountStore = defineStore('account', {
           this.findUserId = res.data.id
           land.btnCh = 6
         })
-        .error(err => {
+        .catch(err => {
           console.error(err.response)
           alert('일치하는 사용자가 없습니다.')
         })
@@ -183,7 +183,7 @@ export const useAccountStore = defineStore('account', {
       //     console.log(res)
       //     this.findUserfindPassword = res
       //   })
-      //   .error(err => {
+      //   .catch(err => {
       //     console.error(err.response)
       //   })
     },
@@ -334,11 +334,11 @@ export const useAccountStore = defineStore('account', {
     sendNumTel(tel) {
       // popup
       function openTelPage(pn) {
-        window.open(`http://localhost:8080/test2?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
+        window.open(`http://localhost:8080/tc?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
       }
       function getTelPopupFeatures() {
       var popupWidth = 480;
-      var popupHeight = 450;
+      var popupHeight = 720;
       var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
       var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
       var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
