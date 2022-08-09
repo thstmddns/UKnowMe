@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="progress">{{avatarProgress}}</div>
     <!-- <progress value="22" max="100"></progress> -->
     <div id="nowAvatar"></div>
   </div>
@@ -7,12 +8,19 @@
 
 <script>
 import { onMounted } from "vue";
-import Avatar from "@/assets/main/avatar";
+import { useAvatarStore } from "@/stores/main/avatar";
+import { storeToRefs } from "pinia";
+
 export default {
   setup() {
+    const avatarFun = useAvatarStore();
+
+    let { avatarProgress } = storeToRefs(avatarFun);
+
     onMounted(() => {
-      Avatar.load();
+      avatarFun.load();
     });
+    return { avatarFun, avatarProgress };
   },
 };
 </script>
@@ -24,5 +32,10 @@ export default {
   height: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
+}
+#progress {
+  position : absolute;
+  z-index: 10;
+  font-size: 100px;
 }
 </style>
