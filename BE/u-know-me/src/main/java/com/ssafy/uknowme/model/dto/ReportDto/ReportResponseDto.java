@@ -4,7 +4,7 @@ import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.web.domain.Report;
 import com.ssafy.uknowme.web.domain.enums.DeleteState;
 import com.ssafy.uknowme.web.domain.enums.ReportState;
-import jdk.nashorn.internal.objects.annotations.Constructor;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
