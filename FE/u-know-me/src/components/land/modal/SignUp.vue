@@ -294,8 +294,8 @@ export default {
 
 <style>
 .sign-head {
-  width: 400px;
-  height: 40px;
+  /* width: 400px; */
+  /* height: 40px; */
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;

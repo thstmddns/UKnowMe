@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-head">
+  <div class="sign-head text-center">
     <div>로그아웃</div>
   </div>
   <div class="logout-content">
