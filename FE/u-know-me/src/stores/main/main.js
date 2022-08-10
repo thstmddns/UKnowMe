@@ -4,11 +4,11 @@ export const useMainStore = defineStore('main', {
   state: () => ({
     btnCh: 0,
     pBtnCh: 0,
-    options: {
-      minAge: 0,
-      maxAge: 0,
-      matchingRoom: '',
-      matchingSmoke: '',
+    option: {
+      minAge: 3,
+      maxAge: 3,
+      matchingRoom: '1',
+      matchingSmoke: '0',
     }
   }),
   getters: {

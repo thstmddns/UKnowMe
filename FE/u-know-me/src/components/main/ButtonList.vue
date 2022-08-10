@@ -9,17 +9,20 @@
       정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
     </button>
   </div>
-
   <!-- <div class="metaverse">
       <div class="metaverse-img">
         <img class="metaverse-img" src="@/assets/main/metaverse.png" alt="">
       </div>
     </div> -->
 
+  <hgroup class="speech-bubble">
+    <p>매칭 옵션 선택 후<br />매칭을 시작해주세요!</p>
+  </hgroup>
+
   <div class="match-circle">
     <div id="love-container">
       <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
-      <div class="heart-img" @click="click">
+      <div class="heart-img" @click="calcAge()">
         <img src="@/assets/main/heart.png" alt="" />
       </div>
       <div class="circle" style="animation-delay: 0s"></div>
@@ -29,8 +32,12 @@
     </div>
 
     <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기-->
-    <button @click="main.btnCh=4" class="matching-btn" v-if="matchBtn == false">
-      옵션을 선택해주세요
+    <button
+      @click="main.btnCh = 4"
+      class="matching-btn"
+      v-if="matchBtn == false"
+    >
+      매칭 옵션 선택
     </button>
     <button class="matching-btn" v-if="matchBtn == true">매칭 중</button>
     <!--  -->
@@ -39,6 +46,7 @@
 
 <script>
 import { useMainStore } from "@/stores/main/main";
+import { useAccountStore } from "@/stores/land/account";
 
 export default {
   name: "ButtonList",
@@ -50,10 +58,12 @@ export default {
   },
   setup() {
     const main = useMainStore();
-    return { main };
+    const account = useAccountStore();
+
+    return { main, account };
   },
   methods: {
-    click() {
+    matchStart() {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
@@ -62,10 +72,23 @@ export default {
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
       webSocket.onopen = () => {
-        console.log("웹소켓서버와 연결 성공");
-
-        webSocket.send(`{"seq" :"1","id":"ssafy","nickname":"예남3" ,"gender":"M" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`);
-        webSocket.send(`{"seq" :"1","id":"ssafy","nickname":"예솔3" ,"gender":"W" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`);
+        // let Age =
+        let sendData = `{
+            "key" : "match_start_1",
+            "id" : "${this.account.currentUser.id}",
+            "seq" : "${this.account.currentUser.seq}",
+            "gender" : "${this.account.currentUser.gender}",
+            "nickName":"${this.account.currentUser.nickname}",
+            "age" : "24",
+            "maxAge":"${age + this.main.option.maxAge}",
+            "minAge":"${age - this.main.option.maxAge}",
+            "lat":"0.0",
+            "lon":"0.0",
+            "smoke" : "0",
+            "matchingSmoke":"0"
+          }`;
+        console.log("webSocket.send : ", sendData);
+        webSocket.send(sendData);
       };
 
       // 2-2) 메세지 수신 이벤트 처리
@@ -82,6 +105,26 @@ export default {
       webSocket.onerror = function (event) {
         console.log(event);
       };
+    },
+    calcAge() {
+      var ssn1;
+      var nByear, nTyear;
+      var today;
+
+      ssn1 = "990103";
+
+      console.log(ssn1[0]);
+
+      today = new Date();
+      nTyear = today.getFullYear();
+      if (ssn1[0] < 3) {
+        nByear = 1900 + parseInt(ssn1.substring(0, 2), 10);
+      } else {
+        nByear = 2000 + parseInt(ssn1.substring(0, 2), 10);
+      }
+      var nAge = nTyear - nByear;
+
+      alert(nAge); // 2012년 4월 13일 일 경우 2012413 반환
     },
   },
 };
@@ -213,12 +256,41 @@ export default {
   filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
   font-size: 15px;
 }
-.matching-btn:hover {
+/* .matching-btn:hover {
   background: #dcddfe;
   color: black;
   cursor: default;
 }
 .matching-btn:active {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+} */
+.speech-bubble {
+  position: absolute;
+  right: 50px;
+  bottom: 300px;
+  background: #9ea2ff;
+  border-radius: 20px;
+  width: 200px;
+  margin: 1em 0;
+  text-align: center;
+  line-height: 150%;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
+}
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 24px solid transparent;
+  border-top-color: #9ea2ff;
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: 20px;
+  margin-bottom: -24px;
 }
 </style>

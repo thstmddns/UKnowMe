@@ -11,6 +11,7 @@ export default {
 <style>
 html, body, #app {
   height: 100;
+  overflow: hidden;
 }
 button {
   width: 130px;
@@ -25,6 +26,7 @@ button {
   position: relative;
   display: inline-block;
   overflow: hidden;
+  -webkit-tap-highlight-color : transparent;
 }
 button:hover {
   background: #C699FF;
@@ -47,4 +49,5 @@ button:active{
     inset -4px -4px 6px 0 rgba(255,255,255,.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
 }
+
 </style>
