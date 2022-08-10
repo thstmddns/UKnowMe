@@ -11,6 +11,8 @@
                 <th>밸런스 게임 제목</th>
                 <th>답1</th>
                 <th>답2</th>
+                <th>수정</th>
+                <th>삭제</th>
               </tr>
             </thead>
           </table>
@@ -18,17 +20,40 @@
         <div class="balance-table-content">
           <table>
             <tbody>
-              <tr>
-                <td class="num">번호</td>
-                <td>게임 제목</td>
-                <td>답1</td>
-                <td>답2</td>
+              <tr v-for="(list, i) in admin.balanceList" :key="i">
+                <td class="num">{{ i }}</td>
+                <td class="title">{{ list.question }}</td>
+                <td class="answer1">{{ list.answer1 }}</td>
+                <td class ="answer2">{{ list.answer2 }}</td>
+                <td>
+                  <button type="button" class="btn brn--modify" @click="admin.updateBalance(list.seq)">수정</button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn--modify" @click="admin.deleteBalance(list.seq)">삭제</button>
+                </td>
+                
+                <!-- <td class="balance-delete" @click="admin.deleteBalance(list.seq)">{{ list.createDate.slice(0, 10) }}&#160;&#160;&#160;<button class="delete-btn">삭제</button></td> -->
               </tr>
             </tbody>
           </table>
+            <div class="page_wrap">
+              <div class="page_nation">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">6</a>
+                <a href="#">7</a>
+                <a href="#">8</a>
+                <a href="#">9</a>
+                <a href="#">10</a>
+              </div>
+            </div>
         </div>
       </div>
       <balance-form class="balance-add"/>
+      <!-- <balance-edit class="balance-add"/> -->
     </div>
   </div>
     
@@ -36,16 +61,45 @@
 
 <script>
 import BalanceForm from "@/components/admin/balance/BalanceForm.vue"
+import {useAdminStore} from "@/stores/admin/admin"
+// import BalanceEdit from "@/components/admin/balance/BalanceEdit.vue"
 
 export default {
   name: "AdminBalance",
+  setup() { 
+    const admin = useAdminStore()
+    admin.getBalances()
+    return{admin}
+  },
   components: {
     BalanceForm
-  }
+  },
 }
 </script>
 
 <style>
+.balance-delete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.deleteBalance {
+  width: 50;
+}
+.updateBalance {
+  width: 50;
+}
+.page_wrap {
+  position: absolute;
+	text-align:center;
+	font-size:0;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+ }
+.page_nation {
+	display:inline-block;
+}
 .balance {
   font-size: 30px;
   font-weight: 550;
