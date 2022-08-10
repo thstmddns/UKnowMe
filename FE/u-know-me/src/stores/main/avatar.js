@@ -137,10 +137,25 @@ export const useAvatarStore = defineStore('avatar', {
           });
         },
 
-        (progress) => 
-          this.avatarProgress = 100.0 * (progress.loaded / progress.total),
+// for progress tag in HTML 
+
+        //progress 값이 바뀔 때마다
+        (progress) => {
+          document.getElementById("progress").style.color = "#a056ff";
+        
+          this.avatarProgress = 100 * (progress.loaded / progress.total)
+           if(this.avatarProgress==100){
+            setTimeout(function() {
+             document.getElementById("progress").style.display = "none";
+          }, 1000);
+          
+           
+          }
+        },
+       
         (error) => console.error(error)
       )
+      
 
       setInterval(blink, 1000)
 
