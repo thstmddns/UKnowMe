@@ -1,6 +1,5 @@
 <template>
-<div>
-  <div id="main-container" class="container">
+  <div class="chat-body" id="main-container">
     <div id="join" v-if="!session">
       <div id="join-dialog" class="jumbotron vertical-center">
         <h1>Join a video session</h1>
@@ -31,27 +30,21 @@
         </div>
       </div>
     </div>
-
     <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
-      <div>
-        <div class="preview">
-          <video class="input_video" width="1280px" height="720px" style="visibility: hidden;"></video>
-          <canvas class="guides" style="display: none"></canvas>
-        </div>
-      </div>
       <div class="video-container">
         <div class="video-item" id="my-video">
-          <p>My Video</p>
+          <video class="my-real-video" style="display: none"></video>
+          <video
+            id="test-video"
+            style="display: none"
+            autoplay
+            controls
+          ></video>
+          <div class="preview">
+            <canvas class="guides" style="position: absolute"></canvas>
+            <video class="input_video" style=""></video>
+          </div>
+          <div><p>My Video</p></div>
         </div>
         <user-video
           v-for="sub in subscribers"
@@ -61,16 +54,16 @@
         />
       </div>
     </div>
+    <chat-something />
   </div>
-  <chat-something />
-</div>
 </template>
 
 <script>
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
-import Avatar from "@/assets/chat/avatar";
+import { useChatStore } from "@/stores/chat/chat";
+import { storeToRefs } from "pinia";
 
 import ChatSomething from "@/components/chat/ChatSomething";
 
@@ -88,22 +81,48 @@ export default {
     ChatSomething,
   },
 
+  setup() {
+    const chat = useChatStore();
+    let {
+      OV,
+      session,
+      mainStreamManager,
+      publisher,
+      subscribers,
+      videoDevices,
+    } = storeToRefs(chat);
+    chat.socketConnect();
+
+    return {
+      chat,
+      OV,
+      session,
+      mainStreamManager,
+      publisher,
+      subscribers,
+      videoDevices,
+    };
+  },
+
   data() {
     return {
-      OV: undefined,
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
-
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
     };
   },
   methods: {
     joinSession() {
+      const chat = useChatStore();
+
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
+
+      // --- Init Video Device ---
+      this.OV.getDevices().then((devices) => {
+        this.videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
+      });
 
       // --- Init a session ---
       this.session = this.OV.initSession();
@@ -137,8 +156,9 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            var avatarVideo = Avatar.load();
-
+            
+            var avatarVideo = chat.avatarLoad();
+            
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
@@ -157,6 +177,11 @@ export default {
             // --- Publish your stream ---
 
             this.session.publish(this.publisher);
+
+            setTimeout(function () {
+              console.log("Works!");
+              chat.startHolistic();
+            }, 1000);
           })
           .catch((error) => {
             console.log(
@@ -167,20 +192,7 @@ export default {
           });
       });
 
-      window.addEventListener("beforeunload", this.leaveSession);
-    },
-
-    leaveSession() {
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
-      if (this.session) this.session.disconnect();
-
-      this.session = undefined;
-      this.mainStreamManager = undefined;
-      this.publisher = undefined;
-      this.subscribers = [];
-      this.OV = undefined;
-
-      window.removeEventListener("beforeunload", this.leaveSession);
+      window.addEventListener("beforeunload", chat.leaveSession);
     },
 
     updateMainVideoStreamManager(stream) {
@@ -269,10 +281,15 @@ export default {
 
 <style>
 h1 {
-  margin:0;
+  margin: 0;
 }
-#main-container {
-  width: 100vw;
+#join,
+#session {
+  flex: 1;
+}
+.chat-body {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   background: radial-gradient(
     61.17% 61.17% at 50% 50%,
@@ -280,25 +297,52 @@ h1 {
     #ffffff 100%
   );
 }
-#avatarCanvas {
-  border: 3px solid purple;
-  height: auto;
-}
 
 .video-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
 }
 .video-item {
-  flex-grow: 1;
+  position: relative;
+  margin: 20px;
   text-align: center;
 }
-.video-item video {
-  height: 480px;
-  width: 640px;
+.video-item canvas {
   border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 640px;
+  height: 480px;
 }
-
+.video-item video {
+  border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 640px;
+  height: 480px;
+}
+.my-real-video {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+.preview {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  left: 5%;
+  top: 5%;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+.preview .guides {
+  width: 100% !important;
+  height: auto;
+}
+.preview video {
+  width: 100% !important;
+  height: auto;
+}
 </style>

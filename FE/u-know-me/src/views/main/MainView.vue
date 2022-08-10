@@ -1,10 +1,9 @@
 <template>
+  <main-modal v-if="main.btnCh !== 0" />
   <div class="background">
     <avatar-select />
     <now-avatar />
     <button-list />
-    <logout-modal v-if="main.logoutBtn == true" />
-    <inform-modal v-if="main.informBtn == true" />
   </div>
 </template>
 
@@ -12,13 +11,12 @@
 import AvatarSelect from "@/components/main/AvatarSelect.vue";
 import NowAvatar from "@/components/main/NowAvatar.vue";
 import ButtonList from "@/components/main/ButtonList.vue";
-import LogoutModal from "@/components/main/LogoutModal.vue";
-import InformModal from "@/components/main/InformModal.vue";
+import MainModal from "@/components/main/MainModal.vue";
 import { useMainStore } from "@/stores/main/main";
 
 export default {
   name: "MainPage",
-  components: { AvatarSelect, NowAvatar, ButtonList, LogoutModal, InformModal },
+  components: { AvatarSelect, NowAvatar, ButtonList, MainModal },
   setup() {
     const main = useMainStore();
     return { main };

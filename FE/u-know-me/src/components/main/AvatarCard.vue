@@ -1,21 +1,21 @@
 <template>
   <div class="card">
     <div class="container">
-      <img src="@/assets/main/boy-temp.png" alt="">
+      <img :src="avatar.image" alt="">
     </div>
     <div class="avatar-inform">
-      <h4 id="avatar-name"><b>캐릭터 이름</b></h4>
+      <h4 id="avatar-name">{{avatar.name}}</h4>
       <button class="avatar-button">선택</button>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'AvatarCard',
   props: {
-    avatardata : Array,
-  }
+    avatar : Object,
+  },
 }
 </script>
 
@@ -32,10 +32,10 @@ export default {
   width: 250px;
   height: 150px;
   background: #FFFFFF;
-  border-radius: 24.9137px;
+  border-radius: 24px;
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 20px 0;
 }
 .avatar-button {
   width: 100px;
@@ -55,8 +55,8 @@ export default {
 
 #avatar-name {
   margin: 30px 0;
+  display: flex;
+  justify-content: center;
 }
-
-
 
 </style>

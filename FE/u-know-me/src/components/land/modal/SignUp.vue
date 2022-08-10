@@ -8,7 +8,8 @@
       <div>
         <Field type="text" name="signUpId" id="signUpId" placeholder="아이디를 입력해 주세요." v-model="credentials.id" :rules="validateId" />
       </div>
-      <ErrorMessage class="error-message" name="signUpId"/>
+      <ErrorMessage v-if="!account.checkSign.id" class="error-message" name="signUpId"/>
+      <p v-if="account.checkSign.id" class="correct-message">사용 가능한 아이디 입니다.</p>
     </div>
     <div>
       <div><label for="signUpPassword">비밀번호</label></div>
@@ -29,9 +30,10 @@
       <div><label for="signUpNickName">닉네임</label></div>
       <div>
         <Field class="middle-input" type="text" name="signUpNickName" id="signUpNickName" placeholder="닉네임을 입력해주세요." v-model="credentials.nickname" :rules="validateNickname" />
-        <button type="button">중복 확인</button>
+        <button :class="{ 'fix-btn': account.checkSign.nickName }" type="button" @click="account.duplicateNickname(credentials.nickname)">중복 확인</button>
       </div>
-      <ErrorMessage class="error-message" name="signUpNickName"/>
+      <ErrorMessage v-if="!account.checkSign.nickName" class="error-message" name="signUpNickName"/>
+      <p v-if="account.checkSign.nickName" class="correct-message">사용 가능한 닉네임 입니다.</p>
     </div>
     <div>
       <div><label for="signUpYear">생년월일</label></div>
@@ -93,16 +95,18 @@
       <div><label for="signUpPhoneNumber">휴대전화</label></div>
       <div>
         <Field class="middle-input" type="text" name="signUpPhoneNumber" id="signUpPhoneNumber" placeholder="-없이 입력해주세요." v-model="credentials.tel" :rules="validateTel" />
-        <button type="button">전송하기</button>
+        <button @click="account.sendNumTel(credentials.tel)" type="button">전송하기</button>
       </div>
-      <ErrorMessage class="error-message" name="signUpPhoneNumber"/>
     </div>
     <div>
       <div><label for="signUpCertificationNumber">인증번호</label></div>
       <div>
-          <input class="middle-input" type="text" name="signUpCertificationNumber" id="signUpCertificationNumber"  placeholder="인증번호를 입력해주세요.">
-          <button type="button">인증하기</button>
-        </div>
+        <Field type="text" :class="{ 'disabled-input-bg': !account.sendTel }" name="signUpCertificationNumber" id="signUpCertificationNumber"  placeholder="인증번호를 입력해주세요." v-model="telCerticate" :rules="validateTelCerticate" :disabled="!account.sendTel" />
+        <input @click="telClick()" type="text" id="tel-input" style="display:none;">
+      </div>
+      <div class="error-div"><ErrorMessage class="error-message" name="signUpPhoneNumber"/></div>
+      <div class="error-div" v-if="!account.checkSign.tel"><ErrorMessage class="error-message" name="signUpCertificationNumber"/></div>
+      <p v-if="account.checkSign.tel" class="correct-message">인증이 성공했습니다.</p>
     </div>
     <button type="submit" class="sign-btn">가입하기</button>
   </Form>
@@ -139,18 +143,8 @@ export default {
   }
  },
  methods: {
-    initCredentials() {
-      this.credentials = {
-        id: '',
-        password: '',
-        name: '',
-        nickname: '',
-        gender: '',
-        birth: '',
-        tel: '',
-        smoke: '',
-        address: '',
-      }
+    telClick() {
+      this.telCerticate = document.getElementById('tel-input').value
     },
     isRequired(value) {
       if (!value) {
@@ -165,6 +159,12 @@ export default {
       const idJ = /^[a-z]{1}[a-z0-9]{3,19}$/;
       if (!idJ.test(value)) {
         return '4~20자의 영문 소문자, 숫자만 사용 가능합니다.'
+      } 
+      else {
+        this.account.duplicateId(value)
+        if (!this.account.checkSign.id) {
+          return '이미 사용중이거나 탈퇴한 아이디입니다.'
+        }
       }
       return true;
     },
@@ -175,7 +175,10 @@ export default {
       const NicknameJ = /^[가-힣a-zA-Z0-9]{2,16}$/
       if (!NicknameJ.test(value)) {
         return '한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)';
+      } else if (!this.account.checkSign.nickName) {
+        return '닉네임 중복 확인을 해주세요.'
       }
+      this.account.checkSign.nickName = 0
       return true;
     },
     validatename(value) {
@@ -247,10 +250,20 @@ export default {
       }
       const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
       if (!phoneJ.test(value)) {
-        return '전화번호가 올바르지 않습니다.';
+        return '형식에 맞지 않는 번호입니다.';
       }
       return true;
     },
+    validateTelCerticate(value) {
+      if (!value) {
+        return '인증이 필요합니다.';
+      }
+      this.account.certicateTel(value)
+      if (!this.account.checkSign.tel) {
+        return '인증번호를 다시 확인해주세요.'
+      }
+      return true
+    }
  },
  setup() {
   const account = useAccountStore()
@@ -271,11 +284,13 @@ export default {
     smoke: '',
     address: '',
   })
+  const telCerticate = ref('')
   return {
     account,
     credentials,
     birth,
     land,
+    telCerticate,
   }
  }
 }
@@ -283,8 +298,8 @@ export default {
 
 <style>
 .sign-head {
-  width: 400px;
-  height: 40px;
+  /* width: 400px; */
+  /* height: 40px; */
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
@@ -292,7 +307,7 @@ export default {
   padding-bottom: 32px;
 }
 #signUpForm {
-  height: 84%;
+  height: calc(100% - 120px);
   margin-right: -32px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -319,7 +334,7 @@ export default {
   line-height: 20px;
   color: #000000;
 }
-#signUpForm div input, select {
+#signUpForm div input, #signUpForm div select {
   box-sizing: border-box;
   width: 412px;
   height: 40px;
@@ -364,6 +379,13 @@ export default {
   font-size: 4px;
   color: red
 }
+#signUpForm .error-div {
+  padding: 0;
+}
+.correct-message {
+  font-size: 4px;
+  color: green
+}
 .go-login {
   margin-top: 20px;
   font-size: 16px;
@@ -377,5 +399,18 @@ export default {
   cursor: pointer;
   color:#8227fa;
   text-decoration: underline;
+}
+#signUpForm .fix-btn {
+  background: #C699FF;
+}
+#signUpForm .fix-btn:hover {
+  background: #C699FF;
+  cursor: Default;
+}
+#signUpForm .fix-btn:active {
+  background: #C699FF;
+}
+#signUpForm .disabled-input-bg {
+  background-color: #efefef;
 }
 </style>
