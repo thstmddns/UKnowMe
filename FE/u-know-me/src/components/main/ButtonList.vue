@@ -22,7 +22,7 @@
   <div class="match-circle">
     <div id="love-container">
       <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
-      <div class="heart-img" @click="click">
+      <div class="heart-img" @click="calcAge()">
         <img src="@/assets/main/heart.png" alt="" />
       </div>
       <div class="circle" style="animation-delay: 0s"></div>
@@ -46,6 +46,7 @@
 
 <script>
 import { useMainStore } from "@/stores/main/main";
+import { useAccountStore } from "@/stores/land/account";
 
 export default {
   name: "ButtonList",
@@ -57,7 +58,9 @@ export default {
   },
   setup() {
     const main = useMainStore();
-    return { main };
+    const account = useAccountStore();
+
+    return { main, account };
   },
   methods: {
     matchStart() {
@@ -69,24 +72,23 @@ export default {
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
       webSocket.onopen = () => {
-        console.log("웹소켓서버와 연결 성공");
-
-        webSocket.send(
-          `{
+        // let Age =
+        let sendData = `{
             "key" : "match_start_1",
-            "id" : "ssafy",
-            "seq" : "2",
-            "gender" : "M",
-            "nickName":"예남3",
-            "birth" : "19990909",
-            "maxAge":"24",
-            "minAge":"20",
+            "id" : "${this.account.currentUser.id}",
+            "seq" : "${this.account.currentUser.seq}",
+            "gender" : "${this.account.currentUser.gender}",
+            "nickName":"${this.account.currentUser.nickname}",
+            "age" : "24",
+            "maxAge":"${age + this.main.option.maxAge}",
+            "minAge":"${age - this.main.option.maxAge}",
             "lat":"0.0",
             "lon":"0.0",
             "smoke" : "0",
-            "machingSmoke":"0"
-          }`
-        );
+            "matchingSmoke":"0"
+          }`;
+        console.log("webSocket.send : ", sendData);
+        webSocket.send(sendData);
       };
 
       // 2-2) 메세지 수신 이벤트 처리
@@ -103,6 +105,26 @@ export default {
       webSocket.onerror = function (event) {
         console.log(event);
       };
+    },
+    calcAge() {
+      var ssn1;
+      var nByear, nTyear;
+      var today;
+
+      ssn1 = "990103";
+
+      console.log(ssn1[0]);
+
+      today = new Date();
+      nTyear = today.getFullYear();
+      if (ssn1[0] < 3) {
+        nByear = 1900 + parseInt(ssn1.substring(0, 2), 10);
+      } else {
+        nByear = 2000 + parseInt(ssn1.substring(0, 2), 10);
+      }
+      var nAge = nTyear - nByear;
+
+      alert(nAge); // 2012년 4월 13일 일 경우 2012413 반환
     },
   },
 };
