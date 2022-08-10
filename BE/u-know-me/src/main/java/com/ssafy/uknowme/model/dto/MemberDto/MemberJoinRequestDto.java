@@ -29,7 +29,7 @@ public class MemberJoinRequestDto {
     private String gender;
 
     @NotBlank(message = "생일은 필수 입력 값입니다.")
-    @Pattern(regexp = "^[0-9]{6}")
+    @Pattern(regexp = "^[0-9]{8}")
     private String birth;
 
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")

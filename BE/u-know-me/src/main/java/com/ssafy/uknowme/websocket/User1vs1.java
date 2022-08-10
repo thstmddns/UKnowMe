@@ -27,7 +27,7 @@ public class User1vs1 {
     private double lat; //위도
     private double lon; //경도
     private int[] options; //자신 옵션
-    private int[] matchingoptions; //상대에게 원하는 옵션
+    private int[] matchingOptions; //상대에게 원하는 옵션
 
     private WebSocketSession session;
 
@@ -40,17 +40,11 @@ public class User1vs1 {
         this.gender = jObject.getString("gender").charAt(0);
         this.maxAge = Integer.parseInt(jObject.getString("maxAge"));
         this.minAge = Integer.parseInt(jObject.getString("minAge"));
-        String birthYear = (jObject.getString("birth"));
-        birthYear = birthYear.substring(0,4);
-        LocalDate now = LocalDate.now();
-        int nowYear = now.getYear();
-
-        this.age = nowYear-Integer.parseInt(birthYear)+1;
-
+        this.age = Integer.parseInt(jObject.getString("age"));
         this.lat = Double.parseDouble(jObject.getString("lat"));
         this.lon = Double.parseDouble(jObject.getString("lon"));
         this.options =  new int[Integer.parseInt(jObject.getString("smoke"))];
-        this.matchingoptions = new int[Integer.parseInt(jObject.getString("machingSmoke"))];
+        this.matchingOptions = new int[Integer.parseInt(jObject.getString("matchingSmoke"))];
         this.session = session;
     }
 
