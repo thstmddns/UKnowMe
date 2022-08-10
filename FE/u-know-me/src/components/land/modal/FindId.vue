@@ -71,7 +71,7 @@ export default {
   line-height: 20px;
   color: #000000;
 }
-#findIdForm div input, select {
+#findIdForm div input, #findIdForm div select {
   box-sizing: border-box;
   width: 412px;
   height: 40px;

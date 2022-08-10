@@ -330,7 +330,7 @@ export default {
   line-height: 20px;
   color: #000000;
 }
-#signUpForm div input, select {
+#signUpForm div input, #signUpForm div select {
   box-sizing: border-box;
   width: 412px;
   height: 40px;
