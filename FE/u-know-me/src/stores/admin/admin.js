@@ -9,12 +9,7 @@ export const useAdminStore = defineStore('admin', {
     adminBtn: 0,
     noticeFormBtn: false,
     noticeBtn: 0,
-    notices: [{name: '관리자', title: '제목', content: '내용', time: '오늘'},
-    {name: '관리자', title: '제목2', content: '내용', time: '오늘'},
-    {name: '관리자', title: '제목3', content: '내용', time: '오늘'},
-    {name: '관리자', title: '제목4', content: '내용', time: '오늘'},
-    {name: '관리자', title: '제목5', content: '내용', time: '오늘'},
-  ],
+    notices: [],
     notice: {}
   }),
   getters: {
@@ -45,12 +40,13 @@ export const useAdminStore = defineStore('admin', {
       })
         .then(res => {
           console.log(res);
+          this.notice = res.data
         })
         .catch(err => {
           console.error(err.response)
         })
     },
-    
+
     addNotice(notice) {
       console.log({...notice})
       const account = useAccountStore()
@@ -62,29 +58,36 @@ export const useAdminStore = defineStore('admin', {
       })
         .then(res => {
           console.log(res);
-          this.noticeBtn = 2
+          this.noticeFormBtn = false
+          // this.noticeBtn = 2
           this.fetchNotices()
         })
         .catch(err => {
           console.error(err.response.data)
-          this.noticeBtn = 2
+          // this.noticeBtn = 2
         })
 
     },
 
-    // updateNotice() {
-    //   axios({
-    //     url: sr.notices.notice(noticeSeq),
-    //     method: 'get',
-    //     params: { noticeSeq }
-    //   })
-    //     .then(res => {
-    //       console.log(res);
-    //     })
-    //     .catch(err => {
-    //       console.error(err.response)
-    //     })
-    // },
+    updateNotice(noticeData, noticeSeq) {
+      console.log({...noticeData})
+      const account = useAccountStore()
+      axios({
+        url: sr.notices.notice(noticeSeq),
+        method: 'put',
+        data: { ...noticeData },
+        headers: account.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.fetchNotices()
+          this.fetchNotice(noticeSeq)
+          this.noticeBtn = 1
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
+    },
 
     deleteNotice(noticeSeq) {
       const account = useAccountStore()
@@ -96,6 +99,8 @@ export const useAdminStore = defineStore('admin', {
         })
           .then(res => {
             console.log(res);
+            this.fetchNotices()
+            this.noticeBtn = 0
           })
           .catch(err => console.error(err.response))
       }

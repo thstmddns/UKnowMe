@@ -58,21 +58,4 @@ export default {
   background: #c1c3fc;
   border-radius: 10px;
 }
-th{
-  padding: 20px 15px;
-  text-align: left;
-  font-weight: 550;
-  font-size: 15px;
-  color: rgb(0, 0, 0);
-  text-transform: uppercase;
-}
-td{
-  padding: 15px;
-  text-align: left;
-  vertical-align:middle;
-  font-weight: 300;
-  font-size: 15px;
-  color: rgb(0, 0, 0);
-  border-bottom: solid 1px #f0f1ff;
-}
 </style>

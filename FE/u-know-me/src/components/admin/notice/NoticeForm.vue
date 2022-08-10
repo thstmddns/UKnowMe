@@ -80,7 +80,7 @@ export default {
 
 .notice-form-title {
   float: left;
-  color: #c1c3fc;
+  color: #A056FF;
 }
 
 .notice-form-modal-content {
