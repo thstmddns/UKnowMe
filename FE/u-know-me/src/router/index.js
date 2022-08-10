@@ -4,7 +4,7 @@ import { createWebHistory, createRouter } from "vue-router";
 // account
 // import List from './components/컴포넌트명.vue';
 import LandPageView from '@/views/land/LandPageView.vue'
-import TestView from '@/views/land/TestView.vue'
+import NaverPopUpView from '@/views/land/NaverPopUp.vue'
 import ChatView from '@/views/chat/ChatView.vue'
 import MainView from '@/views/main/MainView.vue'
 import AdminView from '@/views/admin/AdminView.vue'
@@ -25,9 +25,9 @@ const routes = [
     component: LandPageView,
   },
   {
-    path: "/test",
-    name: 'test',
-    component: TestView,
+    path: "/ntpu",
+    name: 'ntpu',
+    component: NaverPopUpView,
   },
   {
     path: "/chat",
