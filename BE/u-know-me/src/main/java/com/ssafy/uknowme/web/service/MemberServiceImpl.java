@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -176,6 +178,31 @@ public class MemberServiceImpl implements MemberService {
         responseDto.setId(member.getId());
 
         return responseDto;
+    }
+
+    @Override
+    public List<MemberInfoResponseDto> getMemberList() {
+        List<Member> members = repository.findAll();
+        List<MemberInfoResponseDto> dtoList = new ArrayList<>();
+
+        for (Member member : members) {
+            MemberInfoResponseDto dto = new MemberInfoResponseDto();
+            dto.convertFromEntity(member);
+
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
+
+    @Override
+    public MemberInfoResponseDto getMemberBySeq(int seq) {
+        Member member = repository.findById(seq).orElseThrow(IllegalStateException::new);
+
+        MemberInfoResponseDto dto = new MemberInfoResponseDto();
+        dto.convertFromEntity(member);
+
+        return dto;
     }
 }
 
