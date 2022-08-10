@@ -73,10 +73,20 @@ export default {
         console.log("웹소켓서버와 연결 성공");
 
         webSocket.send(
-          `{"seq" :"1","id":"ssafy","nickname":"예남3" ,"gender":"M" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`
-        );
-        webSocket.send(
-          `{"seq" :"1","id":"ssafy","nickname":"예솔3" ,"gender":"W" ,"maxage":"24","minage":"20","age":"20" ,"lat":"0.0","lon":"0.0" ,"smoke":"0" ,"machingSmoke":"0"}`
+          `{
+            "key" : "match_start_1",
+            "id" : "ssafy",
+            "seq" : "2",
+            "gender" : "M",
+            "nickName":"예남3",
+            "birth" : "19990909",
+            "maxAge":"24",
+            "minAge":"20",
+            "lat":"0.0",
+            "lon":"0.0",
+            "smoke" : "0",
+            "machingSmoke":"0"
+          }`
         );
       };
 
