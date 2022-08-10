@@ -30,14 +30,13 @@ export default {
       var toggle = document.querySelector(".avatarCollection");
 
       if (mediaViewContent.matches === true) {
-        toggle.style.display = "none";
-        toggleBtn.style.display = "block";
+        toggle.style.left = "-300px";
+        toggleBtn.style.bottom = "50px";
       } else {
-        toggle.style.display = "block";
-        toggleBtn.style.display = "none";
+        toggle.style.left = "0px";
+        toggleBtn.style.bottom = "-70px";
       }
     };
-
     mediaViewContent.addEventListener("change", viewChangeHandler);
 
     return {
@@ -48,10 +47,10 @@ export default {
     toggleAvatar() {
       var toggle = document.querySelector(".avatarCollection");
 
-      if (toggle.style.display == "block" || toggle.style.display == "") {
-        toggle.style.display = "none";
+      if (toggle.style.left == "0px") {
+        toggle.style.left = "-300px";
       } else {
-        toggle.style.display = "block";
+        toggle.style.left = "0px";
       }
     },
   },
@@ -61,6 +60,7 @@ export default {
 <style>
 .avatarCollection {
   position: absolute;
+  left: -300px;
   width: fit-content;
   z-index: 2;
   height: calc(100% - 170px);
@@ -73,6 +73,7 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   justify-content: center;
+  transition: 0.5s;
 }
 .avatarCollection::-webkit-scrollbar {
   width: 10px;
@@ -88,23 +89,24 @@ export default {
   bottom: 50px;
   margin: 0px;
   z-index: 2;
+  transition: 0.5s;
 }
 @media screen and (max-width: 700px) {
   .avatarCollection {
-    display: none;
+    left: -300px;
   }
   #avatarBtn {
-    display: block;
+  bottom: 50px;
   }
 }
 @media screen and (min-width: 700px) {
   .avatarCollection {
-
+    left: 0px;
     height: calc(100% - 10px);
     top: 5px;
   }
   #avatarBtn {
-    display: none;
+  bottom: -70px;
   }
 }
 </style>

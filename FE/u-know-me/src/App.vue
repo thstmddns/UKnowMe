@@ -11,6 +11,7 @@ export default {
 <style>
 html, body, #app {
   height: 100;
+  overflow: hidden;
 }
 button {
   width: 130px;
