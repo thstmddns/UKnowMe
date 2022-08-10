@@ -9,7 +9,6 @@
       정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
     </button>
   </div>
-
   <!-- <div class="metaverse">
       <div class="metaverse-img">
         <img class="metaverse-img" src="@/assets/main/metaverse.png" alt="">
@@ -17,7 +16,7 @@
     </div> -->
 
   <hgroup class="speech-bubble">
-    <p>매칭 옵션 선택 후<br>매칭을 시작해주세요!</p>
+    <p>매칭 옵션 선택 후<br />매칭을 시작해주세요!</p>
   </hgroup>
 
   <div class="match-circle">
@@ -61,7 +60,7 @@ export default {
     return { main };
   },
   methods: {
-    click() {
+    matchStart() {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
