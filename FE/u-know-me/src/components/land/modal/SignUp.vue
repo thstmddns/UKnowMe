@@ -102,6 +102,7 @@
       <div><label for="signUpCertificationNumber">인증번호</label></div>
       <div>
         <Field type="text" :class="{ 'disabled-input-bg': !account.sendTel }" name="signUpCertificationNumber" id="signUpCertificationNumber"  placeholder="인증번호를 입력해주세요." v-model="telCerticate" :rules="validateTelCerticate" :disabled="!account.sendTel" />
+        <input @click="telClick()" type="text" id="tel-input" style="display:none;">
       </div>
       <div class="error-div"><ErrorMessage class="error-message" name="signUpPhoneNumber"/></div>
       <div class="error-div" v-if="!account.checkSign.tel"><ErrorMessage class="error-message" name="signUpCertificationNumber"/></div>
@@ -142,6 +143,9 @@ export default {
   }
  },
  methods: {
+    telClick() {
+      this.telCerticate = document.getElementById('tel-input').value
+    },
     isRequired(value) {
       if (!value) {
         return '필수정보 입니다.';

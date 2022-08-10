@@ -37,8 +37,9 @@ export default {
   /* width: 210px; */
   /* height: 271px; */
   height: 30%;
-  left: 42%;
+  right: 50%;
   top: 0px;
+  transform: translate(50%, 0%);
   filter: drop-shadow(0px 5.25522px 5.25522px rgba(0, 0, 0, 0.25));
   pointer-events: none;
 }
@@ -46,16 +47,19 @@ export default {
   position: absolute;
   /* width: 520px; */
   height: 78%;
-  left: 42%;
+  right: calc(50% - 14vh);
   bottom: 0px;
+  transform: translate(50%, 0%);
   pointer-events: none;
 }
 .me {
   position: absolute;
   /* width: 600px; */
   height: 74%;
-  left: calc(42% - 36vh);
+  /* left: calc(42% - 40vh); */
+  right: calc(50% + 18vh);
   bottom: 0px;
+  transform: translate(50%, 0%);
   pointer-events: none;
 }
 </style>
