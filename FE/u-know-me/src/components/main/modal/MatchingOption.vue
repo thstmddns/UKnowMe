@@ -5,11 +5,11 @@
   <div class="option-content">
     옵션을 선택해 주세요
   </div>
-  <form action="GET" id="matchingOptionForm" @submit.prevent="main.matchingOptionSelect(option)">
+  <form action="GET" id="matchingOptionForm" @submit.prevent="main.matchingOptionSelect(main.option)">
     <div>
       <div class="text-left"><label for="optionSmoking">흡연여부</label></div>
       <div>
-        <select name="optionSmoking" id="optionSmoking" v-model="option.matchingSmoke">
+        <select name="optionSmoking" id="optionSmoking" v-model="main.option.matchingSmoke">
           <option
             v-for="(smoke, idx) in smokes"
             :key="idx"
@@ -20,16 +20,16 @@
     </div>
     <div class="option-input">
       <div class="text-left"><label for="optionMinAge">연하 나이</label></div>
-      <div><input type="number" name="optionMinAge" id="optionMinAge" v-model="option.minAge" min="0" max="10"/></div>
+      <div><input type="number" name="optionMinAge" id="optionMinAge" v-model="main.option.minAge" min="0" max="10"/></div>
     </div>
     <div class="option-input">
       <div class="text-left"><label for="optionMaxAge">연상 나이</label></div>
-      <div><input type="number" name="optionMaxAge" id="optionMaxAge" v-model="option.maxAge" min="0" max="10"/></div>
+      <div><input type="number" name="optionMaxAge" id="optionMaxAge" v-model="main.option.maxAge" min="0" max="10"/></div>
     </div>
     <div class="option-input">
       <div class="text-left"><label for="optionMatching">매칭</label></div>
       <div>
-        <select name="optionMatching" id="optionMatching" v-model="option.matchingRoom">
+        <select name="optionMatching" id="optionMatching" v-model="main.option.matchingRoom">
           <option
             v-for="(matching, idx) in matchings"
             :key="idx"
@@ -45,7 +45,6 @@
 <script>
 import { useMainStore } from "@/stores/main/main";
 import { useAccountStore } from "@/stores/land/account";
-import { ref } from 'vue'
 
 export default {
   name: "MatchingOption",
@@ -61,16 +60,9 @@ export default {
   setup() {
     const main = useMainStore();
     const account = useAccountStore();
-    const option = ref({
-      minAge: 3,
-      maxAge: 3,
-      matchingRoom: '1',
-      matchingSmoke: '0',
-    })
     return {
       main,
       account,
-      option
     };
   },
 };
