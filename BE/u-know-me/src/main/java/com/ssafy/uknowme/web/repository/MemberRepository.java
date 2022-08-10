@@ -13,6 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 
     Optional<Member> findByNameAndTel(String name, String tel);
 
+    Optional<Member> findByTel(String tel);
+
     //아이디 중복체크
     boolean existsById(String memberId);
 
