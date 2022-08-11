@@ -96,7 +96,7 @@ export const useAccountStore = defineStore('account', {
           this.fetchCurrentUser()
           // this.fetchIsAdmin(credentials)
           this.authError.login = 0
-          router.push({ name: 'admin' })
+          router.push({ name: 'main' })
         })
         .catch(err => {
           console.error(err.response.data)

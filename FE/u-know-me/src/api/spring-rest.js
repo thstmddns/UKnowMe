@@ -1,4 +1,4 @@
-const HOST = 'http://uknowme.mooo.com:8080/'
+const HOST = 'https://uknowme.mooo.com:8443/'
 
 const MEMBERS = 'member/'
 const MACHINGS = 'maching/'

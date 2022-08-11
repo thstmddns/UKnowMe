@@ -67,7 +67,7 @@ export default {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
-      const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/matching");
+      const webSocket = new WebSocket("wss://uknowme.mooo.com:8443/ws/matching");
 
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
