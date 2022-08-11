@@ -1,9 +1,13 @@
 <template>
   <div class="sign-head signin-head">
     <div>너, 나 알아?</div>
-    <div style="font-size:16px;">Welcome Back</div>
+    <div style="font-size: 16px">Welcome Back</div>
   </div>
-  <form id="signInForm" action="POST" @submit.prevent="account.login(credentials)">
+  <form
+    id="signInForm"
+    action="POST"
+    @submit.prevent="account.login(credentials)"
+  >
     <div class="signin-input flex">
       <div class="icon-cell">
         <div class="icon-signin">
@@ -11,7 +15,13 @@
         </div>
       </div>
       <div>
-        <input type="text" name="signInId" id="signInId" placeholder="아이디" v-model="credentials.id"/>
+        <input
+          type="text"
+          name="signInId"
+          id="signInId"
+          placeholder="아이디"
+          v-model="credentials.id"
+        />
       </div>
     </div>
     <div class="signin-input flex">
@@ -21,117 +31,84 @@
         </div>
       </div>
       <div>
-        <input type="password" name="signInPassword" id="signInPassword" placeholder="비밀번호" v-model="credentials.password"/>
+        <input
+          type="password"
+          name="signInPassword"
+          id="signInPassword"
+          placeholder="비밀번호"
+          v-model="credentials.password"
+        />
       </div>
     </div>
-    <div class="text-left" style="margin:0;color:red;font-size:12px;" v-if="account.authError.login===1">
+    <div
+      class="text-left"
+      style="margin: 0; color: red; font-size: 12px"
+      v-if="account.authError.login === 1"
+    >
       아이디 또는 비밀번호를 잘못 입력했습니다.
-      <br>입력하신 내용을 다시 확인해주세요.
+      <br />입력하신 내용을 다시 확인해주세요.
     </div>
     <div class="find-id-password">
-      <span @click="land.btnCh=4">아이디/</span><span @click="land.btnCh=5">비밀번호 찾기</span>
+      <span @click="land.btnCh = 4">아이디/</span
+      ><span @click="land.btnCh = 5">비밀번호 찾기</span>
     </div>
     <button class="login-btn">로그인</button>
   </form>
   <p class="login-signup">
-    <span @click="land.btnCh=2">계정이 필요하신가요?</span>
+    <span @click="land.btnCh = 2">계정이 필요하신가요?</span>
   </p>
-  <div class="hr-sect">
-    SNS 계정으로 로그인하기
-  </div>
+  <div class="hr-sect">SNS 계정으로 로그인하기</div>
   <div class="flex justify-center align-center">
     <div>
-      <img id="naver_login_icon" class="sns-login" src="@/assets/land/naver_login_icon.png" alt="naver_login_icon" style="display:none;">
+      <img
+        id="naver_login_icon"
+        class="sns-login"
+        src="@/assets/land/naver_login_icon.png"
+        alt="naver_login_icon"
+        style="display: none"
+      />
       <div id="naver_id_login"></div>
+      <input
+        @click="naverTokenSave()"
+        type="text"
+        id="aT"
+        style="display: none"
+      />
     </div>
-    <img @click="account.kakaoLogin()" class="sns-login" src="@/assets/land/kakao_login_icon.png" alt="kakao_login_icon">
-    <section class="test">
-      <div @click="GoogleLoginBtn">
-        <img class="sns-login" src="@/assets/land/google_login_icon.png" alt="google_login_icon">
-      </div>
-      <div id="my-signin2" style="display:none;"></div>
-    </section>
+    <div>
+      <img
+        @click="account.kakaoLogin()"
+        class="sns-login"
+        src="@/assets/land/kakao_login_icon.png"
+        alt="kakao_login_icon"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { useAccountStore } from '@/stores/land/account'
-import { useLandStore } from '@/stores/land/land'
+import { ref, onMounted } from "vue";
+import { useAccountStore } from "@/stores/land/account";
+import { useLandStore } from "@/stores/land/land";
 
-const client_id = "5OSOWuXn6DTVQB4_h5Pc" 
-const callbackUrl = "http://localhost:8080/test"
+const client_id = "5OSOWuXn6DTVQB4_h5Pc";
+const callbackUrl = "http://localhost:8080/ntpu";
 
 export default {
-  name: 'SignIn',
+  name: "SignIn",
   methods: {
-    // openFindPage(pageNum) {
-    //   let popUpName = '팝팝파파팝'
-    //   if (pageNum === 0) {
-    //     this.land.popBtnCh=0
-    //     popUpName = '아이디 찾기'
-    //   } else if (pageNum === 1) {
-    //     this.land.popBtnCh=1
-    //     popUpName = '비밀번호 찾기'
-    //   }
-    //   window.open(`http://localhost:8080/find?idp=${this.land.popBtnCh}`, popUpName, this.getLoginPopupFeatures());
-    // },
-    // getLoginPopupFeatures() {
-    // var popupWidth = 480;
-    // var popupHeight = 450;
-    // var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
-    // var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
-    // var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
-    // var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
-    // return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
-    // },
-    GoogleLoginBtn() {
-      var self = this;
-
-      window.gapi.signin2.render('my-signin2', {
-        scope: 'profile email',
-        width: 240,
-        height: 50,
-        longtitle: true,
-        theme: 'dark',
-        onsuccess: this.GoogleLoginSuccess,
-        onfailure: this.GoogleLoginFailure,
-      });
-      setTimeout(function () {
-        if (!self.googleLoginCheck) {
-          const auth = window.gapi.auth2.getAuthInstance();
-          auth.isSignedIn.get();
-          document.querySelector('.abcRioButton').click();
-        }
-      }, 1500)
-
-    },
-    async GoogleLoginSuccess(googleUser) {
-      const profile = googleUser.getBasicProfile();
-      console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-      console.log('Full Name: ' + profile.getName());
-      console.log('Given Name: ' + profile.getGivenName());
-      console.log('Family Name: ' + profile.getFamilyName());
-      console.log("Image URL: " + profile.getImageUrl());
-      console.log("Email: " + profile.getEmail());
-
-      // The ID token you need to pass to your backend:
-      const id_token = googleUser.getAuthResponse().id_token;
-      console.log("ID Token: " + id_token);
-    },
-    //구글 로그인 콜백함수 (실패)
-    GoogleLoginFailure(error) {
-      console.log('삐용삐용 에러입니다.');
-      console.log(error);
+    naverTokenSave() {
+      this.account.snsToken.naver = document.getElementById("aT").value;
+      this.account.naverLogin();
     },
   },
   setup() {
-    const account = useAccountStore()
-    const land = useLandStore()
+    const account = useAccountStore();
+    const land = useLandStore();
     const credentials = ref({
-      id: '',
-      password: '',
-    })
+      id: "",
+      password: "",
+    });
 
     onMounted(() => {
       // naver
@@ -140,25 +117,30 @@ export default {
       naver_id_login.setState(state);
       naver_id_login.setPopup();
       naver_id_login.init_naver_id_login();
-      
-      const naver_id_login_anchor = document.getElementById('naver_id_login_anchor')
-      const naver_login_icon = document.getElementById('naver_login_icon')
 
-      naver_id_login_anchor.firstChild.removeAttribute('width')
-      naver_id_login_anchor.firstChild.removeAttribute('height')
+      const naver_id_login_anchor = document.getElementById(
+        "naver_id_login_anchor"
+      );
+      const naver_login_icon = document.getElementById("naver_login_icon");
 
-      naver_id_login_anchor.firstChild.src = naver_login_icon.src
-      naver_id_login_anchor.firstChild.className += 'sns-login'
+      naver_id_login_anchor.firstChild.removeAttribute("width");
+      naver_id_login_anchor.firstChild.removeAttribute("height");
+
+      naver_id_login_anchor.firstChild.src = naver_login_icon.src;
+      naver_id_login_anchor.firstChild.className += "sns-login";
       // !naver
-    })
-
+      // google
+      // !google
+    });
+    const aa = ref("");
     return {
       account,
       credentials,
       land,
-    }
-  }
-}
+      aa,
+    };
+  },
+};
 </script>
 
 <style>
@@ -175,12 +157,12 @@ export default {
   align-items: center;
 }
 .sns-login {
-  /* width: 80px; */
+  width: 188px;
   height: 48px;
   margin-right: 12px;
 }
 .sns-login:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 .signin-head {
   margin: 32px auto;
@@ -197,7 +179,7 @@ export default {
   border-bottom: 2px solid #c1bbbb;
 }
 .icon-signin {
-  color: #C699FF;
+  color: #c699ff;
   font-size: 20px;
   margin-left: 12px;
 }
@@ -234,21 +216,21 @@ export default {
 }
 #signInForm span {
   font-size: 12px;
-  color: #C699FF;
+  color: #c699ff;
 }
 #signInForm span:hover {
   cursor: pointer;
-  color:#8227fa;
+  color: #8227fa;
   text-decoration: underline;
 }
 .login-signup {
   font-size: 16px;
-  color: #C699FF;
+  color: #c699ff;
   margin-bottom: 32px;
 }
 .login-signup span:hover {
   cursor: pointer;
-  color:#8227fa;
+  color: #8227fa;
   text-decoration: underline;
 }
 .hr-sect {
@@ -259,7 +241,8 @@ export default {
   font-size: 12px;
   margin: 16px 0px;
 }
-.hr-sect::before, .hr-sect::after {
+.hr-sect::before,
+.hr-sect::after {
   content: "";
   flex-grow: 1;
   background: rgba(0, 0, 0, 0.35);

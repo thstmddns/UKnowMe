@@ -26,6 +26,10 @@ export const useAccountStore = defineStore('account', {
       tel: 0,
     },
     sendTel: 0,
+    snsToken: {
+      naver: cookies.get('snT') || '',
+      kakao: cookies.get('skT') || '',
+    }
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
@@ -33,6 +37,10 @@ export const useAccountStore = defineStore('account', {
       Authorization: `Bearer ${state.a_token}`,
       refreshToken: state.r_token
     }),
+    snsLoginToken: state => ({
+      naver: state.snsToken.naver,
+      kakao: state.snsToken.kakao,
+    })
   },
   actions: {
     getToken() {
@@ -99,17 +107,15 @@ export const useAccountStore = defineStore('account', {
       this.removeToken()
       router.push({ name: 'home' })
     },
-    socialLogin(sns, credentials) {
-      const land = useLandStore()
-      if (!credentials) {
-        console.log('sns 로그인하기')
-      } else {
-        console.log('최초 1회 로그인하기')
-        land.btnCh=3
+    socialLogin(sns) {
+      if (sns === 'naver') {
+        console.log(this.snsLoginToken.naver);
+      } else if (sns === 'kakao') {
+        console.log(this.snsLoginToken.kakao);
       }
     },
-    naverLogin(token) {
-      console.log(token)
+    naverLogin() {
+      this.socialLogin('naver')
       // axios({
       //   url: sr.accounts.naverLogin(),
       //   method: 'post',
@@ -123,15 +129,18 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
-    kakaoLogin() {
+     kakaoLogin() {
+      const self = this
       const js_key = "29f50216ed786d04f88f2f1aafdd49cc"
       const Kakao = window.Kakao
       Kakao.init(js_key);
       function loginWithKakao() {
         Kakao.Auth.login({
           success: function(authObj) {
-            alert(JSON.stringify(authObj))
-            console.log(authObj);
+            // alert(JSON.stringify(authObj))
+            cookies.set('skT', authObj.access_token, `${authObj.expires_in}s`)
+            self.snsToken.kakao = authObj.access_token
+            self.socialLogin('kakao')
           },
           fail: function(err) {
             alert(JSON.stringify(err))
@@ -152,10 +161,6 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
-    googleLogin() {
-      const Google = window.gapi
-      console.log(Google);
-    },
     findId(credentials) {
       const land = useLandStore()
        axios({
@@ -167,7 +172,7 @@ export const useAccountStore = defineStore('account', {
           this.findUserId = res.data.id
           land.btnCh = 6
         })
-        .error(err => {
+        .catch(err => {
           console.error(err.response)
           alert('일치하는 사용자가 없습니다.')
         })
@@ -183,7 +188,7 @@ export const useAccountStore = defineStore('account', {
       //     console.log(res)
       //     this.findUserfindPassword = res
       //   })
-      //   .error(err => {
+      //   .catch(err => {
       //     console.error(err.response)
       //   })
     },
@@ -296,15 +301,17 @@ export const useAccountStore = defineStore('account', {
       //   })
     },
     duplicateId(id) {
-      console.log({ id });
       axios({
         url: sr.members.idDuplicate(),
         method: 'get',
         params: { id }
       })
         .then(res => {
-          console.log(res);
-          this.checkSign.id = 1
+          if (res.data) {
+            this.checkSign.id = 1
+          } else {
+            this.checkSign.id = 0
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -312,15 +319,18 @@ export const useAccountStore = defineStore('account', {
         })
     },
     duplicateNickname(nickname) {
-      console.log({ nickname });
       axios({
         url: sr.members.nickNameDuplicate(),
         method: 'get',
         params: { nickname }
       })
         .then(res => {
-          console.log(res);
-          this.checkSign.nickName = 1
+          if (res.data) {
+            this.checkSign.nickName = 1
+          } else {
+            this.checkSign.nickName = 0
+            alert('중복된 닉네임이 있습니다.')
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -328,8 +338,27 @@ export const useAccountStore = defineStore('account', {
         })
     },
     sendNumTel(tel) {
-      tel
-      this.sendTel = 1
+      // popup
+      function openTelPage(pn) {
+        window.open(`http://localhost:8080/tc?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
+      }
+      function getTelPopupFeatures() {
+      var popupWidth = 480;
+      var popupHeight = 720;
+      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
+      }
+      // !popup
+      const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+      if (!phoneJ.test(tel)) {
+        alert('형식에 맞지 않는 번호입니다.')
+      } else {
+        this.sendTel = 1
+        openTelPage(tel)
+      }
     },
     certicateTel(num) {
       if (num === '0000') {
@@ -359,6 +388,6 @@ export const useAccountStore = defineStore('account', {
             alert('회원탈퇴에 실패하셨습니다.')
           })
       }
-    }
+    },
   },
 })

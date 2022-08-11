@@ -147,7 +147,7 @@ export default {
   line-height: 20px;
   color: #000000;
 }
-#informSecureForm div input, select {
+#informSecureForm div input, #informSecureForm div select {
   box-sizing: border-box;
   width: 412px;
   height: 40px;

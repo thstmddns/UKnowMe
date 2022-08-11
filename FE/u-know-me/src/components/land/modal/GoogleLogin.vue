@@ -1,5 +1,5 @@
 <template>
-  <section class="test">
+  <section>
     <div id="g_id_onload"
       data-client_id="126204385632-ibuafqcdp8og2o1qevlhrrcs6u7vvut1.apps.googleusercontent.com"
       data-context="signin"
@@ -16,19 +16,11 @@
       data-logo_alignment="left">
     </div>
   </section>
-  <button>
-    <!-- <GoogleLogin /> -->
-  </button>
 </template>
 
 <script>
-// import GoogleLogin from "@/components/land/GoogleLogin.vue";
-
 export default {
-  name: 'Test2View',
-  components: {
-    // GoogleLogin,
-  }
+
 }
 </script>
 

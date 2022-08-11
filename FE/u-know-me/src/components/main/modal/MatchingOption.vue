@@ -77,7 +77,7 @@ export default {
   line-height: 20px;
   color: #000000;
 }
-#matchingOptionForm div input, select {
+#matchingOptionForm div input, #matchingOptionForm div select {
   box-sizing: border-box;
   width: 220px;
   height: 36px;

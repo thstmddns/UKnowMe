@@ -10,6 +10,8 @@ const NOTICES = 'notice/'
 export default {
   members: {
     member: () => HOST + 'member',
+    members: () => HOST + MEMBERS + 'list',
+    memberDetail: memberSeq => HOST + MEMBERS + `${memberSeq}`,
     login: () => HOST + MEMBERS + 'login',
     // logout: () => HOST + MEMBERS + 'logout',
     signup: () => HOST + MEMBERS + 'join',
@@ -48,7 +50,10 @@ export default {
     avatarInfo: avatarSeq => HOST + AVATARS + `${avatarSeq}`,
   },
   notices: {
-    notice: () => HOST + 'notice',
-    noticeInfo: noticeSeq => HOST + NOTICES + `${noticeSeq}`,
+    // notice: () => HOST + 'notice',
+    // noticeInfo: noticeSeq => HOST + NOTICES + `${noticeSeq}`,
+    notices: () => HOST + NOTICES + 'list',
+    notice: noticeSeq => HOST + NOTICES + `${noticeSeq}`,
+    save: () => HOST + NOTICES + 'create',
   }
 }
