@@ -80,9 +80,9 @@ export const useAccountStore = defineStore('account', {
           console.error(err.response.data)
         })
     },
-    login(credentials) {
+    async login(credentials) {
       console.log({...credentials})
-      axios({
+      await axios({
         url: sr.members.login(),
         method: 'post',
         data: {...credentials},
@@ -93,15 +93,17 @@ export const useAccountStore = defineStore('account', {
           const access_token = res.headers.authorization.split(' ')[1]
           const refresh_token = res.headers.temp
           this.saveToken(access_token, refresh_token)
-          this.fetchCurrentUser()
-          // this.fetchIsAdmin(credentials)
-          this.authError.login = 0
-          router.push({ name: 'main' })
         })
         .catch(err => {
-          console.error(err.response.data)
+          console.error(err)
           this.authError.login = 1
         })
+      await this.fetchCurrentUser()
+      if(this.currentUser.role === "ROLE_USER") {
+        router.push({ name: 'main' })
+      } else {
+        router.push({ name: 'admin' })
+      }
     },
     logout() {
       const main = useMainStore()
@@ -194,9 +196,9 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
-    fetchCurrentUser() {
+    async fetchCurrentUser() {
       if (this.isLoggedIn) {
-        axios({
+        await axios({
           url: sr.members.member(),
           method: 'get',
           headers: this.authHeader,
