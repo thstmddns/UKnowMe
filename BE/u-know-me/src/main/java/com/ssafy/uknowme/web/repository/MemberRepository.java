@@ -18,6 +18,11 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 
     Optional<Member> findByNameAndTel(String name, String tel);
 
+    Optional<Member> findByTel(String tel);
+
+    @Query("select m from Member m where substring(m.birth, 5, 4) = :birthday")
+    Optional<Member> findByBirthday(@Param("birthday") String birthday);
+
     @Query("select new com.ssafy.uknowme.model.dto.MemberDto.ManageMemberInfoResponseDto(m.seq, m.id, m.name, m.nickname, m.gender, m.birth, m.tel, m.smoke, m.address, m.reportState, count(r.seq), m.createDate, m.updateDate) " +
             "from Member m " +
             "left join fetch Report r " +
