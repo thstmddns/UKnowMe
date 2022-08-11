@@ -6,22 +6,22 @@
     </div>
     
     <table class="notice-table">
-          <thead class="notice-table-title">
-            <tr>
-              <th class="num"></th>
-              <th class="notice-name">생성자 이름</th>
-              <th>공지 제목</th>
-              <th>생성 날짜</th>
-            </tr>
-          </thead>
-          <tbody class="notice-table-content">
-            <tr v-for="(a, num) in admin.notices" :key="num" >
-              <td class="num">{{num}}</td>
-              <td class="notice-name">{{a.member.name}}</td>
-              <td @click="aaa(num)">{{a.title}}</td>
-              <td class="notice-delete" @click="admin.deleteNotice(a.seq)">{{a.createDate.slice(0, 10)}}&#160;&#160;&#160;<button class="delete-btn">삭제</button></td>
-            </tr>
-          </tbody>
+      <thead class="notice-table-title">
+        <tr>
+          <th class="num"></th>
+          <th class="notice-name">생성자 이름</th>
+          <th>공지 제목</th>
+          <th>생성 날짜</th>
+        </tr>
+      </thead>
+      <tbody class="notice-table-content">
+        <tr v-for="(a, num) in admin.notices" :key="num" >
+          <td class="num">{{num}}</td>
+          <td class="notice-name">{{a.member.name}}</td>
+          <td @click="aaa(num)">{{a.title}}</td>
+          <td class="notice-delete" @click="admin.deleteNotice(a.seq)">{{a.createDate.slice(0, 10)}}&#160;&#160;&#160;<button class="delete-btn">삭제</button></td>
+        </tr>
+      </tbody>
     </table>
     
     <div class="page_wrap">
