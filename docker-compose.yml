@@ -15,4 +15,7 @@ services:
     build: ./BE/u-know-me
     ports:
       - "8080:8080"
+      - "8443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
     restart: unless-stopped
