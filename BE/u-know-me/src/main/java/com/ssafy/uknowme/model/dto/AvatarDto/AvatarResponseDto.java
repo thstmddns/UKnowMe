@@ -1,5 +1,6 @@
 package com.ssafy.uknowme.model.dto.AvatarDto;
 
+import com.ssafy.uknowme.web.domain.Avatar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,8 @@ public class AvatarResponseDto {
     private String name;
 
     private int frequency;
+
+    public static AvatarResponseDto convertFromEntity(Avatar avatar) {
+        return new AvatarResponseDto(avatar.getSeq(), avatar.getName(), avatar.getFrequency());
+    }
 }
