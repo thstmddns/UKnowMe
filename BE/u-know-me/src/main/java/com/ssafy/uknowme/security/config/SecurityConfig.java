@@ -1,8 +1,13 @@
 package com.ssafy.uknowme.security.config;
 
-import com.ssafy.uknowme.security.jwt.JwtAuthenticationFilter;
-import com.ssafy.uknowme.security.jwt.JwtAuthorizationFilter;
-import com.ssafy.uknowme.security.jwt.JwtService;
+import com.ssafy.uknowme.security.filter.TokenAuthenticationFilter;
+import com.ssafy.uknowme.security.filter.TokenAuthorizationFilter;
+import com.ssafy.uknowme.security.oauth.handler.OAuth2AuthenticationFailureHandler;
+import com.ssafy.uknowme.security.oauth.handler.OAuth2AuthenticationSuccessHandler;
+import com.ssafy.uknowme.security.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.ssafy.uknowme.security.oauth.service.PrincipalOauth2UserService;
+import com.ssafy.uknowme.security.properties.AppProperties;
+import com.ssafy.uknowme.security.token.AuthTokenProvider;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +18,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,11 +34,13 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    private final JwtService jwtService;
-
     private final MemberRepository memberRepository;
+
+    private final AuthTokenProvider authTokenProvider;
+
+    private final AppProperties appProperties;
+
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private final String[] PERMIT_ALL_SWAGGER = {
             /* swagger v2 */
@@ -50,13 +60,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        AuthenticationManager manager = authenticationManagerBuilder.getObject();
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.getObject();
 
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtService, manager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/member/login");
-
-        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(jwtService, memberRepository, manager);
-
+        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(authTokenProvider, appProperties, authenticationManager);
+        tokenAuthenticationFilter.setFilterProcessesUrl("/member/login");
 
         return http
                     .cors().configurationSource(corsConfigurationSource())
@@ -66,14 +73,52 @@ public class SecurityConfig {
                 .and()
                     .formLogin().disable()
                     .httpBasic().disable()
-                    .addFilter(jwtAuthenticationFilter)
-                    .addFilter(jwtAuthorizationFilter)
+                    .addFilter(tokenAuthenticationFilter)
+                    .addFilterBefore(tokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
                     .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching").permitAll()
-                        //TODO : 후에 report 지워야함 (오른쪽 눌러서 ROLLBACK 시켜놓을것)
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                    .oauth2Login()
+                        .authorizationEndpoint()
+                        .baseUri("/oauth2/authorization")
+                        .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+                    .and()
+                        .redirectionEndpoint()
+                        .baseUri("/**/oauth2/code/*")
+                    .and()
+                        .userInfoEndpoint()
+                        .userService(new PrincipalOauth2UserService(memberRepository))
+                    .and()
+                        .successHandler(oAuth2AuthenticationSuccessHandler())
+                        .failureHandler(oAuth2AuthenticationFailureHandler())
                 .and().build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public TokenAuthorizationFilter tokenAuthorizationFilter() {
+        return new TokenAuthorizationFilter(authTokenProvider);
+    }
+
+    @Bean
+    public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    @Bean
+    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+        return new OAuth2AuthenticationSuccessHandler(authTokenProvider, appProperties);
+    }
+
+    @Bean
+    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
     }
 
     @Bean

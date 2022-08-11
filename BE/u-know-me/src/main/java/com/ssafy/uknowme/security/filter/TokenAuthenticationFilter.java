@@ -1,11 +1,16 @@
-package com.ssafy.uknowme.security.jwt;
+package com.ssafy.uknowme.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberLoginRequestDto;
 import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import com.ssafy.uknowme.security.exception.DeletedMemberException;
+import com.ssafy.uknowme.security.properties.AppProperties;
+import com.ssafy.uknowme.security.token.AuthToken;
+import com.ssafy.uknowme.security.token.AuthTokenProvider;
+import com.ssafy.uknowme.security.utils.CookieUtil;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.DeleteState;
+import com.ssafy.uknowme.web.domain.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,22 +21,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
+import java.util.Date;
+
+import static com.ssafy.uknowme.security.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REFRESH_TOKEN;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final String HEADER_STRING = "Authorization";
+    private final AuthTokenProvider authTokenProvider;
 
-    private final String AUTHORIZATION_TYPE = "Bearer";
-
-    private final JwtService jwtService;
-
+    private final AppProperties appProperties;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -72,20 +75,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)  {
 
-        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        PrincipalDetails details = (PrincipalDetails) authResult.getPrincipal();
 
-        Map<String, String> tokenSet = jwtService.createTokenSet(principalDetails.getUsername());
+        Member member = details.getMember();
 
-        String accessToken = tokenSet.get("accessToken");
-        String refreshToken = tokenSet.get("refreshToken");
+        String memberId = member.getId();
 
-        response.addHeader(HEADER_STRING, AUTHORIZATION_TYPE + " " + accessToken);
-        response.addHeader("temp", refreshToken);
+        Role role = member.getRole();
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setMaxAge(14 * 24 * 60 * 60);
+        AuthToken accessToken = authTokenProvider.createAuthToken(memberId, role.toString(), new Date(System.currentTimeMillis() + appProperties.getAuth().getTokenExpiry()));
 
-        response.addCookie(cookie);
+        log.info(accessToken.getToken());
+
+        response.addHeader("Authorization", "Bearer " + accessToken.getToken());
+
+        AuthToken refreshToken = authTokenProvider.createAuthToken(appProperties.getAuth().getTokenSecret(), new Date(System.currentTimeMillis() + appProperties.getAuth().getRefreshTokenExpiry()));
+
+        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), (int) appProperties.getAuth().getRefreshTokenExpiry());
     }
 
     @Override
