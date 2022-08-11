@@ -8,14 +8,12 @@ export const useAdminStore = defineStore('admin', {
     adminBtn: 0,
     noticeAddBtn: false,
     balanceList: [],
+    balance: {},
   }),
   getters: {
 
   },
   actions: {
-    // getArticle:function(seq) {
-    //   return axios.get(BASE_URL + 'feature/balance/{balanceSeq}'); 
-    // },
     getBalances() {
       const account = useAccountStore()
       axios({
@@ -80,7 +78,6 @@ export const useAdminStore = defineStore('admin', {
         console.log(res);
         this.getBalances()
         this.getBalance(balanceSeq)
-        this.balanceBtn = 1
       })
       .catch(err => {
         console.error(err.response)
@@ -98,7 +95,6 @@ export const useAdminStore = defineStore('admin', {
         .then(res => {
           console.log(res);
           this.getBalances()
-          this.balanceBtn = 0
         })
         .catch(err => console.error(err.response))
       }

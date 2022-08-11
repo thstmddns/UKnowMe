@@ -53,7 +53,7 @@
         </div>
       </div>
       <balance-form class="balance-add"/>
-      <!-- <balance-edit class="balance-add"/> -->
+      <balance-edit class="balance-add"/>
     </div>
   </div>
     
@@ -62,7 +62,7 @@
 <script>
 import BalanceForm from "@/components/admin/balance/BalanceForm.vue"
 import {useAdminStore} from "@/stores/admin/admin"
-// import BalanceEdit from "@/components/admin/balance/BalanceEdit.vue"
+import BalanceEdit from "@/components/admin/balance/BalanceEdit.vue"
 
 export default {
   name: "AdminBalance",
@@ -72,7 +72,8 @@ export default {
     return{admin}
   },
   components: {
-    BalanceForm
+    BalanceForm,
+    BalanceEdit
   },
 }
 </script>

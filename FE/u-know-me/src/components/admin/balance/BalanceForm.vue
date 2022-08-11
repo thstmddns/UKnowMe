@@ -21,6 +21,7 @@ import { ref } from "vue"
     setup() {
       const admin = useAdminStore();
       const balanceValue = ref({
+        seq:'',
         question: '',
         answer1: '',
         answer2: ''
