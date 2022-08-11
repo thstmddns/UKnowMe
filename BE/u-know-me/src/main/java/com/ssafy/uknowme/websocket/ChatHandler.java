@@ -18,7 +18,10 @@ import java.util.List;
 @Log4j2
 public class ChatHandler extends TextWebSocketHandler {
     private static List<Room1vs1> room1vs1 = new ArrayList();
+    private static List<Room2vs2> room2vs2 = new ArrayList();
     private static List<WebSocketSession> list = new ArrayList<>();
+
+    static final int PEOPLE_NUM_2VS2 = 4;
 
     final TextMessage UKNOWME = new TextMessage("{\n" +
             "        \"key\" : \"uknowme\"\n" +
@@ -28,6 +31,7 @@ public class ChatHandler extends TextWebSocketHandler {
             "        \"key\" : \"roomBreak\",\n" +
             "    }");
 
+    // : 명범님 죄송합니다...코드가 정리가안돼서 많이 더러워요,,,,,,가능하면 소켓 하시기 전에 정리해 보겠습니다
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -41,27 +45,52 @@ public class ChatHandler extends TextWebSocketHandler {
 
                     if (room1vs1.get(roomcnt).getRoomNum().equals(jObject.get("room_seq").toString())) {
                         room1vs1.get(roomcnt).setUser2Session(session);
+                        room1vs1.get(roomcnt).setUser2Seq(Integer.parseInt(jObject.get("user_seq").toString()));
                         return;
                     }
                 }
                 //방 없으면 새로 만들기
-                room1vs1.add(new Room1vs1(session, jObject.get("room_seq").toString()));
+                room1vs1.add(new Room1vs1(session, jObject.get("room_seq").toString(), Integer.parseInt(jObject.get("user_seq").toString())));
                 break;
-
+            case "chat_start_2":
+                //방있으면 그 안에 들어가기
+                log.info("2대2룸 입장");
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    if (room2vs2.get(roomcnt).getRoomNum().equals(jObject.get("room_seq").toString())) {
+                        room2vs2.get(roomcnt).addUserInfos(Integer.parseInt(jObject.get("user_seq").toString()), session);
+                        return;
+                    }
+                }
+                //방 없으면 새로 만들기
+                room2vs2.add(new Room2vs2(session, jObject.get("room_seq").toString(), Integer.parseInt(jObject.get("user_seq").toString())));
+                break;
             case "heart_1":
                 log.info("하트 버튼 클릭 요청");
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
                     try {
                         sendLike(roomcnt, session, UKNOWME);
-                    } catch (IndexOutOfBoundsException e ) {
+                    } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+                }
+                break;
+            case "heart_2":
+                log.info("하트 버튼 클릭 요청");
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    try {
+                        sendLike2(roomcnt, session, UKNOWME);
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
                         log.info("웹소켓이 이미 닫혔습니다");
                     }
                 }
                 break;
             case "balance_q_request_1":
                 log.info("밸런스 게임 요청");
+
                 String balance_q_request_tmp = String.format("{\n" +
                                 "\t\"key\" : \"balance_q_response_1\",\n" +
                                 "\t\"question\" :\"%s\",\n" +
@@ -76,11 +105,33 @@ public class ChatHandler extends TextWebSocketHandler {
                         sendUserMessage(roomcnt, session, balance_q_request_msg);
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         log.info("웹소켓이 이미 닫혔습니다");
                     }
                 }
                 break;
+            case "balance_q_request_2":
+                log.info("밸런스 게임 요청");
+                String balance_q_request_tmp2 = String.format("{\n" +
+                                "\t\"key\" : \"balance_q_response_1\",\n" +
+                                "\t\"question\" :\"%s\",\n" +
+                                "\t\"answer1\" : \"%s\",\n" +
+                                "\t\"answer2\" : \"%s\"\n" +
+                                "}", jObject.get("question").toString(),
+                        jObject.get("answer1").toString(),
+                        jObject.get("answer2").toString());
+                TextMessage balance_q_request_msg2 = new TextMessage(balance_q_request_tmp2);
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    try {
+                        sendUserMessage2(roomcnt, session, balance_q_request_msg2);
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+                }
+                break;
+
             case "balance_a_request_1":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp = String.format("{\n" +
@@ -94,11 +145,33 @@ public class ChatHandler extends TextWebSocketHandler {
                         sendUserMessage(roomcnt, session, balance_a_request_msg);
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         log.info("웹소켓이 이미 닫혔습니다");
                     }
-
+                    break;
                 }
+
+                break;
+            case "balance_a_request_2":
+                log.info("밸런스 게임 답 요청");
+                String balance_a_request_tmp2 = String.format("{\n" +
+                        "\t\"key\" : \"balance_q_response_1\",\n" +
+                        "\t\"answer\" : \"%s\",\n" +
+                        "}", jObject.get("answser").toString());
+                TextMessage balance_a_request_msg2 = new TextMessage(balance_a_request_tmp2);
+
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    try {
+                        sendUserMessage2(roomcnt, session, balance_a_request_msg2);
+                        break;
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+                    break;
+                }
+                break;
             case "keyword_helper_request_1":
                 log.info("키워드 헬퍼 요청");
                 String keyword_helper_tmp = String.format("{\n" +
@@ -112,11 +185,93 @@ public class ChatHandler extends TextWebSocketHandler {
                         sendUserMessage(roomcnt, session, keyword_helper_response_msg);
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         log.info("웹소켓이 이미 닫혔습니다");
                     }
 
                 }
+                break;
+
+            case "keyword_helper_request_2":
+                log.info("키워드 헬퍼 요청");
+                String keyword_helper_tmp2 = String.format("{\n" +
+                        "\t\"key\" : \"balance_q_response_1\",\n" +
+                        "\t\"keyword\" : \"%s\",\n" +
+                        "}", jObject.get("keyword").toString());
+                TextMessage keyword_helper_response_msg2 = new TextMessage(keyword_helper_tmp2);
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    try {
+
+                        sendUserMessage2(roomcnt, session, keyword_helper_response_msg2);
+                        break;
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+
+                }
+                break;
+            case "users_seq_request_1":
+                log.info("방안의 유저 정보 요청");
+
+
+                for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
+                    try {
+                        if (session.equals(room1vs1.get(roomcnt).getUser1Session()) | session.equals(room1vs1.get(roomcnt).getUser2Session())) {
+                            String users_seq_response_tmp = String.format("{\n" +
+                                    "\t\"key\" : \"users_seq_response\",\n" +
+                                    "\t\"user1_seq\" : \"%s\",\n" +
+                                    "\t\"user2_seq\" : \"%s\",\n" +
+                                    "}", room1vs1.get(roomcnt).getUser1Seq(), room1vs1.get(roomcnt).getUser2Seq());
+                            TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
+                            session.sendMessage(users_seq_response_msg);
+                            break;
+                        }
+
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+
+                }
+                break;
+
+            case "users_seq_request_2":
+                log.info("방안의 유저 정보 요청");
+
+                log.info("주의사항 : 무조건 4명 다 들어와있는 처음에 요청해야 합니다");
+                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+                    try {
+
+                        if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(0).getSession()) |
+                                session.equals(room2vs2.get(roomcnt).getUserInfos().get(1).getSession()) |
+                                session.equals(room2vs2.get(roomcnt).getUserInfos().get(2).getSession()) |
+                                session.equals(room2vs2.get(roomcnt).getUserInfos().get(3).getSession())) {
+                            String users_seq_response_tmp = String.format("{\n" +
+                                            "\t\"key\" : \"users_seq_response\",\n" +
+                                            "\t\"user1_seq\" : \"%s\",\n" +
+                                            "\t\"user2_seq\" : \"%s\",\n" +
+                                            "\t\"user3_seq\" : \"%s\",\n" +
+                                            "\t\"user4_seq\" : \"%s\",\n" +
+
+                                            "}", room2vs2.get(roomcnt).getUserInfos().get(0).getSeq()
+                                    , room2vs2.get(roomcnt).getUserInfos().get(1).getSeq()
+                                    , room2vs2.get(roomcnt).getUserInfos().get(2).getSeq()
+                                    , room2vs2.get(roomcnt).getUserInfos().get(3).getSeq());
+                            TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
+                            session.sendMessage(users_seq_response_msg);
+                            break;
+
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        log.info("리스트를 벗어나 버렸습니다.");
+                    } catch (IllegalStateException e) {
+                        log.info("웹소켓이 이미 닫혔습니다");
+                    }
+                }
+                break;
         }
     }
 
@@ -145,20 +300,45 @@ public class ChatHandler extends TextWebSocketHandler {
                         log.info("이미 나간 사람에게는 메세지가 가지 않습니다");
                     }
                     room1vs1.remove(roomcnt);
-                    log.info("방ㅂㅂ " + room1vs1.toString());
+                    log.info("방이 사라졌습니다" + room1vs1.toString());
                 }
             } catch (NullPointerException e) {
                 log.info("한사람한테만 보냈습니다");
             }
         }
+
+        for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+            try {
+                for (int userCnt = 0; userCnt < (room2vs2.get(roomcnt).getUserInfos().size()); userCnt++) {
+                    try {
+                        if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(userCnt).getSession())) {
+
+                            log.info(room2vs2.get(roomcnt).getUserInfos().get(userCnt));
+                            room2vs2.get(roomcnt).getUserInfos().remove(userCnt);
+                            log.info("유저가 나갔습니다 " + room1vs1.toString());
+                            if (room2vs2.get(roomcnt).getUserInfos().size() == 0) {
+                                room2vs2.remove(roomcnt);
+                                log.info("방이 사라졌습니다 " + room1vs1.toString());
+                            }
+                        }
+                    } catch (IllegalStateException i) {
+                        log.info("이미 나간 사람에게는 메세지가 가지 않습니다");
+                    }
+                }
+            } catch (NullPointerException e) {
+                log.info("한사람한테만 보냈습니다");
+            } catch (IndexOutOfBoundsException e) {
+                log.info("이미 나간 사람한테는 메세지가 가지 않습니다.");
+            }
+        }
+        log.info(session + " 클라이언트 접속 해제");
+
     }
 
     public void sendLike(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException {
-        System.out.println("하트눌림0");
         if (session.equals(room1vs1.get(roomcnt).getUser1Session())) {
             room1vs1.get(roomcnt).setUser1Like(true);
             if (room1vs1.get(roomcnt).isUser2Like() == true) {
-                System.out.println("하트눌림1");
                 room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
                 room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
                 return;
@@ -166,13 +346,36 @@ public class ChatHandler extends TextWebSocketHandler {
         } else {
             room1vs1.get(roomcnt).setUser2Like(true);
             if (room1vs1.get(roomcnt).isUser1Like() == true) {
-                System.out.println("하트눌림2");
                 room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
                 room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
                 return;
             }
         }
     }
+
+    public void sendLike2(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException {
+        for (int userCnt = 0; userCnt < PEOPLE_NUM_2VS2; userCnt++) {
+            if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(userCnt).getSession())) {
+                room2vs2.get(roomcnt).getUserInfos().get(userCnt).setLike(true);
+                int likeCnt = 0;
+                try {
+                    for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
+                        if (room2vs2.get(roomcnt).getUserInfos().get(i).isLike()) likeCnt++;
+
+                    }
+                } catch (Exception e) {
+                    log.info("아직 모든 인원이 차지 않았습니다");
+                }
+                if (likeCnt == PEOPLE_NUM_2VS2) {
+                    for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
+                        room2vs2.get(i).getUserInfos().get(userCnt).getSession().sendMessage(msg);
+                    }
+                }
+            }
+        }
+
+    }
+
 
     public void sendRoomMessage(int roomcnt, TextMessage msg) throws IOException, IllegalStateException {
         room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
@@ -185,6 +388,13 @@ public class ChatHandler extends TextWebSocketHandler {
             room1vs1.get(roomcnt).getUser2Session().sendMessage(msg); //2한테 메세지 보내기
         } else {//자기가 2라면
             room1vs1.get(roomcnt).getUser1Session().sendMessage(msg); //1한테 메세지 보내기
+        }
+    }
+
+    public void sendUserMessage2(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException, IllegalStateException {
+        for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
+            if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(i).getSession())) continue;
+            room2vs2.get(roomcnt).getUserInfos().get(i).getSession().sendMessage(msg);
         }
     }
 }
