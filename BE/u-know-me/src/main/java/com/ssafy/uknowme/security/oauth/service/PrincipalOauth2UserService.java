@@ -42,15 +42,31 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
         ProviderType providerType = ProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
-        OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, (Map<String, Object>) user.getAttributes().get("response"));
+        Member member = null;
+        if (providerType.equals(ProviderType.NAVER)) {
+            OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, (Map<String, Object>) user.getAttributes().get("response"));
 
-        String tel = userInfo.getMobile().replaceAll("-", "");
+            String tel = userInfo.getMobile().replaceAll("-", "");
 
-        Member member = memberRepository.findByTel(tel)
-                .orElseGet(() -> Member.builder()
-                        .id("empty")
-                        .password("empty")
-                        .build());
+            member = memberRepository.findByTel(tel)
+                    .orElseGet(() -> Member.builder()
+                            .id("empty")
+                            .password("empty")
+                            .build());
+        } else {
+            OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, (Map<String, Object>) user.getAttributes().get("kakao_account"));
+
+            String birthday = userInfo.getBirthday();
+
+            System.out.println(user.getAttributes());
+            System.out.println(birthday);
+
+            member = memberRepository.findByBirthday(birthday)
+                    .orElseGet(() -> Member.builder()
+                            .id("empty")
+                            .password("empty")
+                            .build());
+        }
 
         return new PrincipalDetails(member, user.getAttributes());
     }

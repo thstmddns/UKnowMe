@@ -13,12 +13,17 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
 
     @Override
     public String getProviderId() {
-        return null;
+        return (String) attributes.get("id");
     }
 
     @Override
     public String getProvider() {
-        return null;
+        return "KAKAO";
+    }
+
+    @Override
+    public String getBirthday() {
+        return (String) attributes.get("birthday");
     }
 
     @Override

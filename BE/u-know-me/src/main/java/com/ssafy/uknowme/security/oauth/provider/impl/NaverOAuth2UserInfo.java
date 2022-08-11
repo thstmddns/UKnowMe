@@ -23,6 +23,11 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     }
 
     @Override
+    public String getBirthday() {
+        return null;
+    }
+
+    @Override
     public String getMobile() {
         return (String) attributes.get("mobile");
     }
