@@ -69,7 +69,7 @@
       />
       <div id="naver_id_login"></div>
       <input
-        @click="naverTokenSave()"
+        @click="account.naverLogin()"
         type="text"
         id="aT"
         style="display: none"
@@ -91,17 +91,11 @@ import { ref, onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 import { useLandStore } from "@/stores/land/land";
 
-const client_id = "5OSOWuXn6DTVQB4_h5Pc";
+const client_id = "YQdwIoQRJWLg8GBYAaZq";
 const callbackUrl = "http://localhost:8080/ntpu";
 
 export default {
   name: "SignIn",
-  methods: {
-    naverTokenSave() {
-      this.account.snsToken.naver = document.getElementById("aT").value;
-      this.account.naverLogin();
-    },
-  },
   setup() {
     const account = useAccountStore();
     const land = useLandStore();
