@@ -100,22 +100,17 @@ export const useAccountStore = defineStore('account', {
       router.push({ name: 'home' })
     },
     socialLogin(sns) {
+      const land = useLandStore()
       if (sns === 'naver') {
-        const snT = cookies.get('snT')
-        console.log(snT);
-        axios({
-          url: sr.members.naverLogin(),
-          method: 'post',
-          headers: { 
-            Authorization: `Bearer ${snT}`,
-          }
-        })
-          .then((res) => {
-            console.log(res)
-          })
-          .error(err => {
-            console.error(err.response)
-          })
+        const access_token = cookies.get('access_token')
+        const refresh_token = cookies.get('refresh_token')
+        this.saveToken(access_token, refresh_token)
+        if (access_token) {
+          router.push({ name: 'main' })
+        } else {
+          alert('회원가입을 먼저 해주세요.')
+          land.btnCh = 2
+        }
       } else if (sns === 'kakao') {
         const skT = cookies.get('skT')
         console.log(skT);
@@ -136,6 +131,19 @@ export const useAccountStore = defineStore('account', {
     },
     naverLogin() {
       this.socialLogin('naver')
+      // // popup
+      // const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver'
+      // function getTelPopupFeatures() {
+      // var popupWidth = 480;
+      // var popupHeight = 720;
+      // var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+      // var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+      // var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+      // var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+      // return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
+      // }
+      // // !popup
+      // window.open(REIDRECT_URL, '네이버로그인', getTelPopupFeatures());
     },
      kakaoLogin() {
       const self = this
