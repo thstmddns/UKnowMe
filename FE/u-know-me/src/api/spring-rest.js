@@ -1,4 +1,4 @@
-const HOST = 'http://uknowme.mooo.com:8080/'
+const HOST = 'https://uknowme.mooo.com:8443/'
 
 const MEMBERS = 'member/'
 const MACHINGS = 'maching/'
@@ -10,6 +10,8 @@ const NOTICES = 'notice/'
 export default {
   members: {
     member: () => HOST + 'member',
+    members: () => HOST + MEMBERS + 'list',
+    memberDetail: memberSeq => HOST + MEMBERS + `${memberSeq}`,
     login: () => HOST + MEMBERS + 'login',
     // logout: () => HOST + MEMBERS + 'logout',
     signup: () => HOST + MEMBERS + 'join',
@@ -53,6 +55,5 @@ export default {
     notices: () => HOST + NOTICES + 'list',
     notice: noticeSeq => HOST + NOTICES + `${noticeSeq}`,
     save: () => HOST + NOTICES + 'create',
-
   }
 }

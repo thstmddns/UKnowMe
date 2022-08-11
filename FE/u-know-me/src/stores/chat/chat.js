@@ -23,6 +23,7 @@ export const useChatStore = defineStore('chat', {
     camera2: null,
     videoDevices: null,
     jsonData: null,
+    SessionName : "SessionA",
   }),
   getters: {
 
@@ -425,7 +426,7 @@ export const useChatStore = defineStore('chat', {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
-      const webSocket = new WebSocket("ws://uknowme.mooo.com:8080/ws/chat");
+      const webSocket = new WebSocket("wss://uknowme.mooo.com:8443/ws/chat");
 
       this.webSocket = webSocket;
       let toCam = this.toCam;
