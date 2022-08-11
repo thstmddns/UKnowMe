@@ -104,7 +104,9 @@ export const useAccountStore = defineStore('account', {
         })
     },
     logout() {
+      const main = useMainStore()
       this.removeToken()
+      main.$reset()
       router.push({ name: 'home' })
     },
     socialLogin(sns) {
