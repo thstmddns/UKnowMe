@@ -13,13 +13,16 @@ import NowAvatar from "@/components/main/NowAvatar.vue";
 import ButtonList from "@/components/main/ButtonList.vue";
 import MainModal from "@/components/main/MainModal.vue";
 import { useMainStore } from "@/stores/main/main";
+import { useAccountStore } from '@/stores/land/account';
 
 export default {
   name: "MainPage",
   components: { AvatarSelect, NowAvatar, ButtonList, MainModal },
   setup() {
     const main = useMainStore();
-    return { main };
+    const account = useAccountStore();
+    account.fetchCurrentUser();
+    return { main, account };
   },
 };
 </script>
