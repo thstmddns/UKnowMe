@@ -1,13 +1,16 @@
 package com.ssafy.uknowme.web.service;
 
 import com.ssafy.uknowme.model.dto.MemberDto.*;
+import com.ssafy.uknowme.web.domain.Avatar;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
+import com.ssafy.uknowme.web.repository.AvatarRepository;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository repository;
 
+    private final AvatarRepository avatarRepository;
+
 
     @Override
     public boolean join(MemberJoinRequestDto dto) {
@@ -40,8 +45,11 @@ public class MemberServiceImpl implements MemberService {
 
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+        Avatar avatar = initAvatar(dto);
+
         Member member = Member.builder()
                 .id(dto.getId())
+                .avatar(avatar)
                 .password(encoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .nickname(dto.getNickname())
@@ -56,6 +64,14 @@ public class MemberServiceImpl implements MemberService {
         repository.save(member);
 
         return true;
+    }
+
+    private Avatar initAvatar(MemberJoinRequestDto dto) {
+        if (dto.getGender().equals("M")) {
+            return avatarRepository.findById(4).orElseThrow(IllegalStateException::new);
+        } else {
+            return avatarRepository.findById(1).orElseThrow(IllegalAccessError::new);
+        }
     }
 
     @Override
@@ -185,6 +201,30 @@ public class MemberServiceImpl implements MemberService {
         ManageMemberInfoResponseDto dto = repository.findManageMemberInfoResponseDto(LocalDateTime.now().minusDays(7), seq).orElseThrow(IllegalStateException::new);
 
         return dto;
+    }
+
+    @Override
+    public void changeAvatar(ChangeAvatarDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User principal = (User) authentication.getPrincipal();
+
+        String id = principal.getUsername();
+
+        Member member = repository.findById(id).orElseThrow(IllegalStateException::new);
+
+        Avatar avatar = avatarRepository.findById(dto.getAvatarSeq()).orElseThrow(IllegalStateException::new);
+
+        member.changeAvatar(avatar);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDto dto) {
+        Member member = repository.findById(dto.getId()).orElseThrow(IllegalStateException::new);
+
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        member.changePassword(encoder.encode(dto.getChangePassword()));
     }
 }
 

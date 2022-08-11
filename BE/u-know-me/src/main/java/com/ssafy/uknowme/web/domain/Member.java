@@ -119,11 +119,12 @@ public class Member extends BaseEntity {
     private LocalDateTime reportLastDate;
 
     @Builder
-    public Member(int seq, String id, String password, String name, String nickname,
+    public Member(int seq, String id, Avatar avatar, String password, String name, String nickname,
                   String gender, String birth, String tel, String smoke, String address,
                   Role role, String naverId, String kakaoId, int matchCount) {
         this.seq = seq;
         this.id = id;
+        this.avatar = avatar;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
@@ -141,6 +142,14 @@ public class Member extends BaseEntity {
     public void updateMember(MemberUpdateDto dto) {
         this.smoke = dto.getSmoke();
         this.address = dto.getAddress();
+    }
+
+    public void changeAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 
     public void updateReport(ReportState state){

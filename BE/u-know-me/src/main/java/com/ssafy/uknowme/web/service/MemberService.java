@@ -27,4 +27,8 @@ public interface MemberService {
     List<ManageMemberInfoResponseDto> getMemberList();
 
     ManageMemberInfoResponseDto getMemberBySeq(int seq);
+
+    void changeAvatar(ChangeAvatarDto dto);
+
+    void changePassword(ChangePasswordDto dto);
 }

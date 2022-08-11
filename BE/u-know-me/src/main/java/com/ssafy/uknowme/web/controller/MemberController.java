@@ -59,6 +59,29 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value="아바타 변경 API", notes="사용자가 착용 아바타를 변경할 때 사용하는 API입니다.")
+    @PutMapping("/avatar")
+    public ResponseEntity<?> changeAvatar(@RequestBody ChangeAvatarDto dto) {
+        try {
+            memberService.changeAvatar(dto);
+            return new ResponseEntity<>("true", HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>("false", HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value="비밀번호 변경 API", notes="전화번호 인증 후 비밀번호를 변경할 때 사용하는 API입니다.")
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto dto) {
+        try {
+            memberService.changePassword(dto);
+            return new ResponseEntity<>("true", HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>("false", HttpStatus.OK);
+
+        }
+    }
+
     @ApiOperation(value="멤버 정보 조회 API", notes="사용자 정보를 조회할 때 사용하는 API입니다. 로그인해야 사용할 수 있습니다.")
     @GetMapping
     public ResponseEntity<?> getMemberInfo() {
