@@ -4,6 +4,8 @@ import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.web.domain.Notice;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class NoticeResponseDto {
 
@@ -11,6 +13,8 @@ public class NoticeResponseDto {
     private MemberInfoResponseDto member;
     private String title;
     private String content;
+
+    private LocalDateTime createDate;
 
     public NoticeResponseDto(Notice entity) {
         MemberInfoResponseDto dto = new MemberInfoResponseDto();
@@ -20,6 +24,6 @@ public class NoticeResponseDto {
         this.member = dto;
         this.title = entity.getTitle();
         this.content = entity.getContent();
-
+        this.createDate = entity.getCreateDate();
     }
 }

@@ -1,11 +1,8 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
-import com.ssafy.uknowme.model.dto.MemberDto.ValidatePasswordRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.*;
+
+import java.util.List;
 
 public interface MemberService {
 
@@ -26,4 +23,8 @@ public interface MemberService {
     boolean validatePassword(ValidatePasswordRequestDto dto);
 
     FindIdResponseDto findId(FindIdRequestDto dto);
+
+    List<ManageMemberInfoResponseDto> getMemberList();
+
+    ManageMemberInfoResponseDto getMemberBySeq(int seq);
 }

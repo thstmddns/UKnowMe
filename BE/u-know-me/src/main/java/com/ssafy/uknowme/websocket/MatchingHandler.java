@@ -245,8 +245,8 @@ public class MatchingHandler extends TextWebSocketHandler {
 
         //옵션 조건 체크
         for (int i = 0; i < user1.getOptions().length; i++) {
-            if (user1.getMatchingoptions()[i] == 2 & user2.getOptions()[i] == 1) return false;
-            if (user1.getMatchingoptions()[i] == 1 & user2.getOptions()[i] == 2) return false;
+            if (user1.getMatchingOptions()[i] == 2 & user2.getOptions()[i] == 1) return false;
+            if (user1.getMatchingOptions()[i] == 1 & user2.getOptions()[i] == 2) return false;
         }
         return true;
     }

@@ -39,11 +39,7 @@ public class User2vs2 {
         this.gender = jObject.getString("gender").charAt(0);
         this.maxAge = Integer.parseInt(jObject.getString("maxAge"));
         this.minAge = Integer.parseInt(jObject.getString("minAge"));
-        String birthYear = (jObject.getString("birth"));
-        birthYear = birthYear.substring(0,4);
-        LocalDate now = LocalDate.now();
-        int nowYear = now.getYear();
-        this.age = nowYear-Integer.parseInt(birthYear)+1;
+        this.age = Integer.parseInt(jObject.getString("age"));
         this.lat = Double.parseDouble(jObject.getString("lat"));
         this.lon = Double.parseDouble(jObject.getString("lon"));
         this.session = session;

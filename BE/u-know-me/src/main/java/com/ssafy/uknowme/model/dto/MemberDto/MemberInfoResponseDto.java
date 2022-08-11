@@ -2,8 +2,11 @@ package com.ssafy.uknowme.model.dto.MemberDto;
 
 
 import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.enums.ReportState;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,6 +21,12 @@ public class MemberInfoResponseDto {
     private String smoke;
     private String address;
 
+    private ReportState reportState;
+
+    private LocalDateTime createDate;
+
+    private LocalDateTime updateDate;
+
     public void convertFromEntity(Member member) {
         this.seq = member.getSeq();
         this.id = member.getId();
@@ -28,5 +37,8 @@ public class MemberInfoResponseDto {
         this.tel = member.getTel();
         this.smoke = member.getSmoke();
         this.address = member.getAddress();
+        this.reportState = member.getReportState();
+        this.createDate = member.getCreateDate();
+        this.updateDate = member.getUpdateDate();
     }
 }

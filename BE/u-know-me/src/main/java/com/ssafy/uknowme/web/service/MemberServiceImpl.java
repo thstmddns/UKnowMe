@@ -1,11 +1,6 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberJoinRequestDto;
-import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
-import com.ssafy.uknowme.model.dto.MemberDto.ValidatePasswordRequestDto;
+import com.ssafy.uknowme.model.dto.MemberDto.*;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import com.ssafy.uknowme.web.repository.MemberRepository;
@@ -18,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -176,6 +173,18 @@ public class MemberServiceImpl implements MemberService {
         responseDto.setId(member.getId());
 
         return responseDto;
+    }
+
+    @Override
+    public List<ManageMemberInfoResponseDto> getMemberList() {
+        return repository.findManageMemberInfoResponseDtoList(LocalDateTime.now().minusDays(7));
+    }
+
+    @Override
+    public ManageMemberInfoResponseDto getMemberBySeq(int seq) {
+        ManageMemberInfoResponseDto dto = repository.findManageMemberInfoResponseDto(LocalDateTime.now().minusDays(7), seq).orElseThrow(IllegalStateException::new);
+
+        return dto;
     }
 }
 

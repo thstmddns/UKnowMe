@@ -1,14 +1,13 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdResponseDto;
 import com.ssafy.uknowme.model.dto.MemberDto.*;
-import com.ssafy.uknowme.model.dto.MemberDto.FindIdRequestDto;
 import com.ssafy.uknowme.web.exception.BadRequestException;
 import com.ssafy.uknowme.web.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +65,27 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMemberInfo(), HttpStatus.OK);
     }
 
-    @ApiOperation(value="비밀번호 검증 API", notes="비밀번호를 검증할 때 사용하는 API입니다. 마찬가지로 로그인해야 사용할 수 있습니다.")
+    @ApiOperation(value="멤버 전체 리스트 조회 API", notes="관리자가 멤버 전체 리스트를 조회할 때 사용하는 API입니다. 로그인해야 사용할 수 있습니다. 관리자만 사용할 수 있습니다.")
+    @GetMapping("/list")
+    @Secured("ROLE_MANAGER")
+    public ResponseEntity<?> getMemberList() {
+        for (ManageMemberInfoResponseDto dto : memberService.getMemberList()) {
+            System.out.println(dto);
+        }
+        return new ResponseEntity<>(memberService.getMemberList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{memberSeq}")
+    @Secured("ROLE_MANAGER")
+    public ResponseEntity<?> getMemberBySeq(@PathVariable int memberSeq) {
+        try {
+            return new ResponseEntity<>(memberService.getMemberBySeq(memberSeq), HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value="비밀번호 검증 API", notes="비밀번호를 검증할 때 사용하는 API입니다. 로그인해야 사용할 수 있습니다.")
     @PostMapping("/validate/password")
     public ResponseEntity<?> validatePassword(@RequestBody ValidatePasswordRequestDto dto) {
         return new ResponseEntity<>(memberService.validatePassword(dto), HttpStatus.OK);
