@@ -24,7 +24,7 @@ public interface MemberService {
 
     FindIdResponseDto findId(FindIdRequestDto dto);
 
-    List<MemberInfoResponseDto> getMemberList();
+    List<ManageMemberInfoResponseDto> getMemberList();
 
-    MemberInfoResponseDto getMemberBySeq(int seq);
+    ManageMemberInfoResponseDto getMemberBySeq(int seq);
 }
