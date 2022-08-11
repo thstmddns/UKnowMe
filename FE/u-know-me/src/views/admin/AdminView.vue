@@ -44,7 +44,7 @@
 <script>
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '@/stores/admin/admin'
-import AdminMember from '@/components/admin/AdminMember.vue'
+import AdminMember from '@/components/admin/member/AdminMember.vue'
 import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
 import AdminBalance from '@/components/admin/balance/AdminBalance.vue'

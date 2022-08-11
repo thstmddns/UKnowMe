@@ -4,9 +4,10 @@
         <div class="close-btn" @click="noticeBtn = 0">
           <i class="fa-solid fa-xmark x-btn"></i>
         </div>
-        <div>
+        <div class="modal-content">
           <notice-detail v-if="noticeBtn == 1"/>
           <notice-edit v-if="noticeBtn == 2"/>
+          <member-detail v-if="noticeBtn == 3"/>
         </div>
       </div>
     </div>
@@ -17,11 +18,12 @@ import { storeToRefs } from "pinia"
 import { useAdminStore } from "@/stores/admin/admin"
 import NoticeDetail from '@/components/admin/notice/NoticeDetail.vue'
 import NoticeEdit from '@/components/admin/notice/NoticeEdit.vue'
+import MemberDetail from '@/components/admin/member/MemberDetail.vue'
 
 export default {
   name: "NoticForm",
   components: {
-    NoticeDetail, NoticeEdit,
+    NoticeDetail, NoticeEdit, MemberDetail,
   },
   setup() {
     const admin = useAdminStore()
@@ -56,5 +58,12 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.modal-content {
+  width: 100%;
+  height: 100%;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 </style>

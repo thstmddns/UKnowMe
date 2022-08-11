@@ -10,20 +10,55 @@ export const useAdminStore = defineStore('admin', {
     noticeFormBtn: false,
     noticeBtn: 0,
     notices: [],
-    notice: {}
+    notice: {},
+    members: [],
+    member: {},
   }),
   getters: {
 
   },
   actions: {
+    fetchMembers() {
+      const account = useAccountStore()
+      axios({
+        url: sr.members.members(),
+        method: 'get',
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.members = res.data
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+
+    fetchMember(memberSeq) {
+      const account = useAccountStore()
+      axios({
+        url: sr.members.memberDetail(memberSeq),
+        method: 'get',
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.member = res.data
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+
     fetchNotices() {
+      const account = useAccountStore()
       axios({
         url: sr.notices.notices(),
         method: 'get',
-        params: {  }
+        headers: account.authHeader,
       })
         .then(res => {
-          console.log(res);
+          console.log(res.data);
           this.notices = res.data
         })
         .catch(err => {
@@ -32,11 +67,9 @@ export const useAdminStore = defineStore('admin', {
     },
 
     fetchNotice(noticeSeq) {
-
       axios({
         url: sr.notices.notice(noticeSeq),
         method: 'get',
-        params: {  }
       })
         .then(res => {
           console.log(res);
