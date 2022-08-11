@@ -69,6 +69,9 @@ public class MemberController {
     @GetMapping("/list")
     @Secured("ROLE_MANAGER")
     public ResponseEntity<?> getMemberList() {
+        for (ManageMemberInfoResponseDto dto : memberService.getMemberList()) {
+            System.out.println(dto);
+        }
         return new ResponseEntity<>(memberService.getMemberList(), HttpStatus.OK);
     }
 
