@@ -16,12 +16,12 @@
         <tbody class="member-table-content">
           <tr v-for="(member, num) in admin.members" :key="num">
             <td class="num">{{num}}</td>
-            <td>{{member.name}}</td>
+            <td class="member-info-active" @click="goDetail(num)">{{member.name}}</td>
             <td>{{member.gender}}</td>
             <td>{{member.id}}</td>
             <td>{{member.createDate.slice(0, 10)}}</td>
-            <td>신고 누적 횟수</td>
-            <td>계정 상태</td>
+            <td>{{member.accusedCount}}</td>
+            <td><div class="warning-btn"></div></td>
           </tr>
         </tbody>
       </table>
@@ -40,6 +40,12 @@ export default {
       admin,
     }
   },
+  methods: {
+    goDetail(num) {
+      this.admin.noticeBtn = 3
+      this.admin.member = this.admin.members[num]
+    }
+  }
 }
 </script>
 
@@ -66,5 +72,17 @@ export default {
 .member-table-content::-webkit-scrollbar-thumb {
   background: #c1c3fc;
   border-radius: 10px;
+}
+.warning-btn {
+  width: 0px;
+  height: 0px;
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-bottom: 20px solid red;
+}
+.member-info-active:hover {
+  background-color: #f0f1ff;
+  cursor: pointer;
+  font-weight: 600;
 }
 </style>
