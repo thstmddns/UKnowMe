@@ -23,7 +23,7 @@
             />
           </p>
           <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">
+            <button class="btn btn-lg btn-success" id="joinBtn" @click="joinSession()">
               Join!
             </button>
           </p>
@@ -64,6 +64,8 @@ import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
 import { useChatStore } from "@/stores/chat/chat";
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+import { useAccountStore } from "@/stores/land/account";
 
 import ChatSomething from "@/components/chat/ChatSomething";
 
@@ -82,7 +84,10 @@ export default {
   },
 
   setup() {
+    const account = useAccountStore();
     const chat = useChatStore();
+    account.fetchCurrentUser();
+
     let {
       OV,
       session,
@@ -90,10 +95,16 @@ export default {
       publisher,
       subscribers,
       videoDevices,
+      SessionName,
     } = storeToRefs(chat);
     chat.socketConnect();
 
+    onMounted(() => {
+      document.getElementById("joinBtn").click();
+    });
+
     return {
+      account,
       chat,
       OV,
       session,
@@ -101,13 +112,14 @@ export default {
       publisher,
       subscribers,
       videoDevices,
+      SessionName,
     };
   },
 
   data() {
     return {
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: this.SessionName,
+      myUserName: this.account.currentUser.nickname,
     };
   },
   methods: {
@@ -156,9 +168,8 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            
             var avatarVideo = chat.avatarLoad();
-            
+
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
