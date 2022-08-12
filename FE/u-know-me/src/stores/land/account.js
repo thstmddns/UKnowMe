@@ -33,7 +33,7 @@ export const useAccountStore = defineStore('account', {
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
-    authHeader: state => ({ 
+    authHeader: state => ({
       Authorization: `Bearer ${state.a_token}`,
       refreshToken: state.r_token
     }),
@@ -62,30 +62,30 @@ export const useAccountStore = defineStore('account', {
     signup(credentials, birth) {
       const land = useLandStore()
       if (birth.day.length === 1) {
-        birth.day = '0'+ birth.day
+        birth.day = '0' + birth.day
       }
-      credentials.birth = birth.year.slice(-2) + birth.month + birth.day
-      console.log('회원가입', {...credentials})
+      credentials.birth = birth.year + birth.month + birth.day
+      console.log('회원가입', { ...credentials })
       axios({
         url: sr.members.signup(),
         method: 'post',
-        data: {...credentials}
+        data: { ...credentials }
       })
         .then(res => {
           console.log(res);
           alert('회원가입이 완료되었습니다. 새로운 환경에서 로그인 해주세요.')
-          land.btnCh=1
+          land.btnCh = 1
         })
         .catch(err => {
           console.error(err.response.data)
         })
     },
     login(credentials) {
-      console.log({...credentials})
+      console.log({ ...credentials })
       axios({
         url: sr.members.login(),
         method: 'post',
-        data: {...credentials},
+        data: { ...credentials },
         withCredentials: true,
       })
         .then(res => {
@@ -105,7 +105,8 @@ export const useAccountStore = defineStore('account', {
     },
     logout() {
       this.removeToken()
-      router.push({ name: 'home' })
+      router.reload();
+      // router.push({ name: 'home' })
     },
     socialLogin(sns) {
       if (sns === 'naver') {
@@ -129,20 +130,20 @@ export const useAccountStore = defineStore('account', {
       //     console.error(err.response)
       //   })
     },
-     kakaoLogin() {
+    kakaoLogin() {
       const self = this
       const js_key = "29f50216ed786d04f88f2f1aafdd49cc"
       const Kakao = window.Kakao
       Kakao.init(js_key);
       function loginWithKakao() {
         Kakao.Auth.login({
-          success: function(authObj) {
+          success: function (authObj) {
             // alert(JSON.stringify(authObj))
             cookies.set('skT', authObj.access_token, `${authObj.expires_in}s`)
             self.snsToken.kakao = authObj.access_token
             self.socialLogin('kakao')
           },
-          fail: function(err) {
+          fail: function (err) {
             alert(JSON.stringify(err))
           },
         })
@@ -163,10 +164,10 @@ export const useAccountStore = defineStore('account', {
     },
     findId(credentials) {
       const land = useLandStore()
-       axios({
+      axios({
         url: sr.members.findId(),
         method: 'get',
-        params: {...credentials},
+        params: { ...credentials },
       })
         .then((res) => {
           this.findUserId = res.data.id
@@ -178,7 +179,7 @@ export const useAccountStore = defineStore('account', {
         })
     },
     findPassword(credentials) {
-      console.log({...credentials})
+      console.log({ ...credentials })
       //  axios({
       //   url: sr.accounts.findPassword(),
       //   method: 'post',
@@ -225,7 +226,7 @@ export const useAccountStore = defineStore('account', {
         })
     },
     certificatePassword(password) {
-      console.log({password});
+      console.log({ password });
       const main = useMainStore()
       this.fetchCurrentUser()
       axios({
@@ -249,7 +250,7 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyCertificatePassword(password) {
-      console.log({password});
+      console.log({ password });
       axios({
         url: sr.members.validatePassword(),
         method: 'post',
@@ -266,12 +267,12 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyInform(credentials) {
-      console.log({...credentials});
+      console.log({ ...credentials });
       const main = useMainStore()
       axios({
         url: sr.members.update(),
         method: 'put',
-        data: {...credentials},
+        data: { ...credentials },
         headers: this.authHeader,
       })
         .then(res => {
@@ -343,13 +344,13 @@ export const useAccountStore = defineStore('account', {
         window.open(`http://localhost:8080/tc?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
       }
       function getTelPopupFeatures() {
-      var popupWidth = 480;
-      var popupHeight = 720;
-      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
-      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
-      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
-      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
-      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
+        var popupWidth = 480;
+        var popupHeight = 720;
+        var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+        var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+        var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+        var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+        return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
       }
       // !popup
       const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
