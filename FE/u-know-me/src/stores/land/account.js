@@ -82,6 +82,7 @@ export const useAccountStore = defineStore('account', {
       })
         .then(res => {
           console.log(res);
+          this.authError.login = 0
           const access_token = res.headers.authorization.split(' ')[1]
           const refresh_token = res.headers.temp
           this.saveToken(access_token, refresh_token)
@@ -90,11 +91,13 @@ export const useAccountStore = defineStore('account', {
           console.error(err)
           this.authError.login = 1
         })
-      await this.fetchCurrentUser()
-      if(this.currentUser.role === "ROLE_USER") {
-        router.push({ name: 'main' })
-      } else {
-        router.push({ name: 'admin' })
+      if (!this.authError.login) {
+        await this.fetchCurrentUser()
+        if(this.currentUser.role === "ROLE_USER") {
+          router.push({ name: 'main' })
+        } else {
+          router.push({ name: 'admin' })
+        }
       }
     },
     logout() {
