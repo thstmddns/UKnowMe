@@ -8,11 +8,11 @@
             <thead>
               <tr>
                 <th class="num">번호</th>
-                <th>밸런스 게임 제목</th>
-                <th>답1</th>
-                <th>답2</th>
-                <th>수정</th>
-                <th>삭제</th>
+                <th class="title">밸런스 게임 제목</th>
+                <th class="answer1">답1</th>
+                <th class="answer2">답2</th>
+                <th class="UD">수정</th>
+                <th class="UD">삭제</th>
               </tr>
             </thead>
           </table>
@@ -24,19 +24,17 @@
                 <td class="num">{{ i }}</td>
                 <td class="title">{{ list.question }}</td>
                 <td class="answer1">{{ list.answer1 }}</td>
-                <td class ="answer2">{{ list.answer2 }}</td>
-                <td>
-                  <button type="button" class="btn brn--modify" @click="admin.updateBalance(list.seq)">수정</button>
+                <td class="answer2">{{ list.answer2 }}</td>
+                <td class="UD">
+                  <button type="button" class="btn btn--modify" @click="aaa(i)">수정</button>
                 </td>
-                <td>
+                <td class="UD">
                   <button type="button" class="btn btn--modify" @click="admin.deleteBalance(list.seq)">삭제</button>
                 </td>
-                
-                <!-- <td class="balance-delete" @click="admin.deleteBalance(list.seq)">{{ list.createDate.slice(0, 10) }}&#160;&#160;&#160;<button class="delete-btn">삭제</button></td> -->
               </tr>
             </tbody>
           </table>
-            <div class="page_wrap">
+            <!-- <div class="page_wrap">
               <div class="page_nation">
                 <a href="#" class="active">1</a>
                 <a href="#">2</a>
@@ -49,11 +47,10 @@
                 <a href="#">9</a>
                 <a href="#">10</a>
               </div>
-            </div>
+            </div> -->
         </div>
       </div>
       <balance-form class="balance-add"/>
-      <balance-edit class="balance-add"/>
     </div>
   </div>
     
@@ -62,7 +59,8 @@
 <script>
 import BalanceForm from "@/components/admin/balance/BalanceForm.vue"
 import {useAdminStore} from "@/stores/admin/admin"
-import BalanceEdit from "@/components/admin/balance/BalanceEdit.vue"
+// import BalanceEdit from "@/components/admin/balance/BalanceEdit.vue"
+
 
 export default {
   name: "AdminBalance",
@@ -73,12 +71,44 @@ export default {
   },
   components: {
     BalanceForm,
-    BalanceEdit
+    // BalanceEdit,
+  },
+  methods: {
+    aaa(i) {
+      this.admin.noticeBtn = 4;
+      this.admin.balance = this.admin.balanceList[i]
+      console.log(this.admin.balance)
+    }
   },
 }
 </script>
 
 <style>
+.title { 
+  width: 40%;
+}
+.answer1 {
+  width: 20%;
+}
+.answer2 {
+  width: 20%;
+}
+.content {
+  width: 97%;
+}
+.btn--modify {
+  width: 90%;
+  border: 1px solid #c1c3fc;
+  border-radius: 10px;
+}
+.btn--modify:hover {
+  background-color: #c1c3fc;
+}
+
+.UD {
+  width: 20%;
+  padding: 0;
+}
 .balance-delete {
   display: flex;
   justify-content: space-between;
@@ -89,17 +119,6 @@ export default {
 }
 .updateBalance {
   width: 50;
-}
-.page_wrap {
-  position: absolute;
-	text-align:center;
-	font-size:0;
-  bottom: 5%;
-  left: 50%;
-  transform: translate(-50%, 0%);
- }
-.page_nation {
-	display:inline-block;
 }
 .balance {
   font-size: 30px;

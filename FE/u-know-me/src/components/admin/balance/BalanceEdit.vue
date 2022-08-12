@@ -1,59 +1,76 @@
 <template>
-  <div class="balance-edit">
-    <h1>밸런스 게임 수정</h1>
-    <form action="POST" @submit.prevent="admin.updateBalance(j, admin.balance.seq)">
-      <div>
-        <input type="text" class="balance-edit" v-model="j.question">
-        <input type="text" class="balance-edit" v-model="j.answer1">
-        <input type="text" class="balance-edit" v-model="j.answer2">
-
-        <!-- <input type="text" v-model="balanceValue.question" placeholder="question을 입력해주세요."/>
-        <input type="text" v-model="balanceValue.answer1" placeholder="answer1을 입력해주세요." />
-        <input type="text" v-model="balanceValue.answer2" placeholder="answer2를 입력해주세요."/> -->
+  <div class="balance-edit-container">
+    <form action="POST" @submit.prevent="admin.updateBalance(i, admin.balance.seq)">
+      <div class="balance-edit-group">
+        <input type="text" class="balance-edit-title" v-model="i.question">
       </div>
+      <div class="balance-edit-group">
+        <textarea class="balance-edit-content" v-model="i.answer1"></textarea>
+      </div>
+      <div class="balance-edit-group">
+        <textarea class="balance-edit-content" v-model="i.answer2"></textarea>
+      </div>
+      <div class="save-btn">
+        <button class="admin-btn balance-save-btn">저장</button>
+      </div>
+      <!-- <button class="admin-btn " @click="admin.balanceBtn = 2">수정</button> -->
 
-      <button class="admin-btn admin-balance-btn">저장</button>
     </form>
   </div>
 </template>
 
+
 <script>
-import { useAdminStore } from '@/stores/admin/admin'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from "pinia";
+import { useAdminStore } from "@/stores/admin/admin";
 import { ref } from "vue"
 
 export default {
-  name: "BalanceEdit",
+  name: "balanceForm",
   components: {},
   setup() {
     const admin = useAdminStore()
     const { balanceBtn } = storeToRefs(admin)
-    const j = ref({
+    const i = ref({
       question : admin.balance.question,
       answer1 : admin.balance.answer1,
-      answer2 : admin.balance.answer2,
+      answer2 : admin.balance.answer2
     })
     return {
       admin,
       balanceBtn,
-      j
-    }
-  }
-
+      i
+    };
+  },
 }
 </script>
 
 <style>
-.balance-edit {
-  width: 100%;
-  background-color: pink;
+.balance-edit-container {
+  vertical-align: middle;
 }
-.admin-balance-btn {
-  /* position: fixed; */
-  bottom: 1%;
-  right: 1%;
-  width: 50px;
-  height: 40px;
-  margin: 10px;
+.balance-edit-group {
+  display: flex;
+  justify-content: center;
+  margin: 7%;
+}
+.balance-edit-title {
+  margin-top: 70px;
+  width: 100%;
+  height: 80px;
+  border: 1px solid #c1c3fc;
+  padding-left: 14px; padding-right: 14px;
+}
+.balance-edit-modal-content {
+  border: 2px solid #c1c3fc;
+  margin: 7%;
+  height: 220px;
+}
+.balance-edit-content {
+  width: 100%;
+  height: 20px;
+  border: 1px solid #c1c3fc;
+  padding: 16px 14px;
+  background: #fff;
 }
 </style>
