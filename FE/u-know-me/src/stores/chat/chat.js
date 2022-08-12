@@ -87,7 +87,7 @@ export const useChatStore = defineStore('chat', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      var ary = ["블랙.vrm"];
+      var ary = ["블랙.vrm", "유미.vrm", "동민.vrm"];
       var rand = Math.floor(Math.random() * 101);
 
       rand %= ary.length;
@@ -437,7 +437,7 @@ export const useChatStore = defineStore('chat', {
         console.log("웹소켓서버와 연결 성공");
         webSocket.send(`{
           "key" : "chat_start_1",
-          "room_seq" : "cavavsdv-sadvas-asdvas"
+          "room_seq" : "${this.SessionName}"
         }`);
       };
 

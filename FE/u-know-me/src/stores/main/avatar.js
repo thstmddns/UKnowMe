@@ -92,7 +92,7 @@ export const useAvatarStore = defineStore('avatar', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      var ary = ["블랙.vrm"];
+      var ary = ["블랙.vrm", "유미.vrm", "동민.vrm"];
       var rand = Math.floor(Math.random() * 101);
 
       rand %= ary.length;
@@ -137,25 +137,22 @@ export const useAvatarStore = defineStore('avatar', {
           });
         },
 
-// for progress tag in HTML 
+        // for progress tag in HTML 
 
         //progress 값이 바뀔 때마다
         (progress) => {
           document.getElementById("progress").style.color = "#a056ff";
-        
+
           this.avatarProgress = 100 * (progress.loaded / progress.total)
-           if(this.avatarProgress==100){
-            setTimeout(function() {
-             document.getElementById("progress").style.display = "none";
-          }, 1000);
-          
-           
+          if (this.avatarProgress == 100) {
+            setTimeout(function () {
+              document.getElementById("progress").style.display = "none";
+            }, 1000);
           }
         },
-       
+
         (error) => console.error(error)
       )
-      
 
       setInterval(blink, 1000)
 

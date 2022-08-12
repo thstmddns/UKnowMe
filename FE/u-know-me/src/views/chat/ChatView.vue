@@ -167,8 +167,8 @@ export default {
       this.getToken(this.mySessionId).then((token) => {
         this.session
           .connect(token, { clientData: this.myUserName })
-          .then(() => {
-            var avatarVideo = chat.avatarLoad();
+          .then(async () => {
+            var avatarVideo = await chat.avatarLoad();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
