@@ -166,6 +166,7 @@ export const useAccountStore = defineStore('account', {
       //   })
     },
     findId(credentials) {
+      console.log({...credentials});
       const land = useLandStore()
        axios({
         url: sr.members.findId(),
@@ -173,12 +174,15 @@ export const useAccountStore = defineStore('account', {
         params: {...credentials},
       })
         .then((res) => {
-          this.findUserId = res.data.id
-          land.btnCh = 6
+          if (res.data) {
+            this.findUserId = res.data.id
+            land.btnCh = 6
+          } else {
+            alert('일치하는 사용자가 없습니다.')
+          }
         })
         .catch(err => {
           console.error(err.response)
-          alert('일치하는 사용자가 없습니다.')
         })
     },
     findPassword(credentials) {
