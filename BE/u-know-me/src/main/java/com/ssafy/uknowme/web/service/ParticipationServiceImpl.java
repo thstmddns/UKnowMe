@@ -25,7 +25,6 @@ public class ParticipationServiceImpl implements ParticipationService{
 
     @Override
     public boolean save(ParticipationSaveRequestDto dto) {
-
         Participation participation = Participation.builder()
                 .room(roomRepository.getReferenceById(dto.getRoomSeq()))
                 .member(memberRepository.getReferenceById(dto.getMemberSeq()))
