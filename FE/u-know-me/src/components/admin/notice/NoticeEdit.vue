@@ -54,11 +54,19 @@ export default {
   border: 1px solid #c1c3fc;
   padding-left: 14px; padding-right: 14px;
 }
+<<<<<<< HEAD
 .notice-edit-modal-content {
   /* border: 2px solid #c1c3fc; */
   /* margin: 7%;
   height: 220px; */
 }
+=======
+/* .notice-edit-modal-content { */
+  /* border: 2px solid #c1c3fc; */
+  /* margin: 7%;
+  height: 220px; */
+/* } */
+>>>>>>> FE-Feature/73(밸런스-게임)
 .notice-edit-content {
   width: 100%;
   height: 170px;

@@ -100,9 +100,6 @@ export default {
   height: 40px;
   margin: 0 0 15px 0;
 }
-.notice-table {
-  /* border: none; */
-}
 .notice-table-title {
   background-color: #f0f1ff;
 }

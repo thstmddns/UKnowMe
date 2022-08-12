@@ -35,7 +35,8 @@ export default {
     twoToTwo: memberSeq => HOST + MACHINGS + '2vs2/' + `${memberSeq}`,
   },
   features: {
-    balance: () => HOST + FEATURES + 'balance',
+    balance: () => HOST + FEATURES + 'balance/create',
+    balanceList: () => HOST + FEATURES + 'balance/list',
     balanceInfo: balanceSeq => HOST + FEATURES + 'balance/' + `${balanceSeq}`,
     keyword: () => HOST + FEATURES + 'keyword',
     keywordInfo: keywordSeq => HOST + FEATURES + 'keyword/' + `${keywordSeq}`,
