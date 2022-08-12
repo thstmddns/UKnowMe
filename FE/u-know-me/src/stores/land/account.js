@@ -25,6 +25,9 @@ export const useAccountStore = defineStore('account', {
       nickName: 0,
       tel: 0,
     },
+    checkFind: {
+      tel: 0,
+    },
     sendTel: 0,
     snsToken: {
       naver: cookies.get('snT') || '',
@@ -182,19 +185,24 @@ export const useAccountStore = defineStore('account', {
         })
     },
     findPassword(credentials) {
-      console.log({...credentials})
-      //  axios({
-      //   url: sr.accounts.findPassword(),
-      //   method: 'post',
-      //   data: {...credentials},
-      // })
-      //   .then((res) => {
-      //     console.log(res)
-      //     this.findUserfindPassword = res
-      //   })
-      //   .catch(err => {
-      //     console.error(err.response)
-      //   })
+      const land = useLandStore()
+       axios({
+        url: sr.members.findPassword(),
+        method: 'get',
+        params: {...credentials},
+      })
+        .then((res) => {
+          if (res.data) {
+            this.findUserId = res.data.id
+            land.btnCh = 7
+          } else {
+            alert('일치하는 사용자가 없습니다.')
+          }
+        })
+        .catch(err => {
+          console.error(err.response)
+          alert('일치하는 사용자가 없습니다.')
+        })
     },
     async fetchCurrentUser() {
       if (this.isLoggedIn) {
@@ -288,21 +296,24 @@ export const useAccountStore = defineStore('account', {
         })
     },
     chagePassword(password) {
-      console.log(password);
-      // axios({
-      //   url: sr.members.member(),
-      //   method: 'put',
-      //   data: { password },
-      //   headers: this.authHeader,
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     main.btnCh = 0
-      //     alert('성공적으로 비밀번호가 변경되었습니다.')
-      //   })
-      //   .catch(err => {
-      //     console.error(err.response)
-      //   })
+      const land = useLandStore()
+      axios({
+        url: sr.members.changePassword(),
+        method: 'put',
+        data: { ...password },
+        headers: this.authHeader,
+      })
+        .then(res => {
+          if (res.data) {
+            land.btnCh = 1
+            alert('성공적으로 비밀번호가 변경되었습니다.')
+          } else {
+            alert('비밀번호 변경에 실패했습니다.')
+          }
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     duplicateId(id) {
       axios({
@@ -342,30 +353,16 @@ export const useAccountStore = defineStore('account', {
         })
     },
     sendNumTel(tel) {
-      // popup
-      function openTelPage(pn) {
-        window.open(`http://localhost:8080/tc?pn=${pn}`, 'Pass인증', getTelPopupFeatures());
-      }
-      function getTelPopupFeatures() {
-      var popupWidth = 480;
-      var popupHeight = 720;
-      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
-      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
-      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
-      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
-      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
-      }
-      // !popup
       const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
       if (!phoneJ.test(tel)) {
         alert('형식에 맞지 않는 번호입니다.')
       } else {
         this.sendTel = 1
-        openTelPage(tel)
+        window.open(`https://uknowme.mooo.com:4443/tc?pn=${tel}`, 'Pass인증', this.getTelPopupFeatures());
       }
     },
     certicateTel(num) {
-      if (num === '0000') {
+      if (num === '7483') {
         this.checkSign.tel = 1
       } else {
         this.checkSign.tel = 0
