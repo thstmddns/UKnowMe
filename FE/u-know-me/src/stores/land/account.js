@@ -291,6 +291,7 @@ export const useAccountStore = defineStore('account', {
         .then(res => {
           console.log(res);
           main.btnCh = 0
+          main.pBtnCh = 0
           alert('성공적으로 정보가 변경되었습니다.')
         })
         .catch(err => {
