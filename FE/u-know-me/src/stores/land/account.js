@@ -113,6 +113,8 @@ export const useAccountStore = defineStore('account', {
       this.saveToken(access_token, refresh_token)
       if (access_token) {
         router.push({ name: 'main' })
+        cookies.remove('access_token')
+        cookies.remove('refresh_token')
       } else {
         alert('회원가입을 먼저 해주세요.')
         land.btnCh = 2
