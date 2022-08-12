@@ -106,70 +106,36 @@ export const useAccountStore = defineStore('account', {
       main.$reset()
       router.push({ name: 'home' })
     },
-    socialLogin(sns) {
+    socialLogin() {
       const land = useLandStore()
-      if (sns === 'naver') {
-        const access_token = cookies.get('access_token')
-        const refresh_token = cookies.get('refresh_token')
-        this.saveToken(access_token, refresh_token)
-        if (access_token) {
-          router.push({ name: 'main' })
-        } else {
-          alert('회원가입을 먼저 해주세요.')
-          land.btnCh = 2
-        }
-      } else if (sns === 'kakao') {
-        const skT = cookies.get('skT')
-        console.log(skT);
-        axios({
-          url: sr.members.kakaoLogin(skT),
-          method: 'post',
-          headers: { 
-            Authorization: `Bearer ${skT}`,
-          }
-        })
-          .then((res) => {
-            console.log(res)
-          })
-          .error(err => {
-            console.error(err.response)
-          })
+      const access_token = cookies.get('access_token')
+      const refresh_token = cookies.get('refresh_token')
+      this.saveToken(access_token, refresh_token)
+      if (access_token) {
+        router.push({ name: 'main' })
+        cookies.remove('access_token')
+        cookies.remove('refresh_token')
+      } else {
+        alert('회원가입을 먼저 해주세요.')
+        land.btnCh = 2
       }
     },
     naverLogin() {
-      this.socialLogin('naver')
-      // // popup
-      // const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver'
-      // function getTelPopupFeatures() {
-      // var popupWidth = 480;
-      // var popupHeight = 720;
-      // var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
-      // var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
-      // var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
-      // var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
-      // return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
-      // }
-      // // !popup
-      // window.open(REIDRECT_URL, '네이버로그인', getTelPopupFeatures());
+      const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver'
+      window.open(REIDRECT_URL, '네이버로그인', this.getTelPopupFeatures());
     },
     kakaoLogin() {
-      const self = this
-      const js_key = "eeb1404c08508f16f1ff0f59d33806fe"
-      const Kakao = window.Kakao
-      Kakao.init(js_key);
-      function loginWithKakao() {
-        Kakao.Auth.login({
-          success: function (authObj) {
-            // alert(JSON.stringify(authObj))
-            cookies.set('skT', authObj.access_token, `${authObj.expires_in}s`)
-            self.socialLogin('kakao')
-          },
-          fail: function (err) {
-            alert(JSON.stringify(err))
-          },
-        })
-      }
-      loginWithKakao()
+      const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/kakao?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/kakao'
+      window.open(REIDRECT_URL, '카카오로그인', this.getTelPopupFeatures());
+    },
+    getTelPopupFeatures() {
+      var popupWidth = 480;
+      var popupHeight = 720;
+      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
     },
     findId(credentials) {
       console.log({...credentials});
