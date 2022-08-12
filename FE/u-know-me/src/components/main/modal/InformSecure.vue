@@ -134,7 +134,7 @@ export default {
 }
 .inform-secure-btn {
   margin: 32px 0;
-  width: 336px;
+  width: 412px;
 }
 #informSecureForm div {
   padding-top: 4px;

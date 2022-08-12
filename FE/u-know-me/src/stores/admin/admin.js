@@ -1,18 +1,21 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import sr from '@/api/spring-rest'
-import axios from 'axios'
 import { useAccountStore } from '../land/account'
-// import router from '@/router'
 
 export const useAdminStore = defineStore('admin', {
   state: () => ({
     adminBtn: 0,
     noticeFormBtn: false,
+    noticeAddBtn: false,
+    balanceBtn: 0,
     noticeBtn: 0,
     notices: [],
     notice: {},
     members: [],
     member: {},
+    balanceList: [],
+    balance: {},
   }),
   getters: {
 
@@ -33,7 +36,6 @@ export const useAdminStore = defineStore('admin', {
         console.error(err.response)
       })
     },
-
     fetchMember(memberSeq) {
       const account = useAccountStore()
       axios({
@@ -49,7 +51,6 @@ export const useAdminStore = defineStore('admin', {
         console.error(err.response)
       })
     },
-
     fetchNotices() {
       const account = useAccountStore()
       axios({
@@ -65,7 +66,6 @@ export const useAdminStore = defineStore('admin', {
           console.error(err.response)
         })
     },
-
     fetchNotice(noticeSeq) {
       axios({
         url: sr.notices.notice(noticeSeq),
@@ -79,7 +79,6 @@ export const useAdminStore = defineStore('admin', {
           console.error(err.response)
         })
     },
-
     addNotice(notice) {
       console.log({...notice})
       const account = useAccountStore()
@@ -101,7 +100,6 @@ export const useAdminStore = defineStore('admin', {
         })
 
     },
-
     updateNotice(noticeData, noticeSeq) {
       console.log({...noticeData})
       const account = useAccountStore()
@@ -121,7 +119,6 @@ export const useAdminStore = defineStore('admin', {
           console.error(err.response)
         })
     },
-
     deleteNotice(noticeSeq) {
       const account = useAccountStore()
       if (confirm('정말 삭제하시겠습니까?')) {
@@ -138,5 +135,110 @@ export const useAdminStore = defineStore('admin', {
           .catch(err => console.error(err.response))
       }
     },
-  }
+    getBalances() {
+      const account = useAccountStore()
+      axios({
+        url: sr.features.balanceList(),
+        method: 'get',
+        params: { },
+        headers: account.authHeader,
+      })
+        .then(res => {
+          console.log(res.data);
+          this.balanceList = res.data
+        })
+        .catch(err => {
+          console.error(err.response.data)
+        })
+    },
+    getBalance(balanceSeq) {
+      const account = useAccountStore()
+
+      axios({
+        url: sr.features.balanceInfo(balanceSeq),
+        method: 'get',
+        params: { },
+        headers: account.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.balance = res.data
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
+    },
+    addBalance(balance) {
+      console.log({ ...balance })
+      const account = useAccountStore()
+      axios({
+        url: sr.features.balance(),
+        method: 'post',
+        data: { ...balance },
+        headers: account.authHeader,
+      })
+        .then(res => {
+          console.log(res);
+          this.getBalances()
+        })
+        .catch(err => {
+          console.error(err.response.data)
+        })
+    },
+
+    updatingBalance(balanceData, balanceSeq) {
+      console.log({...balanceData})
+      const account = useAccountStore()
+      axios({
+        url: sr.features.balanceInfo(balanceSeq),
+        method: 'put',
+        data: { ...balanceData },
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.getBalances()
+        this.getBalance(balanceSeq)
+        this.balanceBtn = 1
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+
+    updateBalance(balanceData, balanceSeq) {
+      console.log({...balanceData})
+      const account = useAccountStore()
+      axios({
+        url: sr.features.balanceInfo(balanceSeq),
+        method: 'put',
+        data: { ...balanceData },
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.getBalances()
+        this.noticeBtn = 0
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+
+    deleteBalance(balanceSeq) {
+      const account = useAccountStore()
+      if (confirm('정말 삭제하시겠습니까?')) {
+        axios({
+          url: sr.features.balanceInfo(balanceSeq),
+          method: 'delete',
+          headers: account.authHeader,
+        })
+        .then(res => {
+          console.log(res);
+          this.getBalances()
+        })
+        .catch(err => console.error(err.response))
+      }
+    },
+  },
 })

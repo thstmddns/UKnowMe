@@ -16,14 +16,15 @@
     </div> -->
 
   <hgroup class="speech-bubble">
-    <p>매칭 옵션 선택 후<br />매칭을 시작해주세요!</p>
+    <h2 id="speech-title">대기 중</h2>
+    <p id="speech-text">매칭 옵션 선택 후<br />매칭을 시작해주세요!</p>
   </hgroup>
 
   <div class="match-circle">
     <div id="love-container">
       <!-- <div class="heart-img" @click="this.$router.push({ name: 'chat' })"> -->
-      <div class="heart-img" @click="calcAge()">
-        <img src="@/assets/main/heart.png" alt="" />
+      <div class="heart-img" @click="matchStart()">
+        <img id="heart-img-src" src="@/assets/main/heart.png" alt="" />
       </div>
       <div class="circle" style="animation-delay: 0s"></div>
       <div class="circle" style="animation-delay: 1s"></div>
@@ -31,22 +32,16 @@
       <div class="circle" style="animation-delay: 3s"></div>
     </div>
 
-    <!-- 매칭이 눌렸을 때는 매칭 중이라고 띄우기-->
-    <button
-      @click="main.btnCh = 4"
-      class="matching-btn"
-      v-if="matchBtn == false"
-    >
-      매칭 옵션 선택
-    </button>
-    <button class="matching-btn" v-if="matchBtn == true">매칭 중</button>
-    <!--  -->
+    <button class="matching-btn" @click="main.btnCh = 4">매칭 옵션 선택</button>
   </div>
 </template>
 
 <script>
 import { useMainStore } from "@/stores/main/main";
 import { useAccountStore } from "@/stores/land/account";
+import { useChatStore } from "@/stores/chat/chat";
+import router from "@/router";
+import { storeToRefs } from "pinia";
 
 export default {
   name: "ButtonList",
@@ -54,77 +49,122 @@ export default {
   data() {
     return {
       matchBtn: false,
+      webSocket: null,
     };
   },
   setup() {
     const main = useMainStore();
     const account = useAccountStore();
+    const chat = useChatStore();
 
-    return { main, account };
+    let { SessionName } = storeToRefs(chat);
+
+    return { main, account, SessionName };
   },
   methods: {
     matchStart() {
-      //socket test
-      console.log("socket test");
-      // 1. 웹소켓 클라이언트 객체 생성
-      const webSocket = new WebSocket("wss://uknowme.mooo.com:8443/ws/matching");
+      if (this.matchBtn == false) {
+        const self = this;
+        this.matchBtn = true;
 
-      // 2. 웹소켓 이벤트 처리
-      // 2-1) 연결 이벤트 처리
-      webSocket.onopen = () => {
-        // let Age =
-        let sendData = `{
+        console.log("socket start");
+        // 1. 웹소켓 클라이언트 객체 생성
+        self.webSocket = new WebSocket(
+          "wss://uknowme.mooo.com:8443/ws/matching"
+        );
+
+        // 2. 웹소켓 이벤트 처리
+        // 2-1) 연결 이벤트 처리
+        this.webSocket.onopen = () => {
+          console.log("서버 웹소켓 연결 성공");
+
+          var heartBtn = document.querySelector(".heart-img");
+          heartBtn.style.width = "100px";
+          heartBtn.style.height = "100px";
+          document.getElementById("heart-img-src").style.animationDuration =
+            "1s";
+          document.getElementById("speech-title").innerHTML = "매칭";
+          document.getElementById("speech-text").innerHTML =
+            "매칭중입니다.<br>잠시만 기다려주세요..";
+
+          document.querySelector(".matching-btn").disabled = true;
+
+          try {
+            let age = this.calcAge(this.account.currentUser.birth);
+            let smoke = this.account.currentUser.smoke;
+
+            let sendData = `{
             "key" : "match_start_1",
             "id" : "${this.account.currentUser.id}",
             "seq" : "${this.account.currentUser.seq}",
             "gender" : "${this.account.currentUser.gender}",
             "nickName":"${this.account.currentUser.nickname}",
-            "age" : "24",
-            "maxAge":"${this.main.option.maxAge}",
-            "minAge":"${this.main.option.maxAge}",
-            "lat":"0.0",
-            "lon":"0.0",
-            "smoke" : "0",
-            "matchingSmoke":"0"
+            "age" : "${age}",
+            "maxAge":"${age + this.main.option.maxAge}",
+            "minAge":"${age - this.main.option.maxAge}",
+            "lat":"10.0",
+            "lon":"10.0",
+            "smoke" : "${smoke}",
+            "matchingSmoke":"${this.main.option.matchingSmoke}"
           }`;
-        console.log("webSocket.send : ", sendData);
-        webSocket.send(sendData);
-      };
+            console.log("webSocket.send : ", sendData);
+            this.webSocket.send(sendData);
+          } catch (error) {
+            this.webSocket.close();
+            document.getElementById("speech-title").innerHTML = "오류 발생";
+            document.getElementById("speech-text").innerHTML =
+              "사용자 데이터 오류.<br>로그인을 확인해 주세요.";
+            document.getElementById("heart-img-src").style.animationDuration =
+              "0s";
+            document.querySelector(".matching-btn").disabled = false;
+          }
+        };
 
-      // 2-2) 메세지 수신 이벤트 처리
-      webSocket.onmessage = function (event) {
-        console.log(`서버 웹소켓에게 받은 데이터: ${event.data}`);
-      };
+        // 2-2) 메세지 수신 이벤트 처리
+        this.webSocket.onmessage = function (event) {
+          console.log(`서버 웹소켓에게 받은 데이터: ${event.data}`);
 
-      // 2-3) 연결 종료 이벤트 처리
-      webSocket.onclose = function () {
-        console.log("서버 웹소켓 연결 종료");
-      };
+          document.getElementById("heart-img-src").style.animationDuration =
+            "0.5s";
+          document.getElementById("speech-title").innerHTML = "매칭 완료";
+          document.getElementById("speech-text").innerHTML =
+            "매칭완료!<br>곧 연결됩니다!";
 
-      // 2-4) 에러 발생 이벤트 처리
-      webSocket.onerror = function (event) {
-        console.log(event);
-      };
-    },
-    calcAge() {
-      var ssn1;
-      var nByear, nTyear;
-      var today;
+          self.SessionName = event.data;
 
-      ssn1 = "990103";
+          setTimeout(() => router.push({ name: "chat" }), 3000);
+        };
 
-      console.log(ssn1[0]);
+        // 2-3) 연결 종료 이벤트 처리
+        this.webSocket.onclose = function () {
+          console.log("서버 웹소켓 연결 종료");
 
-      today = new Date();
-      nTyear = today.getFullYear();
-      if (ssn1[0] < 3) {
-        nByear = 1900 + parseInt(ssn1.substring(0, 2), 10);
+          var heartBtn = document.querySelector(".heart-img");
+          heartBtn.style.width = "50px";
+          heartBtn.style.height = "50px";
+          document.getElementById("heart-img-src").style.transform =
+            "translate(-50%, -50%) rotate(0deg)";
+        };
+
+        // 2-4) 에러 발생 이벤트 처리
+        this.webSocket.onerror = function (event) {
+          console.log("error", event);
+        };
       } else {
-        nByear = 2000 + parseInt(ssn1.substring(0, 2), 10);
+        this.matchBtn = false;
+        this.webSocket.close();
+        document.getElementById("speech-title").innerHTML = "대기 중";
+        document.getElementById("speech-text").innerHTML =
+          "매칭이 취소되었습니다.<br>매칭을 시작해주세요.";
+        document.getElementById("heart-img-src").style.animationDuration = "0s";
+        document.querySelector(".matching-btn").disabled = false;
       }
-      var nAge = nTyear - nByear;
+    },
+    calcAge(ssn1) {
+      var today = new Date();
+      var result = today.getFullYear() - parseInt(ssn1.substring(0, 4), 10);
 
-      alert(nAge); // 2012년 4월 13일 일 경우 2012413 반환
+      return result;
     },
   },
 };
@@ -221,7 +261,7 @@ export default {
 @keyframes scaleIn {
   from {
     transform: scale(0.5, 0.5);
-    opacity: 0.5;
+    opacity: 1;
   }
   to {
     transform: scale(2.5, 2.5);
@@ -229,6 +269,20 @@ export default {
   }
 }
 
+#heart-img-src {
+  transition: 0.5s;
+  animation-name: heartSpin;
+  animation-duration: 0s;
+  animation-iteration-count: infinite;
+}
+@keyframes heartSpin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
 .heart-img {
   background-color: white;
   width: 50px;
@@ -237,10 +291,16 @@ export default {
   z-index: 1;
   padding: 5px;
   cursor: pointer;
+  filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
+  transition: 0.5s;
 }
 .heart-img img {
   width: 50px;
   height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .heart-img:hover {
   filter: brightness(90%);
@@ -278,7 +338,11 @@ export default {
   font-weight: bold;
   text-shadow: 0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25);
   filter: drop-shadow(0px 1.92647px 1.92647px rgba(0, 0, 0, 0.25));
+  animation-name: bubbleAni;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
 }
+
 .speech-bubble:after {
   content: "";
   position: absolute;
@@ -291,6 +355,18 @@ export default {
   border-bottom: 0;
   border-left: 0;
   margin-left: 20px;
-  margin-bottom: -24px;
+  margin-bottom: -20px;
+}
+
+@keyframes bubbleAni {
+  0% {
+    transform: translate(0%, 2%);
+  }
+  50% {
+    transform: translate(0%, -2%);
+  }
+  100% {
+    transform: translate(0%, 2%);
+  }
 }
 </style>

@@ -23,6 +23,7 @@ export const useChatStore = defineStore('chat', {
     camera2: null,
     videoDevices: null,
     jsonData: null,
+    SessionName : "SessionA",
   }),
   getters: {
 

@@ -9,8 +9,8 @@
       <img class="you-know" src="@/assets/land/character_man.png" alt="you-know">
     </div>
   </div>
+  <cite class="img-cite">&copy; The Jazz Hop Café</cite>
 </template>
-
 <script>
 export default {
   name: 'LandingPage',
@@ -61,5 +61,13 @@ export default {
   bottom: 0px;
   transform: translate(50%, 0%);
   pointer-events: none;
+}
+.img-cite {
+  position: fixed;
+  color: white;
+  font-size: 12px;
+  bottom: 0;
+  right: 10px;
+  z-index: 1;
 }
 </style>

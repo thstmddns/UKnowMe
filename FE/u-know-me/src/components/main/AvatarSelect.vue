@@ -73,6 +73,7 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   justify-content: center;
+  backdrop-filter: blur(5px);
   transition: 0.5s;
 }
 .avatarCollection::-webkit-scrollbar {
