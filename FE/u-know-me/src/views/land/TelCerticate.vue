@@ -89,7 +89,7 @@ export default {
   },
   setup() {
     const btnCh = ref(0)
-    const number = ref('0000')
+    const number = ref('7483')
     return {
       btnCh,
       number
