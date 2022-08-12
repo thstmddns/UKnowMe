@@ -66,14 +66,6 @@
         class="sns-login"
         src="@/assets/land/naver_login_icon.png"
         alt="naver_login_icon"
-        style="display:none;"
-      />
-      <div id="naver_id_login"></div>
-      <input
-        @click="account.naverLogin()"
-        type="text"
-        id="aT"
-        style="display: none"
       />
     </div>
     <div>
@@ -84,16 +76,14 @@
         alt="kakao_login_icon"
       />
     </div>
+    <div id="snsLogin" @click="account.socialLogin()"></div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 import { useLandStore } from "@/stores/land/land";
-
-const client_id = "YQdwIoQRJWLg8GBYAaZq";
-const callbackUrl = "https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver";
 
 export default {
   name: "SignIn",
@@ -104,35 +94,10 @@ export default {
       id: "",
       password: "",
     });
-
-    onMounted(() => {
-      // naver
-      const naver_id_login = new window.naver_id_login(client_id, callbackUrl);
-      const state = naver_id_login.getUniqState();
-      naver_id_login.setState(state);
-      naver_id_login.setPopup();
-      naver_id_login.init_naver_id_login();
-
-      const naver_id_login_anchor = document.getElementById(
-        "naver_id_login_anchor"
-      );
-      const naver_login_icon = document.getElementById("naver_login_icon");
-
-      naver_id_login_anchor.firstChild.removeAttribute("width");
-      naver_id_login_anchor.firstChild.removeAttribute("height");
-
-      naver_id_login_anchor.firstChild.src = naver_login_icon.src;
-      naver_id_login_anchor.firstChild.className += "sns-login";
-      // !naver
-      // google
-      // !google
-    });
-    const aa = ref("");
     return {
       account,
       credentials,
       land,
-      aa,
     };
   },
 };
