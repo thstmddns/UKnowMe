@@ -1,8 +1,12 @@
 package com.ssafy.uknowme.websocket;
 
+import com.ssafy.uknowme.model.dto.balanceDto.BalanceResponseDto;
+import com.ssafy.uknowme.web.service.BalanceService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -16,6 +20,8 @@ import java.util.List;
 @CrossOrigin
 @Component
 @Log4j2
+@Controller
+@RequiredArgsConstructor
 public class ChatHandler extends TextWebSocketHandler {
     private static List<Room1vs1> room1vs1 = new ArrayList();
     private static List<Room2vs2> room2vs2 = new ArrayList();
@@ -31,7 +37,7 @@ public class ChatHandler extends TextWebSocketHandler {
             "        \"key\" : \"roomBreak\",\n" +
             "    }");
 
-    // : 명범님 죄송합니다...코드가 정리가안돼서 많이 더러워요,,,,,,가능하면 소켓 하시기 전에 정리해 보겠습니다
+    private final BalanceService balanceService;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -91,14 +97,17 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_q_request_1":
                 log.info("밸런스 게임 요청");
 
+                BalanceResponseDto balanceResponseDto = null;
+                balanceResponseDto = balanceService.findByBalanceSeq();
+
                 String balance_q_request_tmp = String.format("{\n" +
                                 "\t\"key\" : \"balance_q_response_1\",\n" +
                                 "\t\"question\" :\"%s\",\n" +
                                 "\t\"answer1\" : \"%s\",\n" +
                                 "\t\"answer2\" : \"%s\"\n" +
-                                "}", jObject.get("question").toString(),
-                        jObject.get("answer1").toString(),
-                        jObject.get("answer2").toString());
+                                "}", balanceResponseDto.getQuestion(),
+                         balanceResponseDto.getAnswer1(),
+                        balanceResponseDto.getAnswer2());
                 TextMessage balance_q_request_msg = new TextMessage(balance_q_request_tmp);
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
                     try {
@@ -112,14 +121,16 @@ public class ChatHandler extends TextWebSocketHandler {
                 break;
             case "balance_q_request_2":
                 log.info("밸런스 게임 요청");
+                BalanceResponseDto balanceResponseDto2 = balanceService.findByBalanceSeq();
+
                 String balance_q_request_tmp2 = String.format("{\n" +
-                                "\t\"key\" : \"balance_q_response_1\",\n" +
+                                "\t\"key\" : \"balance_q_response_2\",\n" +
                                 "\t\"question\" :\"%s\",\n" +
                                 "\t\"answer1\" : \"%s\",\n" +
                                 "\t\"answer2\" : \"%s\"\n" +
-                                "}", jObject.get("question").toString(),
-                        jObject.get("answer1").toString(),
-                        jObject.get("answer2").toString());
+                                "}", balanceResponseDto2.getQuestion(),
+                        balanceResponseDto2.getAnswer1(),
+                        balanceResponseDto2.getAnswer2());
                 TextMessage balance_q_request_msg2 = new TextMessage(balance_q_request_tmp2);
                 for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
                     try {
@@ -155,7 +166,7 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_a_request_2":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp2 = String.format("{\n" +
-                        "\t\"key\" : \"balance_q_response_1\",\n" +
+                        "\t\"key\" : \"balance_q_response_2\",\n" +
                         "\t\"answer\" : \"%s\",\n" +
                         "}", jObject.get("answser").toString());
                 TextMessage balance_a_request_msg2 = new TextMessage(balance_a_request_tmp2);
@@ -195,7 +206,7 @@ public class ChatHandler extends TextWebSocketHandler {
             case "keyword_helper_request_2":
                 log.info("키워드 헬퍼 요청");
                 String keyword_helper_tmp2 = String.format("{\n" +
-                        "\t\"key\" : \"balance_q_response_1\",\n" +
+                        "\t\"key\" : \"balance_q_response_2\",\n" +
                         "\t\"keyword\" : \"%s\",\n" +
                         "}", jObject.get("keyword").toString());
                 TextMessage keyword_helper_response_msg2 = new TextMessage(keyword_helper_tmp2);
@@ -220,7 +231,7 @@ public class ChatHandler extends TextWebSocketHandler {
                     try {
                         if (session.equals(room1vs1.get(roomcnt).getUser1Session()) | session.equals(room1vs1.get(roomcnt).getUser2Session())) {
                             String users_seq_response_tmp = String.format("{\n" +
-                                    "\t\"key\" : \"users_seq_response\",\n" +
+                                    "\t\"key\" : \"users_seq_response_1\",\n" +
                                     "\t\"user1_seq\" : \"%s\",\n" +
                                     "\t\"user2_seq\" : \"%s\",\n" +
                                     "}", room1vs1.get(roomcnt).getUser1Seq(), room1vs1.get(roomcnt).getUser2Seq());
@@ -250,7 +261,7 @@ public class ChatHandler extends TextWebSocketHandler {
                                 session.equals(room2vs2.get(roomcnt).getUserInfos().get(2).getSession()) |
                                 session.equals(room2vs2.get(roomcnt).getUserInfos().get(3).getSession())) {
                             String users_seq_response_tmp = String.format("{\n" +
-                                            "\t\"key\" : \"users_seq_response\",\n" +
+                                            "\t\"key\" : \"users_seq_response_2\",\n" +
                                             "\t\"user1_seq\" : \"%s\",\n" +
                                             "\t\"user2_seq\" : \"%s\",\n" +
                                             "\t\"user3_seq\" : \"%s\",\n" +
@@ -278,10 +289,11 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         list.add(session);
-
-        System.out.println(list.toString());
+        
 
         log.info(session + " 클라이언트 접속" + list.toString());
+        session.sendMessage(new TextMessage("미 : 채팅 웹소켓 서버에 온걸 환영해"));
+        
     }
 
 
