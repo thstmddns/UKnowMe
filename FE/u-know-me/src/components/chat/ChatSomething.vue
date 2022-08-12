@@ -7,7 +7,7 @@
 
     <div class="chat-content-center">
       <div id="love-container">
-        <div class="heart-img" @click="chat.heartClick()">
+        <div class="heart-img" @click="chat.heartClick()" :class="chat-success">
           <img src="@/assets/main/heart.png" alt="" />
         </div>
         <div class="circle" style="animation-delay: 0s"></div>
@@ -18,33 +18,36 @@
     </div>
 
     <div class="chat-content-right">
-      <div class="sketch"></div>
       <div class="chat-btn-list">
-        <div class="top-btn">
-          <button class="chat-btn sketch-btn">
-            <i class="fa-solid fa-pencil"></i>
-          </button>
-          <button class="chat-btn camera-btn">
-            <i class="fa-solid fa-camera"></i>
-          </button>
-          <button class="chat-btn-lg set-btn">
-            옵션 <i class="fa-solid fa-gear"></i>
-          </button>
+        <div class="popup-wrapper">
+          <div class="popup accuse-popup">
+            <div class="tooltip">비매너 행위를 신고하세요!</div>
+            <button class="chat-btn accuse-btn">
+              <img class="accuse-box-img" src="@/assets/chat/accuse-img.png" alt="">
+            </button>
+          </div>
+          <div class="popup balance-popup">
+            <div class="tooltip">밸런스 게임으로 상대를 알아가는 건 어떨까요?</div>
+            <button class="chat-btn game-btn">
+              <img src="@/assets/chat/game-img.png" alt="">
+            </button>
+          </div>
         </div>
-        <div class="bottom-btn">
-          <button class="chat-btn accuse-btn">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </button>
-          <button class="chat-btn game-btn">
-            <i class="fa-solid fa-gamepad"></i>
-          </button>
-          <button
-            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
-            class="chat-btn-lg out-btn"
-          >
-            나가기 <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          </button>
+        <div>
+          <div>
+            <button class="chat-btn-lg set-btn">
+              <img src="@/assets/chat/option-img.png" alt="" />
+            </button>
+          </div>
+          <div>
+            <button
+              @click="chat.leaveSession(), $router.replace({ name: 'main' })"
+              class="chat-btn-lg out-btn">
+              <img src="@/assets/chat/exit-img.png" alt="">
+            </button>
+          </div>
         </div>
+        
       </div>
     </div>
   </div>
@@ -125,18 +128,20 @@ export default {
 }
 
 .chat-btn-list {
-  min-width: 270px;
+  /* min-width: 270px; */
   margin: auto 20px;
+  display: flex;
 }
 
 .chat-btn {
   width: 60px;
   height: 60px;
   margin: 5px;
-  background-color: white;
+  padding: 0;
+  background-color: transparent;
   border: 0;
   outline: 0;
-  box-shadow: 0px 2.72109px 2.72109px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
   border-radius: 20.4082px;
   cursor: pointer;
 }
@@ -150,5 +155,59 @@ export default {
   box-shadow: 0px 2.72109px 2.72109px rgba(0, 0, 0, 0.25);
   border-radius: 20.4082px;
   cursor: pointer;
+}
+
+
+.popup-wrapper {
+  display: inline-flex;
+}
+.popup-wrapper .pop-up {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+.pop-up {
+  
+}
+.pop-up div {
+}
+.accuse-btn {
+  
+}
+.popup-wrapper .popup .tooltip {
+  background-color: pink;
+  border-radius: 25px;
+  padding: 5px 10px;
+  font-size: 15px;
+  opacity: 0;
+  pointer-events: none;
+}
+.popup-wrapper .popup:hover .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+.popup-wrapper .popup .tooltip::before {
+}
+
+.accuse-btn img {
+  width: 40px;
+  height: 40px;
+}
+.game-btn img {
+  width: 40px;
+  height: 40px;
+  margin-left: 15%;
+}
+
+
+.set-btn img {
+  width: 40px;
+  height: 40px;
+}
+.out-btn img {
+  width: 40px;
+  height: 40px;
 }
 </style>
