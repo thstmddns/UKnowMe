@@ -9,6 +9,7 @@ import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,9 @@ import static com.ssafy.uknowme.security.oauth.repository.OAuth2AuthorizationReq
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Value("${app.oauth2.authorized-redirect-uris}")
+    private String REDIRECT_URL;
 
     private final AuthTokenProvider authTokenProvider;
     private final AppProperties appProperties;
@@ -48,14 +52,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         AuthToken refreshToken = authTokenProvider.createAuthToken(appProperties.getAuth().getTokenSecret(), new Date(System.currentTimeMillis() + appProperties.getAuth().getRefreshTokenExpiry()));
 
         response.addHeader("Authorization", "Bearer " + accessToken.getToken());
-        response.addHeader("temp", "refresh_token=" + refreshToken.getToken());
-
-        response.getWriter().print("access_token=" + accessToken.getToken());
-        response.getWriter().print("&refresh_token=" + refreshToken.getToken());
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, "access_token", accessToken.getToken(), (int) appProperties.getAuth().getRefreshTokenExpiry());
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), (int) appProperties.getAuth().getRefreshTokenExpiry());
+
+        response.sendRedirect(REDIRECT_URL);
     }
 
 }
