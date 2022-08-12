@@ -29,21 +29,13 @@ export const useAccountStore = defineStore('account', {
       tel: 0,
     },
     sendTel: 0,
-    snsToken: {
-      naver: cookies.get('snT') || '',
-      kakao: cookies.get('skT') || '',
-    }
   }),
   getters: {
     isLoggedIn: state => !!state.a_token,
-    authHeader: state => ({ 
+    authHeader: state => ({
       Authorization: `Bearer ${state.a_token}`,
       refreshToken: state.r_token
     }),
-    snsLoginToken: state => ({
-      naver: state.snsToken.naver,
-      kakao: state.snsToken.kakao,
-    })
   },
   actions: {
     getToken() {
@@ -65,19 +57,19 @@ export const useAccountStore = defineStore('account', {
     signup(credentials, birth) {
       const land = useLandStore()
       if (birth.day.length === 1) {
-        birth.day = '0'+ birth.day
+        birth.day = '0' + birth.day
       }
-      credentials.birth = birth.year.slice(-2) + birth.month + birth.day
+      credentials.birth = birth.year + birth.month + birth.day
       console.log('회원가입', {...credentials})
       axios({
         url: sr.members.signup(),
         method: 'post',
-        data: {...credentials}
+        data: { ...credentials }
       })
         .then(res => {
           console.log(res);
           alert('회원가입이 완료되었습니다. 새로운 환경에서 로그인 해주세요.')
-          land.btnCh=1
+          land.btnCh = 1
         })
         .catch(err => {
           console.error(err.response.data)
@@ -88,11 +80,12 @@ export const useAccountStore = defineStore('account', {
       await axios({
         url: sr.members.login(),
         method: 'post',
-        data: {...credentials},
+        data: { ...credentials },
         withCredentials: true,
       })
         .then(res => {
           console.log(res);
+          this.authError.login = 0
           const access_token = res.headers.authorization.split(' ')[1]
           const refresh_token = res.headers.temp
           this.saveToken(access_token, refresh_token)
@@ -101,11 +94,13 @@ export const useAccountStore = defineStore('account', {
           console.error(err)
           this.authError.login = 1
         })
-      await this.fetchCurrentUser()
-      if(this.currentUser.role === "ROLE_USER") {
-        router.push({ name: 'main' })
-      } else {
-        router.push({ name: 'admin' })
+      if (!this.authError.login) {
+        await this.fetchCurrentUser()
+        if(this.currentUser.role === "ROLE_USER") {
+          router.push({ name: 'main' })
+        } else {
+          router.push({ name: 'admin' })
+        }
       }
     },
     logout() {
@@ -114,74 +109,55 @@ export const useAccountStore = defineStore('account', {
       main.$reset()
       router.push({ name: 'home' })
     },
-    socialLogin(sns) {
-      if (sns === 'naver') {
-        console.log(this.snsLoginToken.naver);
-      } else if (sns === 'kakao') {
-        console.log(this.snsLoginToken.kakao);
+    socialLogin() {
+      const land = useLandStore()
+      const access_token = cookies.get('access_token')
+      const refresh_token = cookies.get('refresh_token')
+      this.saveToken(access_token, refresh_token)
+      if (access_token) {
+        router.push({ name: 'main' })
+        cookies.remove('access_token')
+        cookies.remove('refresh_token')
+      } else {
+        alert('회원가입을 먼저 해주세요.')
+        land.btnCh = 2
       }
     },
     naverLogin() {
-      this.socialLogin('naver')
-      // axios({
-      //   url: sr.accounts.naverLogin(),
-      //   method: 'post',
-      //   data: { naverLoginSeq: token },
-      //   headers: this.authHeader,
-      // })
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .error(err => {
-      //     console.error(err.response)
-      //   })
+      const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver'
+      window.open(REIDRECT_URL, '네이버로그인', this.getTelPopupFeatures());
     },
-     kakaoLogin() {
-      const self = this
-      const js_key = "29f50216ed786d04f88f2f1aafdd49cc"
-      const Kakao = window.Kakao
-      Kakao.init(js_key);
-      function loginWithKakao() {
-        Kakao.Auth.login({
-          success: function(authObj) {
-            // alert(JSON.stringify(authObj))
-            cookies.set('skT', authObj.access_token, `${authObj.expires_in}s`)
-            self.snsToken.kakao = authObj.access_token
-            self.socialLogin('kakao')
-          },
-          fail: function(err) {
-            alert(JSON.stringify(err))
-          },
-        })
-      }
-      loginWithKakao()
-      // axios({
-      //   url: sr.accounts.kakaoLogin(),
-      //   method: 'post',
-      //   data: { kakaoLoginSeq: token },
-      //   headers: this.authHeader,
-      // })
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .error(err => {
-      //     console.error(err.response)
-      //   })
+    kakaoLogin() {
+      const REIDRECT_URL = 'https://uknowme.mooo.com:8443/oauth2/authorization/kakao?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/kakao'
+      window.open(REIDRECT_URL, '카카오로그인', this.getTelPopupFeatures());
+    },
+    getTelPopupFeatures() {
+      var popupWidth = 480;
+      var popupHeight = 720;
+      var sLeft = window.screenLeft ? window.screenLeft : window.screenX ? window.screenX : 0;
+      var sTop = window.screenTop ? window.screenTop : window.screenY ? window.screenY : 0;
+      var popupLeft = screen.width / 2 - popupWidth / 2 + sLeft;
+      var popupTop = screen.height / 2 - popupHeight / 2 + sTop;
+      return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
     },
     findId(credentials) {
+      console.log({...credentials});
       const land = useLandStore()
-       axios({
+      axios({
         url: sr.members.findId(),
         method: 'get',
-        params: {...credentials},
+        params: { ...credentials },
       })
         .then((res) => {
-          this.findUserId = res.data.id
-          land.btnCh = 6
+          if (res.data) {
+            this.findUserId = res.data.id
+            land.btnCh = 6
+          } else {
+            alert('일치하는 사용자가 없습니다.')
+          }
         })
         .catch(err => {
           console.error(err.response)
-          alert('일치하는 사용자가 없습니다.')
         })
     },
     findPassword(credentials) {
@@ -237,7 +213,7 @@ export const useAccountStore = defineStore('account', {
         })
     },
     certificatePassword(password) {
-      console.log({password});
+      console.log({ password });
       const main = useMainStore()
       this.fetchCurrentUser()
       axios({
@@ -261,7 +237,7 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyCertificatePassword(password) {
-      console.log({password});
+      console.log({ password });
       axios({
         url: sr.members.validatePassword(),
         method: 'post',
@@ -278,17 +254,18 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyInform(credentials) {
-      console.log({...credentials});
+      console.log({ ...credentials });
       const main = useMainStore()
       axios({
         url: sr.members.update(),
         method: 'put',
-        data: {...credentials},
+        data: { ...credentials },
         headers: this.authHeader,
       })
         .then(res => {
           console.log(res);
           main.btnCh = 0
+          main.pBtnCh = 0
           alert('성공적으로 정보가 변경되었습니다.')
         })
         .catch(err => {
