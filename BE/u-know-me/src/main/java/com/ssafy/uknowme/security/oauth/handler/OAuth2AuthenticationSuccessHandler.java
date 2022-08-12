@@ -27,7 +27,7 @@ import static com.ssafy.uknowme.security.oauth.repository.OAuth2AuthorizationReq
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${app.oauth2.authorized-redirect-uris}")
+    @Value("${app.oauth2.redirect-uris}")
     private String REDIRECT_URL;
 
     private final AuthTokenProvider authTokenProvider;
@@ -45,6 +45,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         if (memberId.equals("empty")) {
             response.getWriter().print(false);
+            response.sendRedirect(REDIRECT_URL);
             return;
         }
 
