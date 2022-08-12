@@ -61,15 +61,16 @@
   <div class="flex justify-center align-center">
     <div>
       <img
+        @click="account.naverLogin()"
         id="naver_login_icon"
         class="sns-login"
         src="@/assets/land/naver_login_icon.png"
         alt="naver_login_icon"
-        style="display: none"
+        style="display:none;"
       />
       <div id="naver_id_login"></div>
       <input
-        @click="naverTokenSave()"
+        @click="account.naverLogin()"
         type="text"
         id="aT"
         style="display: none"
@@ -91,17 +92,11 @@ import { ref, onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 import { useLandStore } from "@/stores/land/land";
 
-const client_id = "5OSOWuXn6DTVQB4_h5Pc";
-const callbackUrl = "http://localhost:8080/ntpu";
+const client_id = "YQdwIoQRJWLg8GBYAaZq";
+const callbackUrl = "https://uknowme.mooo.com:8443/oauth2/authorization/naver?redirect_uri=https://uknowme.mooo.com:8443/member/oauth2/code/naver";
 
 export default {
   name: "SignIn",
-  methods: {
-    naverTokenSave() {
-      this.account.snsToken.naver = document.getElementById("aT").value;
-      this.account.naverLogin();
-    },
-  },
   setup() {
     const account = useAccountStore();
     const land = useLandStore();

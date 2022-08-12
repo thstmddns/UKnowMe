@@ -69,7 +69,7 @@ export default {
 
         console.log("socket start");
         // 1. 웹소켓 클라이언트 객체 생성
-        this.webSocket = new WebSocket(
+        self.webSocket = new WebSocket(
           "wss://uknowme.mooo.com:8443/ws/matching"
         );
 
@@ -91,13 +91,7 @@ export default {
 
           try {
             let age = this.calcAge(this.account.currentUser.birth);
-            let smoke = null;
-
-            if (this.account.currentUser.smoke == "Y") {
-              smoke = 1;
-            } else {
-              smoke = 0;
-            }
+            let smoke = this.account.currentUser.smoke;
 
             let sendData = `{
             "key" : "match_start_1",
@@ -116,7 +110,7 @@ export default {
             console.log("webSocket.send : ", sendData);
             this.webSocket.send(sendData);
           } catch (error) {
-            this.webSocket.onclose();
+            this.webSocket.close();
             document.getElementById("speech-title").innerHTML = "오류 발생";
             document.getElementById("speech-text").innerHTML =
               "사용자 데이터 오류.<br>로그인을 확인해 주세요.";
@@ -158,7 +152,7 @@ export default {
         };
       } else {
         this.matchBtn = false;
-        this.webSocket.onclose();
+        this.webSocket.close();
         document.getElementById("speech-title").innerHTML = "대기 중";
         document.getElementById("speech-text").innerHTML =
           "매칭이 취소되었습니다.<br>매칭을 시작해주세요.";
@@ -167,19 +161,10 @@ export default {
       }
     },
     calcAge(ssn1) {
-      var nByear, nTyear;
-      var today;
+      var today = new Date();
+      var result = today.getFullYear() - parseInt(ssn1.substring(0, 4), 10);
 
-      today = new Date();
-      nTyear = today.getFullYear();
-      if (ssn1[0] >= 3) {
-        nByear = 1900 + parseInt(ssn1.substring(0, 2), 10);
-      } else {
-        nByear = 2000 + parseInt(ssn1.substring(0, 2), 10);
-      }
-      var nAge = nTyear - nByear;
-
-      return nAge;
+      return result;
     },
   },
 };
