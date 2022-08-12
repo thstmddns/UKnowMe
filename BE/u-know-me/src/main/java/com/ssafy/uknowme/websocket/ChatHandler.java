@@ -289,10 +289,11 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         list.add(session);
-
-        System.out.println(list.toString());
+        
 
         log.info(session + " 클라이언트 접속" + list.toString());
+        session.sendMessage(new TextMessage("미 : 채팅 웹소켓 서버에 온걸 환영해"));
+        
     }
 
 

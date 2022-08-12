@@ -84,7 +84,7 @@ public class MatchingHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info(session + "클라이언트 접속");
-        session.sendMessage(new TextMessage("유노 : 웹소켓 서버에 온걸 환영해"));
+        session.sendMessage(new TextMessage("유노 : 매칭 웹소켓 서버에 온걸 환영해"));
     }
 
     /* Client가 접속 해제 시 호출되는 메서드드 */
@@ -93,7 +93,7 @@ public class MatchingHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
         log.info(session + " 클라이언트 접속 해제");
-        session.sendMessage(new TextMessage("유노 : 다음에 또 와"));
+
 
         try {
             for (int cnt = 0; cnt < connectUserList1vs1.size(); cnt++) {
