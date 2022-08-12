@@ -54,7 +54,9 @@
         />
       </div>
     </div>
+    <chat-sub />
     <chat-something />
+
   </div>
 </template>
 
@@ -67,7 +69,8 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 
-import ChatSomething from "@/components/chat/ChatSomething";
+import ChatSomething from "@/components/chat/ChatSomething.vue";
+import ChatSub from "@/components/chat/ChatSub.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -80,7 +83,7 @@ export default {
 
   components: {
     UserVideo,
-    ChatSomething,
+    ChatSomething, ChatSub
   },
 
   setup() {
