@@ -1,7 +1,7 @@
 <template>
   <div >
     <form action="post" @submit.prevent="admin.addKeyword(keywordValue)">
-      <hgroup class="speech-bubble">
+      <hgroup class="add-bubble">
       <h2 id="speech-title">키워드 추가</h2>
       <div>
         <div class="create">
@@ -76,7 +76,7 @@ import { ref } from "vue"
 .admin-keyword-btn:hover {
   background-color: #c1c3fc;
 }
-.speech-bubble {
+.add-bubble {
   /* position: absolute; */
   padding: 30px 10px 30px 10px;
   right: 50px;
@@ -97,7 +97,7 @@ import { ref } from "vue"
   animation-iteration-count: infinite;
 }
 
-.speech-bubble:after {
+.add-bubble:after {
   content: "";
   position: absolute;
   bottom: 0;
