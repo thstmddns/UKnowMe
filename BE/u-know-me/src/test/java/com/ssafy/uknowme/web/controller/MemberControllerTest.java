@@ -1,9 +1,5 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.uknowme.model.dto.MemberDto.*;
 import com.ssafy.uknowme.web.domain.enums.ReportState;
 import com.ssafy.uknowme.web.service.MemberService;
@@ -27,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssafy.uknowme.utils.JacksonUtils.convertToJson;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -283,11 +280,5 @@ class MemberControllerTest {
         actions.andExpect(MockMvcResultMatchers.content().json(convertToJson(dto)));
     }
 
-    private String convertToJson(Object dto) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        return objectMapper.writeValueAsString(dto);
-    }
 }

@@ -1,9 +1,5 @@
 package com.ssafy.uknowme.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceListResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceResponseDto;
 import com.ssafy.uknowme.model.dto.balanceDto.BalanceSaveRequestDto;
@@ -30,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssafy.uknowme.utils.JacksonUtils.convertToJson;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -159,13 +156,5 @@ public class BalanceControllerTest {
         actions.andExpect(MockMvcResultMatchers.status().isOk());
         actions.andExpect(MockMvcResultMatchers.content().string("true"));
         verify(balanceService, times(1)).delete(1);
-    }
-
-    private String convertToJson(Object dto) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        return objectMapper.writeValueAsString(dto);
     }
 }
