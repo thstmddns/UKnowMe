@@ -1,6 +1,7 @@
 package com.ssafy.uknowme.web.domain.factory;
 
 import com.ssafy.uknowme.web.domain.*;
+import com.ssafy.uknowme.web.domain.enums.ReportState;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,24 @@ public class MockEntityFactory {
                 .smoke("Y")
                 .address("우리집")
                 .role(Role.ROLE_MANAGER)
+                .build();
+    }
+
+    private static Member accusedMember() {
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        return Member.builder()
+                .id("yesolyesol")
+                .avatar(createAvatar())
+                .password(encoder.encode("password"))
+                .name("신예솔")
+                .nickname("예솔짱")
+                .gender("M")
+                .birth("19990101")
+                .tel("01012345679")
+                .smoke("F")
+                .address("너희집")
+                .role(Role.ROLE_USER)
                 .build();
     }
 
@@ -53,6 +72,14 @@ public class MockEntityFactory {
                 .title("공지사항")
                 .content("내용")
                 .hit(0)
+                .build();
+    }
+
+    public static Report createReport() {
+        return Report.builder()
+                .reportingMember(createMember())
+                .accusedMember(accusedMember())
+                .state(ReportState.REPORT)
                 .build();
     }
 }
