@@ -2,6 +2,7 @@ package com.ssafy.uknowme.web.domain.factory;
 
 import com.ssafy.uknowme.web.domain.Avatar;
 import com.ssafy.uknowme.web.domain.Balance;
+import com.ssafy.uknowme.web.domain.Keyword;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -40,6 +41,12 @@ public class MockEntityFactory {
                 .question("중국집")
                 .answer1("짬뽕")
                 .answer2("짜장면")
+                .build();
+    }
+
+    public static Keyword createKeyword() {
+        return Keyword.builder()
+                .keyword("취미")
                 .build();
     }
 }
