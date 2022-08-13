@@ -6,15 +6,17 @@ import * as VRMUtils from "@pixiv/three-vrm";
 
 export const useAvatarStore = defineStore('avatar', {
   state: () => ({
-    avatar: [
-      { id: 1, name: '미', image: require('@/assets/main/girl1.png') },
-      { id: 2, name: '마땡이', image: require('@/assets/main/girl2.png') },
-      { id: 3, name: '도레미', image: require('@/assets/main/girl3.png') },
-      { id: 4, name: '유노', image: require('@/assets/main/boy1.png') },
-      { id: 5, name: '보디다르마', image: require('@/assets/main/boy2.png') },
-      { id: 6, name: '금태양', image: require('@/assets/main/boy3.png') },
-      { id: 7, name: '클라디우스', image: require('@/assets/main/boy4.png') },
-      { id: 8, name: '키츠네', image: require('@/assets/main/boy5.png') }
+    avatarMan: [
+      { id: 11, name: '유노', image: require('@/assets/main/boy1.png') },
+      { id: 12, name: '보디다르마', image: require('@/assets/main/boy2.png') },
+      { id: 13, name: '금태양', image: require('@/assets/main/boy3.png') },
+      { id: 14, name: '클라디우스', image: require('@/assets/main/boy4.png') },
+      { id: 15, name: '키츠네', image: require('@/assets/main/boy5.png') },
+    ],
+    avatarWoman: [
+      { id: 21, name: '미', image: require('@/assets/main/girl1.png') },
+      { id: 22, name: '마땡이', image: require('@/assets/main/girl2.png') },
+      { id: 23, name: '도레미', image: require('@/assets/main/girl3.png') },
     ],
     avatarProgress: 0,
   }),
@@ -137,25 +139,22 @@ export const useAvatarStore = defineStore('avatar', {
           });
         },
 
-// for progress tag in HTML 
+        // for progress tag in HTML 
 
         //progress 값이 바뀔 때마다
         (progress) => {
           document.getElementById("progress").style.color = "#a056ff";
-        
+
           this.avatarProgress = 100 * (progress.loaded / progress.total)
-           if(this.avatarProgress==100){
-            setTimeout(function() {
-             document.getElementById("progress").style.display = "none";
-          }, 1000);
-          
-           
+          if (this.avatarProgress == 100) {
+            setTimeout(function () {
+              document.getElementById("progress").style.display = "none";
+            }, 1000);
           }
         },
-       
+
         (error) => console.error(error)
       )
-      
 
       setInterval(blink, 1000)
 

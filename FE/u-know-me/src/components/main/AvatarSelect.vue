@@ -1,8 +1,15 @@
 <template>
   <div class="avatarCollection">
-    <div class="avatar-card-container">
+    <div v-if="account.currentUser.gender == 'M'" class="avatar-card-container">
       <avatar-card
-        v-for="(avatar, i) in avatars.avatar"
+        v-for="(avatar, i) in avatars.avatarMan"
+        :avatar="avatar"
+        :key="i"
+      />
+    </div>
+    <div v-if="account.currentUser.gender == 'W'" class="avatar-card-container">
+      <avatar-card
+        v-for="(avatar, i) in avatars.avatarWoman"
         :avatar="avatar"
         :key="i"
       />
@@ -16,12 +23,14 @@
 <script>
 import AvatarCard from "@/components/main/AvatarCard.vue";
 import { useAvatarStore } from "@/stores/main/avatar";
+import { useAccountStore } from "@/stores/land/account";
 
 export default {
   name: "AvatarSelect",
   components: { AvatarCard },
   setup() {
     const avatars = useAvatarStore();
+    const account = useAccountStore();
 
     //media 반응형
     const mediaViewContent = window.matchMedia(`(max-width: 700px)`); // 1
@@ -39,9 +48,7 @@ export default {
     };
     mediaViewContent.addEventListener("change", viewChangeHandler);
 
-    return {
-      avatars,
-    };
+    return { avatars, account };
   },
   methods: {
     toggleAvatar() {
@@ -97,7 +104,7 @@ export default {
     left: -300px;
   }
   #avatarBtn {
-  bottom: 50px;
+    bottom: 50px;
   }
 }
 @media screen and (min-width: 700px) {
@@ -107,7 +114,7 @@ export default {
     top: 5px;
   }
   #avatarBtn {
-  bottom: -70px;
+    bottom: -70px;
   }
 }
 </style>

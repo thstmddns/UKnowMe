@@ -9,14 +9,14 @@
         <div>
           <div class="text-inform"><label for="informSecurePassword">현재 비밀번호</label></div>
           <div>
-            <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." v-model="password.currentPassword" :rules="validateCurrentPassword" /></div>
+            <div><Field type="password" name="informSecurePassword" id="informSecurePassword" placeholder="비밀번호를 입력해주세요.." :rules="validateCurrentPassword" /></div>
             <div class="text-left"><ErrorMessage class="error-message" name="informSecurePassword"/></div>
           </div>
         </div>
         <div>
           <div class="text-inform"><label for="informSecureNewPassword">새 비밀번호</label></div>
           <div>
-            <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.newPassword" :rules="validatePassword" /></div>
+            <div><Field type="password" name="informSecureNewPassword" id="informSecureNewPassword" placeholder="비밀번호를 입력해주세요.." v-model="password.changePassword" :rules="validatePassword" /></div>
             <div class="text-left"><ErrorMessage class="error-message" name="informSecureNewPassword"/></div>
           </div>
         </div>
@@ -58,10 +58,10 @@ export default {
       if (!value) {
         return '필수정보 입니다.';
       }
-      // this.account.modifyCertificatePassword(value)
-      // if (!this.account.correctPassword) {
-      //   return '현재 비밀번호와 일치하지 않습니다.'
-      // }
+      this.account.modifyCertificatePassword(value)
+      if (!this.account.correctPassword) {
+        return '현재 비밀번호와 일치하지 않습니다.'
+      }
       return true;
     },
     validatePassword(value) {
@@ -78,7 +78,7 @@ export default {
       if (!value) {
         return '필수정보 입니다.';
       }
-      if (this.password.newPassword !==value) {
+      if (this.password.changePassword !== value) {
         return '비밀번호가 일치하지 않습니다.';
       }
       return true;
@@ -88,8 +88,8 @@ export default {
     const main = useMainStore();
     const account = useAccountStore();
     const password = ref({
-      currentPassword: '',
-      newPassword: '',
+      id: account.currentUser.id,
+      changePassword: '',
     })
     return {
       main,
@@ -134,7 +134,7 @@ export default {
 }
 .inform-secure-btn {
   margin: 32px 0;
-  width: 336px;
+  width: 412px;
 }
 #informSecureForm div {
   padding-top: 4px;

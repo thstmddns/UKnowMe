@@ -8,6 +8,8 @@
           <notice-detail v-if="noticeBtn == 1"/>
           <notice-edit v-if="noticeBtn == 2"/>
           <member-detail v-if="noticeBtn == 3"/>
+          <balance-edit v-if="noticeBtn == 4"/>
+          <keyword-edit v-if="noticeBtn == 5"/>
         </div>
       </div>
     </div>
@@ -19,11 +21,14 @@ import { useAdminStore } from "@/stores/admin/admin"
 import NoticeDetail from '@/components/admin/notice/NoticeDetail.vue'
 import NoticeEdit from '@/components/admin/notice/NoticeEdit.vue'
 import MemberDetail from '@/components/admin/member/MemberDetail.vue'
+import BalanceEdit from '@/components/admin/balance/BalanceEdit.vue'
+import KeywordEdit from '../keyword/KeywordEdit.vue'
 
 export default {
   name: "NoticForm",
   components: {
-    NoticeDetail, NoticeEdit, MemberDetail,
+    NoticeDetail, NoticeEdit, MemberDetail, BalanceEdit,
+    KeywordEdit,
   },
   setup() {
     const admin = useAdminStore()
@@ -32,6 +37,8 @@ export default {
     return {
       admin,
       noticeBtn,
+      BalanceEdit,
+      KeywordEdit
     };
   },
 }

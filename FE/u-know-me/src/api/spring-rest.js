@@ -7,6 +7,7 @@ const ROOMS = 'room/'
 const AVATARS = 'avatar/'
 const NOTICES = 'notice/'
 
+
 export default {
   members: {
     member: () => HOST + 'member',
@@ -16,7 +17,8 @@ export default {
     // logout: () => HOST + MEMBERS + 'logout',
     signup: () => HOST + MEMBERS + 'join',
     findId: () => HOST + MEMBERS + 'find/id',
-    findPassword: () => HOST + MEMBERS + 'find/password',
+    findPassword: () => HOST + MEMBERS + 'find/id',
+    changePassword: () => HOST + MEMBERS + 'password',
     update: () => HOST + MEMBERS + 'update',
     account: memberSeq => HOST + MEMBERS + `${memberSeq}`,
     idDuplicate: () => HOST + MEMBERS + 'check/id',
@@ -35,9 +37,11 @@ export default {
     twoToTwo: memberSeq => HOST + MACHINGS + '2vs2/' + `${memberSeq}`,
   },
   features: {
-    balance: () => HOST + FEATURES + 'balance',
+    balance: () => HOST + FEATURES + 'balance/create',
+    balanceList: () => HOST + FEATURES + 'balance/list',
     balanceInfo: balanceSeq => HOST + FEATURES + 'balance/' + `${balanceSeq}`,
-    keyword: () => HOST + FEATURES + 'keyword',
+    keyword: () => HOST + FEATURES + 'keyword/create',
+    keywordList: () => HOST + FEATURES + 'keyword/list',
     keywordInfo: keywordSeq => HOST + FEATURES + 'keyword/' + `${keywordSeq}`,
   },
   rooms: {

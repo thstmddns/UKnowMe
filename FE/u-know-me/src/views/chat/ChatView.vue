@@ -54,7 +54,11 @@
         />
       </div>
     </div>
-    <chat-something />
+    <chat-sub />
+    <accuse-modal v-if="chat.accuseBtn === 1"/>
+    <game-modal v-if="chat.gameBtn === 1"/>
+    <!-- <chat-something /> -->
+
   </div>
 </template>
 
@@ -67,7 +71,10 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 
-import ChatSomething from "@/components/chat/ChatSomething";
+// import ChatSomething from "@/components/chat/ChatSomething.vue";
+import ChatSub from "@/components/chat/ChatSub.vue";
+import AccuseModal from "@/components/chat/AccuseModal.vue"
+import GameModal from "@/components/chat/GameModal.vue"
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -80,7 +87,9 @@ export default {
 
   components: {
     UserVideo,
-    ChatSomething,
+    ChatSub,
+    AccuseModal,
+    GameModal
   },
 
   setup() {
@@ -97,7 +106,7 @@ export default {
       videoDevices,
       SessionName,
     } = storeToRefs(chat);
-    chat.socketConnect();
+    chat.socketConnect(account.currentUser.seq);
 
     onMounted(() => {
       document.getElementById("joinBtn").click();
@@ -167,8 +176,8 @@ export default {
       this.getToken(this.mySessionId).then((token) => {
         this.session
           .connect(token, { clientData: this.myUserName })
-          .then(() => {
-            var avatarVideo = chat.avatarLoad();
+          .then(async () => {
+            var avatarVideo = await chat.avatarLoad();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
@@ -302,11 +311,11 @@ h1 {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: radial-gradient(
+  /* background: radial-gradient(
     61.17% 61.17% at 50% 50%,
     #ebdcfe 56.77%,
     #ffffff 100%
-  );
+  ); */
 }
 
 .video-container {

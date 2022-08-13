@@ -1,10 +1,10 @@
 <template>
   <div class="card">
     <div class="container">
-      <img :src="avatar.image" alt="">
+      <img :src="avatar.image" alt="" />
     </div>
     <div class="avatar-inform">
-      <h4 id="avatar-name">{{avatar.name}}</h4>
+      <h4 id="avatar-name">{{ avatar.name }}</h4>
       <button class="avatar-button">선택</button>
     </div>
   </div>
@@ -12,11 +12,11 @@
 
 <script>
 export default {
-  name: 'AvatarCard',
+  name: "AvatarCard",
   props: {
-    avatar : Object,
+    avatar: Object,
   },
-}
+};
 </script>
 
 <style>
@@ -31,16 +31,18 @@ export default {
 .card {
   width: 250px;
   height: 150px;
-  background: #FFFFFF;
+  background: rgba(255, 255,255, 0.9);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  backdrop-filter: blur(5px);
 }
 .avatar-button {
   width: 100px;
   height: 40px;
-  background: #A056FF;
+  background: #a056ff;
   color: white;
   box-shadow: 0px 2.95056px 2.21292px rgba(0, 0, 0, 0.25);
   border-radius: 7.37639px;
@@ -50,7 +52,7 @@ export default {
 }
 .avatar-button:hover {
   transition: all 150ms linear;
-  opacity: .85;
+  opacity: 0.85;
 }
 
 #avatar-name {
@@ -58,5 +60,4 @@ export default {
   display: flex;
   justify-content: center;
 }
-
 </style>

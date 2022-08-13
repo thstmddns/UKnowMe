@@ -5,30 +5,32 @@
   <form id="findPasswordForm" action="POST" @submit.prevent="account.findPassword(credentials)">
     <div>
       <div><label for="findPasswordId">아이디</label></div>
-      <div><input type="text" name="findPasswordId" id="findPasswordId" placeholder="아이디를 입력해주세요." v-model="credentials.name"/></div>
+      <div><input type="text" name="findPasswordId" id="findPasswordId" placeholder="아이디를 입력해주세요." v-model="credentials.id"/></div>
     </div>
     <div>
       <div><label for="findPasswordName">이름</label></div>
       <div><input type="text" name="findPasswordName" id="findPasswordName" placeholder="이름을 입력해주세요." v-model="credentials.name"/></div>
     </div>
     <div>
-      <div><label for="findPasswordTel">휴대폰 번호</label></div>
+      <div><label for="findPasswordNumber">휴대전화</label></div>
       <div>
-        <input class="middle-input" type="password" name="findPasswordTel" id="findPasswordTel" placeholder="-없이 입력해주세요." v-model="credentials.tel"/>
-        <button type="button">전송하기</button>
+        <input class="middle-input" type="text" name="findPasswordNumber" id="findPasswordNumber" placeholder="-없이 입력해주세요." v-model="credentials.tel"/>
+        <button @click="account.sendNumTel(credentials.tel)" type="button">전송하기</button>
       </div>
     </div>
-    <div class="mb-16px">
+    <div>
       <div><label for="findPasswordCertificationNumber">인증번호</label></div>
       <div>
-          <input class="middle-input" type="text" name="findPasswordCertificationNumber" id="findPasswordCertificationNumber"  placeholder="인증번호를 입력해주세요.">
-          <button type="button">인증하기</button>
-        </div>
+        <input type="text" :class="{ 'disabled-input-bg': !account.sendTel }" name="findPasswordCertificationNumber" id="findPasswordCertificationNumber"  placeholder="인증번호를 입력해주세요." v-model="telCerticate" :disabled="!account.sendTel" />
+        <input @click="telClick()" type="text" id="tel-input" style="display:none;">
+      </div>
+      <div class="error-div" v-if="!account.checkFind.tel"></div>
+      <p v-if="account.checkFind.tel" class="correct-message">인증이 성공했습니다.</p>
     </div>
     <button type="submit" class="sign-btn">비밀번호 찾기</button>
   </form>
   <div class="go-login">
-    <span @click="land.btnCh=7">비번 찾았으</span> | 
+    <span @click="land.btnCh=4">아이디찾기 </span> &#160; 
     <span @click="land.btnCh=1">로그인 창으로 돌아가기</span>
   </div>
 </template>
@@ -40,6 +42,11 @@ import { useLandStore } from '@/stores/land/land'
 
 export default {
   name:'FindPassword',
+  methods: {
+    telClick() {
+      this.telCerticate = document.getElementById('tel-input').value
+    },
+  },
   setup() {
     const account = useAccountStore()
     const land = useLandStore()
@@ -48,10 +55,12 @@ export default {
       name: '',
       tel: '',
     })
+    const telCerticate = ref('')
     return {
       account,
       credentials,
       land,
+      telCerticate,
     }
   }
 }
@@ -126,6 +135,9 @@ export default {
 }
 #findPasswordForm button:active {
   background: #8122fe;
+}
+#findPasswordForm .disabled-input-bg {
+  background-color: #efefef;
 }
 .mb-16px {
   margin-bottom: 16px;

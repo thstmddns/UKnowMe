@@ -67,7 +67,7 @@ export default {
   color: white;
   font-size: 12px;
   bottom: 0;
-  right: 10px;
+  left: 10px;
   z-index: 1;
 }
 </style>
