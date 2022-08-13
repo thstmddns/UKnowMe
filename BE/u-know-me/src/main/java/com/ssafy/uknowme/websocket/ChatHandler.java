@@ -106,7 +106,7 @@ public class ChatHandler extends TextWebSocketHandler {
                                 "\t\"answer1\" : \"%s\",\n" +
                                 "\t\"answer2\" : \"%s\"\n" +
                                 "}", balanceResponseDto.getQuestion(),
-                         balanceResponseDto.getAnswer1(),
+                        balanceResponseDto.getAnswer1(),
                         balanceResponseDto.getAnswer2());
                 TextMessage balance_q_request_msg = new TextMessage(balance_q_request_tmp);
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
@@ -224,7 +224,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 }
                 break;
             case "users_seq_request_1":
-                log.info("방안의 유저 정보 요청");
+                log.info("방안의 유저 정보 요청 - 현재 사용하지 않습니다");
 
 
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
@@ -250,7 +250,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 break;
 
             case "users_seq_request_2":
-                log.info("방안의 유저 정보 요청");
+                log.info("방안의 유저 정보 요청 - 현재 사용하지 않습니다");
 
                 log.info("주의사항 : 무조건 4명 다 들어와있는 처음에 요청해야 합니다");
                 for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
@@ -289,17 +289,14 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         list.add(session);
-        
 
         log.info(session + " 클라이언트 접속" + list.toString());
-        session.sendMessage(new TextMessage("미 : 채팅 웹소켓 서버에 온걸 환영해"));
-        
+
     }
 
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-
 
         log.info(session + " 클라이언트 접속 해제");
         for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
