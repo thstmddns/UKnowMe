@@ -12,8 +12,13 @@
           신고하시겠습니까? 
         </div>
         <div class="accuse-modal-content-sub">(비매너행위* : 욕설, 혐오 발언, 부적절한 행동)</div>
+        <button v-for="(people, i ) in otherPeople"
+        :people="people"
+        :key="i" 
+       >{{people.userName}}</button>
+        
         <div class="accuse-btn-list">
-          <button class="accuse-btn">신고</button>
+          <button class="accuse-btn"  v-on:click="createReport()">신고</button>
         </div>
       </div>
     </div>
@@ -23,6 +28,9 @@
 <script>
 import { storeToRefs } from "pinia"
 import { useChatStore } from "@/stores/chat/chat"
+import { useAccountStore } from '@/stores/land/account'
+import axios from 'axios'
+
 
 export default {
   name: "AccuseModal",
@@ -30,14 +38,42 @@ export default {
   },
   setup() {
     const chat = useChatStore()
-    const { accuseBtn } = storeToRefs(chat)
+    const { accuseBtn, otherPeople } = storeToRefs(chat)
+    const account = useAccountStore();
 
     return {
       chat,
       accuseBtn,
+      account,
+      otherPeople,
     };
   },
-}
+  methods : {
+     createReport () {
+      axios({
+        url: `https://uknowme.mooo.com:8443/report/create`,
+        method: 'post',
+        data : {
+
+
+  "accusedMemberSeq": 111,
+  "reportState": "REPORT",
+  "reportingMemberSeq": 112
+
+
+
+        }
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
+    }
+    }
+  }
+
 </script>
 
 <style>
