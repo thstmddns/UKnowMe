@@ -68,7 +68,7 @@ export default {
 .loading span {
   display: inline-block;
   margin: 0 -0.05em;
-  animation: loading 1.4s infinite alternate;
+  animation: loading 0.5s infinite alternate;
 }
 
 progress {

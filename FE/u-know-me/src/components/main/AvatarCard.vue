@@ -31,7 +31,7 @@ export default {
 .card {
   width: 250px;
   height: 150px;
-  background: rgba(255, 255,255, 0.7);
+  background: rgba(255, 255,255, 0.9);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
   display: flex;
