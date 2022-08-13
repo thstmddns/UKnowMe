@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style>
-.flex {
+/* .flex {
   display: flex;
 }
 .chat-content-wrap {
@@ -76,14 +76,12 @@ export default {
 .chat-content-left {
   min-width: 400px;
   height: 200px;
-  /* background-color: blanchedalmond; */
   display: flex;
   flex: 1;
 }
 .chat-content-right {
   min-width: 400px;
   height: 200px;
-  /* background-color: blanchedalmond; */
   display: flex;
   flex: 1;
 }
@@ -106,7 +104,6 @@ export default {
 .chat-guide {
   width: 40%;
   height: 200px;
-  /* background-color: blanchedalmond; */
 }
 .chat-text {
   width: 100%;
@@ -128,7 +125,6 @@ export default {
 }
 
 .chat-btn-list {
-  /* min-width: 270px; */
   margin: auto 20px;
   display: flex;
 }
@@ -138,7 +134,7 @@ export default {
   height: 60px;
   margin: 5px;
   padding: 0;
-  background-color: transparent;
+  background-color: white;
   border: 0;
   outline: 0;
   box-shadow: none;
@@ -209,5 +205,5 @@ export default {
 .out-btn img {
   width: 40px;
   height: 40px;
-}
+} */
 </style>

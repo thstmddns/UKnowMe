@@ -12,6 +12,8 @@ let currentVrm;
 
 export const useChatStore = defineStore('chat', {
   state: () => ({
+    accuseBtn: 0,
+    gameBtn: 0,
     test: 0,
     webSocket: null,
     OV: undefined,

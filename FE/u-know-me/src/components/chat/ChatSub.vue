@@ -1,24 +1,7 @@
 <template>
   <div class="chat-sub">
     <div class="chat-keyword-container">
-      <div class="option-btn-list">
-        <div class="option">
-          <button class="chat-btn-lg">
-            <img src="@/assets/chat/option-img.png" alt="" />
-          </button>
-        </div>
-        <div class="option">
-          <button
-            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
-            class="chat-btn-lg">
-            <img src="@/assets/chat/exit-img.png" alt="">
-          </button>
-        </div>
-      </div>
       <div class="keyword">
-        <div class="keyword-img-container">
-          <img class="keyword-img" src="@/assets/chat/youknowme-img.png" alt="">
-        </div>
         <div class="keyword-content">
           <p>"유노"님께서 입장하셨습니다.</p>
           <p>"유노"님께서 입장하셨습니다.</p>
@@ -32,28 +15,63 @@
 
     <div class="chat-love-container">
       <div id="love-container">
-        <div class="heart-img" @click="chat.heartClick()" :class="chat-success">
+        <div class="heart-img" @click="chat.heartClick(), love()">
           <img src="@/assets/main/heart.png" alt="" />
         </div>
-        <div class="circle" style="animation-delay: 0s"></div>
-        <div class="circle" style="animation-delay: 1s"></div>
-        <div class="circle" style="animation-delay: 2s"></div>
-        <div class="circle" style="animation-delay: 3s"></div>
+        <div :class="{'circle' : this.success === false, 'success-circle' : this.success === true}" style="animation-delay: 0s"></div>
+        <div :class="{'circle' : this.success === false, 'success-circle' : this.success === true}" style="animation-delay: 1s"></div>
+        <div :class="{'circle' : this.success === false, 'success-circle' : this.success === true}" style="animation-delay: 2s"></div>
+        <div :class="{'circle' : this.success === false, 'success-circle' : this.success === true}" style="animation-delay: 3s"></div>
       </div>
     </div>
 
     <div class="chat-icon-container">
-      <div class="icon-list">
-
+      <div class="option-btn-list">
+        <div class="option">
+          <button class="chat-btn-lg" @click="chat.gameBtn = 1">
+            <div>밸런스 게임</div>
+            <img src="@/assets/chat/game-img.png" alt="">
+          </button>
+          <button class="chat-btn-lg" @click="chat.accuseBtn = 1">
+            <div>신고하기</div>
+            <img src="@/assets/chat/accuse-img.png" alt="">
+          </button>
+        </div>
+        <div class="option">
+          <button class="chat-btn-lg">
+            <div>모션 인식</div>
+            <img src="@/assets/chat/option-on-img.png" alt="" />
+            <!-- <img src="@/assets/chat/option-off-img.png" alt="" /> -->
+          </button>
+          <button
+            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
+            class="chat-btn-lg">
+            <div>나가기</div>
+            <img src="@/assets/chat/exit-img.png" alt="">
+          </button>
+        </div>
+        <div class="logo">
+          <img src="@/assets/chat/youknowme-img.png" alt="">
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import { useChatStore } from "@/stores/chat/chat";
 
-}
+export default {
+  setup() {
+    const chat = useChatStore();
+    return { chat, success: false };
+  },
+  methods: {
+    love() {
+      this.success = true
+    }
+  }
+};
 </script>
 
 <style>
@@ -64,77 +82,98 @@ export default {
 .chat-keyword-container {
   display: flex;
   min-width: 400px;
-  width: 80%;
   height: 200px;
+  flex: 1;
 }
 .chat-love-container {
-  
+  position: relative;
+  display: flex;
+  place-items: center;
 }
 .chat-icon-container {
-  min-width: 400px;
-  height: 200px;
-  background-color: red;
-}
-.option-btn-list {
-  width: 15%;
-  height: 70%;
-  margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  min-width: 400px;
+  height: 200px;
+  flex: 1;
+}
+.option-btn-list {
+  min-width: 150px;
+  height: 70%;
+  margin: auto 30px;
+  display: flex;
 }
 .option {
   display: flex;
-  justify-content: right;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 20px;
 }
 .chat-btn-lg {
-  min-width: 70px;
-  width: 120px;
+  width: 190px;
   height: 60px;
-  background-color: white;
+  padding: 10px 15px;
+  background-color: #EBDCFE;
   border: 0;
   outline: 0;
   box-shadow: 0px 2.72109px 2.72109px rgba(0, 0, 0, 0.25);
   border-radius: 20.4082px;
   cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 .chat-btn-lg:hover {
-  background-color: white;
+  background-color: #d5b6ff;
+  color:black
+}
+.chat-btn-lg div {
+  width: 120px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 40px;
 }
 .chat-btn-lg img {
   width: 40px;
   height: 40px;
 }
 .keyword {
-  display: flex;
-  width: 80%;
+  min-width: 150px;
+  width: 500px;
   height: 70%;
-  margin: auto;
-  background-color: white;
+  margin: auto 30px;
+  background-color: #EBDCFE;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-}
-.keyword-img-container {
-  display: flex;
-  width: 25%;
-  text-align: center;
-  justify-content: center;
-}
-.keyword-img {
-  max-width: 100%;
-  margin: 10%;
-}
-.keyword-content {
-  width: 75%;
-  height: 140px;
+  flex: 1;
   font-weight: 600;
   overflow: auto;
 }
-.keyword-content::-webkit-scrollbar {
+.keyword-content {
+  margin: 2% 5%;
+}
+.keyword::-webkit-scrollbar {
   display: none;
 }
 .icon-list {
+}
+.logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.logo img {
+  width: auto;
+  height: 100%;
+}
+.success-circle {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background-color: red;
+  position: absolute;
+  opacity: 0;
+
+  animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
 }
 </style>
