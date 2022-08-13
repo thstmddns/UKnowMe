@@ -333,9 +333,10 @@ public class MatchingHandler extends TextWebSocketHandler {
                                     "\t\"user2_nickName\" : \"%s\",\n" +
                                     "\t\"user3_nickName\" : \"%s\",\n" +
                                     "\t\"user4_nickName\" : \"%s\",\n" +
+                                    "\t\"room\" : \"%s\"\n" +
 
                                     "}", user1.getSeq(),user2.getSeq(),user3.getSeq(),user4.getSeq(),
-                            user1.getNickname(), user2.getNickname(), user3.getNickname(), user4.getNickname());
+                            user1.getNickname(), user2.getNickname(), user3.getNickname(), user4.getNickname(),roomSeq);
 
                     TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
                     user1.getSession().sendMessage(users_seq_response_msg);
@@ -344,10 +345,6 @@ public class MatchingHandler extends TextWebSocketHandler {
                     user4.getSession().sendMessage(users_seq_response_msg);
 
 
-                user1.getSession().sendMessage(tx);
-                user2.getSession().sendMessage(tx);
-                user3.getSession().sendMessage(tx);
-                user4.getSession().sendMessage(tx);
 
 
             } catch (IndexOutOfBoundsException e) {
@@ -466,15 +463,14 @@ public class MatchingHandler extends TextWebSocketHandler {
                     "\t\"user1_seq\" : \"%s\",\n" +
                     "\t\"user2_nickName\" : \"%s\",\n" +
                     "\t\"user2_seq\" : \"%s\",\n" +
+                    "\t\"room\" : \"%s\"\n" +
                     "}", user1.getNickname(), user1.getSeq()
-            ,user2.getNickname(), user2.getSeq());
+            ,user2.getNickname(), user2.getSeq(),roomSeq);
 
             TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
             user1.getSession().sendMessage(users_seq_response_msg);
             user2.getSession().sendMessage(users_seq_response_msg);
 
-            user1.getSession().sendMessage(tx);
-            user2.getSession().sendMessage(tx);
 
         } catch (IndexOutOfBoundsException e) {
             log.info("리스트를 벗어나 버렸습니다.");
