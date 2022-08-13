@@ -32,7 +32,7 @@
       <admin-balance
         v-if="adminBtn == 3"
       />
-      <admin-helper
+      <admin-keyword
         v-if="adminBtn == 4"
       />
 
@@ -48,14 +48,14 @@ import AdminMember from '@/components/admin/member/AdminMember.vue'
 import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
 import AdminBalance from '@/components/admin/balance/AdminBalance.vue'
-import AdminHelper from '@/components/admin/AdminHelper.vue'
 import NoticeForm from "@/components/admin/notice/NoticeForm.vue"
 import NoticeModal from "@/components/admin/notice/NoticeModal.vue"
+import AdminKeyword from '@/components/admin/keyword/AdminKeyword.vue'
 
 export default {
   name : "AdminPage",
   components : {
-    AdminMember, AdminNotice, AdminAvatar, AdminBalance, AdminHelper, NoticeForm, NoticeModal
+    AdminMember, AdminNotice, AdminAvatar, AdminBalance, NoticeForm, NoticeModal, AdminKeyword
   },
   setup() {
     const admin = useAdminStore()

@@ -1,20 +1,14 @@
 <template>
   <div >
-    <form action="post" @submit.prevent="admin.addBalance(balanceValue)">
-      <hgroup class="add-bubble">
-      <h2 id="add-title">밸런스 게임 추가</h2>
+    <form action="post" @submit.prevent="admin.addKeyword(keywordValue)">
+      <hgroup class="speech-bubble">
+      <h2 id="speech-title">키워드 추가</h2>
       <div>
         <div class="create">
-          <input class="content" type="text" v-model="balanceValue.question" placeholder="question을 입력해주세요."/>
-        </div>
-        <div class="create">
-          <input class="content" type="text" v-model="balanceValue.answer1" placeholder="answer1을 입력해주세요." />
-        </div>
-        <div class="create">
-          <input class="content" type="text" v-model="balanceValue.answer2" placeholder="answer2를 입력해주세요."/>
+          <input class="content" type="text" v-model="keywordValue.keyword" placeholder="keyword를 입력해주세요."/>
         </div>
       </div>
-        <button class="admin-btn admin-balance-btn">추가</button>
+        <button class="admin-btn admin-keyword-btn">추가</button>
       </hgroup>
     </form>
   </div>
@@ -26,27 +20,25 @@ import {useAdminStore} from "@/stores/admin/admin"
 import { ref } from "vue"
 
   export default {
-    name: "BalanceForm",
+    name: "KeywordForm",
     setup() {
       const admin = useAdminStore();
-      const balanceValue = ref({
+      const keywordValue = ref({
         seq:'',
-        question: '',
-        answer1: '',
-        answer2: ''
+        keyword:'',
       })
       return {
         admin,
-        balanceValue
+        keywordValue
       }
     },
     methods: {
       submit() {
-        const {question, answer1, answer2} = this;
-        if(!question || !answer1 || !answer2){
+        const {keyword} = this;
+        if( !keyword ){
           alert("모든 항목을 입력해주세요.")
         }
-        this.$emit('submit', {question, answer1, answer2 })
+        this.$emit('submit', { keyword })
       }
     }
   }
@@ -69,11 +61,11 @@ import { ref } from "vue"
   font-weight: 600;
   border-radius: 10px;
 }
-.balance-form {
+.keyword-form {
   width: 100%;
   background-color: pink;
 }
-.admin-balance-btn {
+.admin-keyword-btn {
   /* position: fixed; */
   bottom: 1%;
   right: 1%;
@@ -81,10 +73,10 @@ import { ref } from "vue"
   height: 40px;
   margin: 10px;
 }
-.admin-balance-btn:hover {
+.admin-keyword-btn:hover {
   background-color: #c1c3fc;
 }
-.add-bubble {
+.speech-bubble {
   /* position: absolute; */
   padding: 30px 10px 30px 10px;
   right: 50px;
@@ -105,7 +97,7 @@ import { ref } from "vue"
   animation-iteration-count: infinite;
 }
 
-.add-bubble:after {
+.speech-bubble:after {
   content: "";
   position: absolute;
   bottom: 0;

@@ -13,7 +13,6 @@
       <div class="save-btn">
         <button class="admin-btn balance-save-btn">저장</button>
       </div>
-      <!-- <button class="admin-btn " @click="admin.balanceBtn = 2">수정</button> -->
 
     </form>
   </div>
