@@ -64,17 +64,17 @@ export default {
     const account = useAccountStore();
     const chat = useChatStore();
 
-    let { SessionName } = storeToRefs(chat);
+    let { SessionName, otherPeople } = storeToRefs(chat);
 
-    return { main, account, SessionName };
+    return { main, account, SessionName, otherPeople };
   },
   methods: {
     matchStart() {
+      const self = this;
       // 나의 위치정보 추출
       this.whereami();
 
       if (this.matchBtn == false) {
-        const self = this;
         this.matchBtn = true;
 
         console.log("socket start");
@@ -161,18 +161,51 @@ export default {
 
         // 2-2) 메세지 수신 이벤트 처리
         this.webSocket.onmessage = function (event) {
+          // 하트 이미지 변경
+          document.getElementById("heart-img-src").style.animationDuration =
+            "0.5s";
+          document.getElementById("speech-title").innerHTML = "매칭 완료";
+          document.getElementById("speech-text").innerHTML =
+            "매칭완료!<br>곧 연결됩니다!";
+
           console.log(`onMessage: ${event.data}`);
+          const test = event.data.replace(/,\s*}$/, "}");
 
-          if (event.data != "유노 : 매칭 웹소켓 서버에 온걸 환영해") {
-            document.getElementById("heart-img-src").style.animationDuration =
-              "0.5s";
-            document.getElementById("speech-title").innerHTML = "매칭 완료";
-            document.getElementById("speech-text").innerHTML =
-              "매칭완료!<br>곧 연결됩니다!";
+          var data = JSON.parse(test);
 
-            self.SessionName = event.data;
-            setTimeout(() => router.push({ name: "chat" }), 3000);
+          self.SessionName = data.room;
+
+          // 신고할 사람 객체 만들기
+          var otherJson = new Object();
+          //1          
+          otherJson.userName = data.user1_nickName;
+          otherJson.userSeq = data.user1_seq;
+          JSON.stringify(otherJson);
+          self.otherPeople.push(otherJson);
+          //2
+          otherJson = new Object();
+          otherJson.userName = data.user2_nickName;
+          otherJson.userSeq = data.user2_seq;
+          JSON.stringify(otherJson);
+          self.otherPeople.push(otherJson);
+
+          // 2대2일때,
+          if (data.key == "users_seq_response_2") {
+            //3
+            otherJson = new Object();
+            otherJson.userName = data.user3_nickName;
+            otherJson.userSeq = data.user3_seq;
+            JSON.stringify(otherJson);
+            self.otherPeople.push(otherJson);
+            //4
+            otherJson = new Object();
+            otherJson.userName = data.user4_nickName;
+            otherJson.userSeq = data.user4_seq;
+            JSON.stringify(otherJson);
+            self.otherPeople.push(otherJson);
           }
+
+          setTimeout(() => router.push({ name: "chat" }), 3000);
         };
 
         // 2-3) 연결 종료 이벤트 처리

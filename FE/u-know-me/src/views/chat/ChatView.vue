@@ -97,7 +97,7 @@ export default {
       videoDevices,
       SessionName,
     } = storeToRefs(chat);
-    chat.socketConnect();
+    chat.socketConnect(account.currentUser.seq);
 
     onMounted(() => {
       document.getElementById("joinBtn").click();

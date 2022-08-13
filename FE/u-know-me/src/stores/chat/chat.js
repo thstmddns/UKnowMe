@@ -24,6 +24,7 @@ export const useChatStore = defineStore('chat', {
     videoDevices: null,
     jsonData: null,
     SessionName : "SessionA",
+    otherPeople : [],
   }),
   getters: {
 
@@ -422,7 +423,7 @@ export const useChatStore = defineStore('chat', {
       }
     },
 
-    socketConnect() {
+    socketConnect(seq) {
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
@@ -437,7 +438,8 @@ export const useChatStore = defineStore('chat', {
         console.log("웹소켓서버와 연결 성공");
         webSocket.send(`{
           "key" : "chat_start_1",
-          "room_seq" : "${this.SessionName}"
+          "room_seq" : "${this.SessionName}",
+          "user_seq" : "${seq}"
         }`);
       };
 
