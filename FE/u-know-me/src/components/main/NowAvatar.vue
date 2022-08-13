@@ -1,30 +1,37 @@
 <template>
   <div>
     <div id="progress">
-      <progress id="progressTag" :value="avatarProgress" max="100"></progress>
+      <progress id="progressTag" :value="avatarFun.avatarProgress" max="100"></progress>
       <div class="loading">
         <span>LOADING</span>
       </div>
     </div>
 
-    <div id="nowAvatar"></div>
+    <div id="nowAvatarDiv"></div>
   </div>
 </template>
 
 <script>
 import { onMounted } from "vue";
 import { useAvatarStore } from "@/stores/main/avatar";
-import { storeToRefs } from "pinia";
+import { useAccountStore } from '@/stores/land/account';
+
 export default {
   setup() {
     const avatarFun = useAvatarStore();
-    let { avatarProgress } = storeToRefs(avatarFun);
+    const account = useAccountStore();
 
     onMounted(() => {
-      avatarFun.load();
+      var avatar;
+      if (account.currentUser.gender == "M") {
+        avatar = 11;
+      } else {
+        avatar = 21;
+      }
+      avatarFun.load(avatar);
     });
 
-    return { avatarFun, avatarProgress };
+    return { avatarFun };
   },
 };
 </script>

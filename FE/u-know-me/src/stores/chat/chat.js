@@ -406,6 +406,7 @@ export const useChatStore = defineStore('chat', {
     },
 
     leaveSession() {
+      document.getElementById("avatarCanvas").remove();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
 
