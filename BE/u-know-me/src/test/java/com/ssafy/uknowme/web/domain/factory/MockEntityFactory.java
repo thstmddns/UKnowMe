@@ -1,6 +1,7 @@
 package com.ssafy.uknowme.web.domain.factory;
 
 import com.ssafy.uknowme.web.domain.Avatar;
+import com.ssafy.uknowme.web.domain.Balance;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -31,6 +32,14 @@ public class MockEntityFactory {
                 .seq(4)
                 .name("유노")
                 .frequency(0)
+                .build();
+    }
+
+    public static Balance createBalance() {
+        return Balance.builder()
+                .question("중국집")
+                .answer1("짬뽕")
+                .answer2("짜장면")
                 .build();
     }
 }

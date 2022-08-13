@@ -4,12 +4,14 @@ package com.ssafy.uknowme.model.dto.MemberDto;
 import com.ssafy.uknowme.web.domain.enums.ReportState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class ManageMemberInfoResponseDto {
     private int seq;
