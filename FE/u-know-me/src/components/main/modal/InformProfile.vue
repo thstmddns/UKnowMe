@@ -22,7 +22,7 @@
     <div>
       <div><label for="informModifyBirth">생년월일</label></div>
       <div>
-        <Field type="text" name="informModifyBirth" id="informModifyBirth" placeholder="생년월일(6자리)" v-model="credentials.birth" :rules="validateBirthBirth" class="disabled-input-bg" disabled />
+        <Field type="text" name="informModifyBirth" id="informModifyBirth" placeholder="생년월일(8자리)" v-model="credentials.birth" :rules="validateBirth" class="disabled-input-bg" disabled />
       </div>
       <ErrorMessage class="error-message" name="informModifyBirth"/>
     </div>
@@ -157,9 +157,9 @@ export default {
       if (!value) {
         return '생년월일 6자리를 정확하게 입력하세요.';
       }
-      const birth = /^[0-9]{6}$/
+      const birth = /^[0-9]{8}$/
       if (!birth.test(value)) {
-        return '생년월일 6자리를 정확하게 입력하세요.';
+        return '생년월일 8자리를 정확하게 입력하세요.';
       }
       return true;
     },
