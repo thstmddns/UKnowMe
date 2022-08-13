@@ -16,6 +16,9 @@ export const useAdminStore = defineStore('admin', {
     member: {},
     balanceList: [],
     balance: {},
+    keywordList: [],
+    keyword: {},
+
   }),
   getters: {
 
@@ -240,5 +243,91 @@ export const useAdminStore = defineStore('admin', {
         .catch(err => console.error(err.response))
       }
     },
+    getKeywords() {
+      const account = useAccountStore()
+      axios({
+        url: sr.features.keywordList(),
+        method: 'get',
+        params: {},
+        headers:account.authHeader,
+      })
+      .then(res => {
+        console.log(res.data);
+        this.keywordList = res.data
+      })
+      .catch(err => {
+        console.error(err.response.data)
+      })
+    },
+
+    getKeyword(keywordSeq) {
+      const account = useAccountStore()
+
+      axios({
+        url: sr.features.keywordInfo(keywordSeq),
+        method: 'get',
+        params: {},
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.keyword = res.data
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+
+    addKeyword(keyword) {
+      console.log({ ...keyword })
+      const account = useAccountStore()
+      axios({
+        url:sr.features.keyword(),
+        method: 'post',
+        data: { ...keyword },
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.getKeywords()
+      })
+      .catch(err => {
+        console.error(err.response.data)
+      })
+    },
+
+    updateKeyword(keywordData, keywordSeq) {
+      console.log({...keywordData})
+      const account = useAccountStore()
+      axios({
+        url: sr.features.keywordInfo(keywordSeq),
+        method: 'put',
+        data: { ...keywordData },
+        headers: account.authHeader,
+      })
+      .then(res => {
+        console.log(res);
+        this.getKeywords()
+        this.noticeBtn = 0
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
+    },
+    deleteKeyword(keywordSeq) {
+      const account = useAccountStore()
+      if (confirm('정말 삭제하겠습니까>')) {
+        axios({
+          url: sr.features.keywordInfo(keywordSeq),
+          method: 'delete',
+          headers: account.authHeader,
+        })
+        .then(res => {
+          console.log(res);
+          this.getKeywords()
+        })
+        .catch(err => console.error(err.response))
+      }
+    }
   },
 })

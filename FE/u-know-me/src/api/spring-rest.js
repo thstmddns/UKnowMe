@@ -7,6 +7,7 @@ const ROOMS = 'room/'
 const AVATARS = 'avatar/'
 const NOTICES = 'notice/'
 
+
 export default {
   members: {
     member: () => HOST + 'member',
@@ -39,7 +40,8 @@ export default {
     balance: () => HOST + FEATURES + 'balance/create',
     balanceList: () => HOST + FEATURES + 'balance/list',
     balanceInfo: balanceSeq => HOST + FEATURES + 'balance/' + `${balanceSeq}`,
-    keyword: () => HOST + FEATURES + 'keyword',
+    keyword: () => HOST + FEATURES + 'keyword/create',
+    keywordList: () => HOST + FEATURES + 'keyword/list',
     keywordInfo: keywordSeq => HOST + FEATURES + 'keyword/' + `${keywordSeq}`,
   },
   rooms: {
