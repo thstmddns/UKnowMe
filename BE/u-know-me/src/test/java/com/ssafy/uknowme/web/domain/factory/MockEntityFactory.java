@@ -1,9 +1,6 @@
 package com.ssafy.uknowme.web.domain.factory;
 
-import com.ssafy.uknowme.web.domain.Avatar;
-import com.ssafy.uknowme.web.domain.Balance;
-import com.ssafy.uknowme.web.domain.Keyword;
-import com.ssafy.uknowme.web.domain.Member;
+import com.ssafy.uknowme.web.domain.*;
 import com.ssafy.uknowme.web.domain.enums.Role;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +21,7 @@ public class MockEntityFactory {
                 .tel("01012345678")
                 .smoke("Y")
                 .address("우리집")
-                .role(Role.ROLE_USER)
+                .role(Role.ROLE_MANAGER)
                 .build();
     }
 
@@ -47,6 +44,15 @@ public class MockEntityFactory {
     public static Keyword createKeyword() {
         return Keyword.builder()
                 .keyword("취미")
+                .build();
+    }
+
+    public static Notice createNotice() {
+        return Notice.builder()
+                .member(createMember())
+                .title("공지사항")
+                .content("내용")
+                .hit(0)
                 .build();
     }
 }

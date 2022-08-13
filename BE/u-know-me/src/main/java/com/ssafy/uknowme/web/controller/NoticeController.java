@@ -5,7 +5,8 @@ import com.ssafy.uknowme.model.dto.noticeDto.NoticeListResponseDto;
 import com.ssafy.uknowme.model.dto.noticeDto.NoticeResponseDto;
 import com.ssafy.uknowme.model.dto.noticeDto.NoticeSaveRequestDto;
 import com.ssafy.uknowme.model.dto.noticeDto.NoticeUpdateRequestDto;
-import com.ssafy.uknowme.web.service.NoticeServiceImpl;
+import com.ssafy.uknowme.security.annotation.AuthenticationId;
+import com.ssafy.uknowme.web.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
@@ -20,11 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticeController {
 
-    private final NoticeServiceImpl noticeService;
+    private final NoticeService noticeService;
 
     @PostMapping("/create")
-    public boolean save(@RequestBody NoticeSaveRequestDto requestDto) {
-        noticeService.save(requestDto);
+    @Secured("ROLE_MANAGER")
+    public boolean save(@RequestBody NoticeSaveRequestDto requestDto, @AuthenticationId String loginId) {
+        noticeService.save(requestDto, loginId);
         return true;
     }
 
@@ -37,14 +39,12 @@ public class NoticeController {
 
     @GetMapping("/{noticeSeq}")
     public NoticeResponseDto findByNoticeSeq (@PathVariable int noticeSeq) {
-        NoticeResponseDto responseDto = noticeService.findByNoticeSeq(noticeSeq);
-        return responseDto;
+        return noticeService.findByNoticeSeq(noticeSeq);
     }
 
     @GetMapping("/list")
     public List<NoticeListResponseDto> findAll() {
-        List<NoticeListResponseDto> notices = noticeService.findAll();
-        return notices;
+        return noticeService.findAll();
     }
 
 
