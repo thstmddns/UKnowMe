@@ -84,7 +84,6 @@ public class MatchingHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info(session + "클라이언트 접속");
-        session.sendMessage(new TextMessage("유노 : 매칭 웹소켓 서버에 온걸 환영해"));
     }
 
     /* Client가 접속 해제 시 호출되는 메서드드 */
@@ -103,7 +102,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
@@ -116,7 +115,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
@@ -128,7 +127,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
@@ -141,7 +140,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
@@ -154,7 +153,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
@@ -167,13 +166,11 @@ public class MatchingHandler extends TextWebSocketHandler {
             }
         } catch (IndexOutOfBoundsException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             log.info("몇명은 이미 연결이 끊어졌습니다.");
         }
 
     }
-
-
 
 
     //유저를 남자 리스트, 여자 리스트에 넣는 메소드
@@ -191,11 +188,12 @@ public class MatchingHandler extends TextWebSocketHandler {
     }
 
     //매칭 시작하는 메소드
-    public void startMatching1vs1() throws InterruptedException {
+    public void startMatching1vs1()  {
         for (int mancnt = 0; mancnt <= ManList1vs1.size(); mancnt++) {
+
             List<User1vs1> user1vs1TmpWomanList = new ArrayList<>(); //남자 기준의 임시 여자 리스트 생성
             try {
-                for (int womancnt = 0; womancnt <= WomanList1vs1.size(); womancnt++) {
+                for (int womancnt = 0; womancnt < WomanList1vs1.size(); womancnt++) {
                     try {
                         // 현재 남자의 위도를 전역변수에 저장
                         nowlat1vs1 = ManList1vs1.get(mancnt).getLat();
@@ -207,27 +205,25 @@ public class MatchingHandler extends TextWebSocketHandler {
                         }
                     } catch (IndexOutOfBoundsException e) {
                         log.info("여자리스트가 끝났습니다");
-                        break;
+
                     }
                 }
+
+                try {
                 //남자 기준으로 여자들을 거리순 정렬
                 Collections.sort(user1vs1TmpWomanList, optionComparator);
 
                 //임시 여자 리스트에서 남자와 매칭 시도
-                for (User1vs1 womanUser1vs1 : user1vs1TmpWomanList) {
-                    if (startConnect1vs1(ManList1vs1.get(mancnt), womanUser1vs1)) {
-
-                        mancnt--;
-                        break;
-                    }
-                    ;
-
+                if (startConnect1vs1(ManList1vs1.get(mancnt), user1vs1TmpWomanList.get(0))) {
+                    mancnt--;
+                    break;
+                }}catch (IndexOutOfBoundsException e) {
+                    log.info("인덱스 오류 발생");
 
                 }
             } catch (IndexOutOfBoundsException e) {
-
                 log.info("남자리스트가 끝났습니다");
-                break;
+
             } catch (IOException e) {
                 log.info("입출력 Exception 발생");
             }
@@ -241,7 +237,7 @@ public class MatchingHandler extends TextWebSocketHandler {
             try {
                 ManList2vs2 = new ArrayList<>(); //남자리스트 생성
                 WomanList2vs2 = new ArrayList<>(); // 여자리스트 생성
-
+                System.out.println("모든유저 사이즈 : "+ connectUserList2vs2.size() );
                 for (int musercnt = 0; musercnt < connectUserList2vs2.size(); musercnt++) { // 4명 탐색 시작
 
                     // 이미 리스트가 다 다 찬 경우
@@ -271,17 +267,18 @@ public class MatchingHandler extends TextWebSocketHandler {
 
                     }
                 }
+
                 //4명이 다 찼다면 연결 시작
                 if (WomanList2vs2.size() == MATCHING_NUM & ManList2vs2.size() == MATCHING_NUM) {
                     log.info("연결을 시작합니다");
                     if (startConnect2vs2(ManList2vs2.get(0), ManList2vs2.get(1), WomanList2vs2.get(0), WomanList2vs2.get(1))) {
-                        usercnt -= 4;
+                        usercnt -= 1;
                         break;
                     }
                 }
             } catch (IndexOutOfBoundsException | IOException e) {
-                log.info("리스트가 끝났습니다");
-                break;
+                log.info("예외 발생");
+
             }
         }
     }
@@ -289,18 +286,23 @@ public class MatchingHandler extends TextWebSocketHandler {
 
     //1번 유저 기준으로 옵션 체크
     public boolean isMaching1vs1(User1vs1 user1, User1vs1 user2) {
+
+
         // 나이 체크
         if (user1.getMaxAge() < user2.getAge()) return false;
         if (user1.getMinAge() > user2.getAge()) return false;
 
+
         //옵션 조건 체크
-        for (int i = 0; i < user1.getOptions().length; i++) {
-            if (user1.getMatchingOptions()[i] == 2 & user2.getOptions()[i] == 1) return false;
-            if (user1.getMatchingOptions()[i] == 1 & user2.getOptions()[i] == 2) return false;
+        for (int i = 0; i < user1.getOptions().size(); i++) {
+            //만약에 유저1이 원하는 옵션이 2인데 유저의 옵션이 1이면
+
+            if (user1.getMatchingOptions().get(i) == 2 & user2.getOptions().get(i) == 1) return false;
+            if (user1.getMatchingOptions().get(i) == 1 & user2.getOptions().get(i) == 2) return false;
         }
+
         return true;
     }
-
 
 
     //1번 유저 기준으로 옵션 체크 - 후에 옵션 추가시 이 메소드에 넣으면 됨
@@ -313,13 +315,45 @@ public class MatchingHandler extends TextWebSocketHandler {
 
     //매칭성공한 사람들을 현재 리스트에서 제거, 방번호 생성, 접속시잓
     public boolean startConnect2vs2(User2vs2 user1, User2vs2 user2, User2vs2 user3, User2vs2 user4) throws IOException {
-
-
         //TODO : TEST CODE 추후 삭제필
         log.info("연결된 유저  : " + user1.getNickname() + " " + user2.getNickname() + " " + user3.getNickname() + " " + user4.getNickname());
 
         String roomSeq = UUID.randomUUID().toString();
         TextMessage tx = new TextMessage(roomSeq);
+
+
+            try {
+                    String users_seq_response_tmp = String.format("{\n" +
+                                    "\t\"key\" : \"users_seq_response_2\",\n" +
+                                    "\t\"user1_seq\" : \"%s\",\n" +
+                                    "\t\"user2_seq\" : \"%s\",\n" +
+                                    "\t\"user3_seq\" : \"%s\",\n" +
+                                    "\t\"user4_seq\" : \"%s\",\n" +
+                                    "\t\"user1_nickName\" : \"%s\",\n" +
+                                    "\t\"user2_nickName\" : \"%s\",\n" +
+                                    "\t\"user3_nickName\" : \"%s\",\n" +
+                                    "\t\"user4_nickName\" : \"%s\",\n" +
+                                    "\t\"room\" : \"%s\"\n" +
+
+                                    "}", user1.getSeq(),user2.getSeq(),user3.getSeq(),user4.getSeq(),
+                            user1.getNickname(), user2.getNickname(), user3.getNickname(), user4.getNickname(),roomSeq);
+
+                    TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
+                    user1.getSession().sendMessage(users_seq_response_msg);
+                    user2.getSession().sendMessage(users_seq_response_msg);
+                    user3.getSession().sendMessage(users_seq_response_msg);
+                    user4.getSession().sendMessage(users_seq_response_msg);
+
+
+
+
+            } catch (IndexOutOfBoundsException e) {
+                log.info("리스트를 벗어나 버렸습니다.");
+            } catch (IllegalStateException e) {
+                log.info("웹소켓이 이미 닫혔습니다");
+            }
+
+
 
 
         RoomSaveRequestDto roomSaveRequestDto = new RoomSaveRequestDto();
@@ -369,10 +403,8 @@ public class MatchingHandler extends TextWebSocketHandler {
         }
 
 
-        user1.getSession().sendMessage(tx);
-        user2.getSession().sendMessage(tx);
-        user3.getSession().sendMessage(tx);
-        user4.getSession().sendMessage(tx);
+
+
 
         //현재 list 에서 유저 빼기
         connectUserList2vs2.remove(user1);
@@ -401,8 +433,6 @@ public class MatchingHandler extends TextWebSocketHandler {
         roomService.save(roomSaveRequestDto);
 
 
-
-
         ParticipationSaveRequestDto user1ParticipationSaveRequestDto = new ParticipationSaveRequestDto();
         ParticipationSaveRequestDto user2ParticipationSaveRequestDto = new ParticipationSaveRequestDto();
         user1ParticipationSaveRequestDto.setRoomSeq(roomSeq);
@@ -421,8 +451,33 @@ public class MatchingHandler extends TextWebSocketHandler {
             return false;
         }
 
-        user1.getSession().sendMessage(tx);
-        user2.getSession().sendMessage(tx);
+
+
+
+
+        try {
+
+            String users_seq_response_tmp = String.format("{\n" +
+                    "\t\"key\" : \"users_seq_response_1\",\n" +
+                    "\t\"user1_nickName\" : \"%s\",\n" +
+                    "\t\"user1_seq\" : \"%s\",\n" +
+                    "\t\"user2_nickName\" : \"%s\",\n" +
+                    "\t\"user2_seq\" : \"%s\",\n" +
+                    "\t\"room\" : \"%s\"\n" +
+                    "}", user1.getNickname(), user1.getSeq()
+            ,user2.getNickname(), user2.getSeq(),roomSeq);
+
+            TextMessage users_seq_response_msg = new TextMessage(users_seq_response_tmp);
+            user1.getSession().sendMessage(users_seq_response_msg);
+            user2.getSession().sendMessage(users_seq_response_msg);
+
+
+        } catch (IndexOutOfBoundsException e) {
+            log.info("리스트를 벗어나 버렸습니다.");
+        } catch (IllegalStateException e) {
+            log.info("웹소켓이 이미 닫혔습니다");
+        }
+
 
         //현재 남자, 여자 list 에서 빼기
         ManList1vs1.remove(user1);

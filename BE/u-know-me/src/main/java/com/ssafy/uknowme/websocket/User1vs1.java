@@ -4,7 +4,8 @@ import lombok.*;
 import org.json.JSONObject;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,8 +27,8 @@ public class User1vs1 {
     private int age;
     private double lat; //위도
     private double lon; //경도
-    private int[] options; //자신 옵션
-    private int[] matchingOptions; //상대에게 원하는 옵션
+    private List<Integer> options = new ArrayList<>(); //자신 옵션
+    private List<Integer> matchingOptions = new ArrayList<>(); //상대에게 원하는 옵션
 
     private WebSocketSession session;
 
@@ -43,8 +44,10 @@ public class User1vs1 {
         this.age = Integer.parseInt(jObject.getString("age"));
         this.lat = Double.parseDouble(jObject.getString("lat"));
         this.lon = Double.parseDouble(jObject.getString("lon"));
-        this.options =  new int[Integer.parseInt(jObject.getString("smoke"))];
-        this.matchingOptions = new int[Integer.parseInt(jObject.getString("matchingSmoke"))];
+       int tmp = (Integer.parseInt(jObject.getString("smoke")));
+       System.out.println("tmp : "+tmp);
+        this.options.add(tmp);
+        this.matchingOptions.add(Integer.parseInt(jObject.getString("matchingSmoke")));
         this.session = session;
     }
 
