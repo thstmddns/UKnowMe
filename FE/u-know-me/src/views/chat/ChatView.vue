@@ -55,7 +55,9 @@
       </div>
     </div>
     <chat-sub />
-    <chat-something />
+    <accuse-modal v-if="chat.accuseBtn === 1"/>
+    <game-modal v-if="chat.gameBtn === 1"/>
+    <!-- <chat-something /> -->
 
   </div>
 </template>
@@ -69,8 +71,10 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 
-import ChatSomething from "@/components/chat/ChatSomething.vue";
+// import ChatSomething from "@/components/chat/ChatSomething.vue";
 import ChatSub from "@/components/chat/ChatSub.vue";
+import AccuseModal from "@/components/chat/AccuseModal.vue"
+import GameModal from "@/components/chat/GameModal.vue"
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -83,7 +87,9 @@ export default {
 
   components: {
     UserVideo,
-    ChatSomething, ChatSub
+    ChatSub,
+    AccuseModal,
+    GameModal
   },
 
   setup() {
@@ -305,11 +311,11 @@ h1 {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: radial-gradient(
+  /* background: radial-gradient(
     61.17% 61.17% at 50% 50%,
     #ebdcfe 56.77%,
     #ffffff 100%
-  );
+  ); */
 }
 
 .video-container {
