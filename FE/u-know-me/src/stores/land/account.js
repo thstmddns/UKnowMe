@@ -60,23 +60,25 @@ export const useAccountStore = defineStore('account', {
         birth.day = '0' + birth.day
       }
       credentials.birth = birth.year + birth.month + birth.day
-      console.log('회원가입', {...credentials})
       axios({
         url: sr.members.signup(),
         method: 'post',
         data: { ...credentials }
       })
         .then(res => {
-          console.log(res);
-          alert('회원가입이 완료되었습니다. 새로운 환경에서 로그인 해주세요.')
-          land.btnCh = 1
+          if (res.data) {
+            alert('회원가입이 완료되었습니다. 새로운 환경에서 로그인 해주세요.')
+            land.btnCh = 1
+          } else {
+            alert('회원가입에 실패했습니다. 잠시후 다시 시도해주세요.')
+          }
         })
         .catch(err => {
           console.error(err.response.data)
+          alert('회원가입에 실패했습니다. 잠시후 다시 시도해주세요.')
         })
     },
     async login(credentials) {
-      console.log({...credentials})
       await axios({
         url: sr.members.login(),
         method: 'post',
@@ -84,7 +86,6 @@ export const useAccountStore = defineStore('account', {
         withCredentials: true,
       })
         .then(res => {
-          console.log(res);
           this.authError.login = 0
           const access_token = res.headers.authorization.split(' ')[1]
           const refresh_token = res.headers.temp
@@ -104,8 +105,10 @@ export const useAccountStore = defineStore('account', {
       }
     },
     logout() {
+      const account = useAccountStore()
       const main = useMainStore()
       this.removeToken()
+      account.$reset()
       main.$reset()
       router.push({ name: 'home' })
     },
@@ -141,7 +144,6 @@ export const useAccountStore = defineStore('account', {
       return ["width=".concat(popupWidth), "height=".concat(popupHeight), "left=".concat(popupLeft), "top=".concat(popupTop), 'scrollbars=yes', 'resizable=1'].join(',');
     },
     findId(credentials) {
-      console.log({...credentials});
       const land = useLandStore()
       axios({
         url: sr.members.findId(),
@@ -189,7 +191,6 @@ export const useAccountStore = defineStore('account', {
         })
           .then(res => {
             this.currentUser = res.data
-            console.log(res.data);
           })
           .catch(err => {
             if (err.response.status == 401) {
@@ -199,21 +200,7 @@ export const useAccountStore = defineStore('account', {
           })
       }
     },
-    fetchIsAdmin({ username }) {
-      axios({
-        url: sr.accounts.isAdmin(username),
-        method: 'get',
-        headers: this.authHeader,
-      })
-        .then(res => {
-          this.isAdmin = res.data.is_supersuser
-        })
-        .catch(err => {
-          console.error(err.response)
-        })
-    },
     certificatePassword(password) {
-      console.log({ password });
       const main = useMainStore()
       this.fetchCurrentUser()
       axios({
@@ -223,7 +210,6 @@ export const useAccountStore = defineStore('account', {
         headers: this.authHeader,
       })
         .then(res => {
-          console.log(res);
           if (res.data) {
             main.btnCh = 3
             main.pBtnCh = 1
@@ -237,7 +223,6 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyCertificatePassword(password) {
-      console.log({ password });
       axios({
         url: sr.members.validatePassword(),
         method: 'post',
@@ -245,8 +230,11 @@ export const useAccountStore = defineStore('account', {
         headers: this.authHeader,
       })
         .then(res => {
-          console.log(res);
-          this.correctPassword = 1
+          if (res.data) {
+            this.correctPassword = 1
+          } else {
+            this.correctPassword = 0
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -254,7 +242,6 @@ export const useAccountStore = defineStore('account', {
         })
     },
     modifyInform(credentials) {
-      console.log({ ...credentials });
       const main = useMainStore()
       axios({
         url: sr.members.update(),
@@ -263,10 +250,13 @@ export const useAccountStore = defineStore('account', {
         headers: this.authHeader,
       })
         .then(res => {
-          console.log(res);
-          main.btnCh = 0
-          main.pBtnCh = 0
-          alert('성공적으로 정보가 변경되었습니다.')
+          if (res.data) {
+            main.btnCh = 0
+            main.pBtnCh = 0
+            alert('성공적으로 정보가 변경되었습니다.')
+          } else {
+            alert('정보 변경이 실패했습니다.')
+          }
         })
         .catch(err => {
           console.error(err.response)
@@ -274,6 +264,7 @@ export const useAccountStore = defineStore('account', {
     },
     chagePassword(password) {
       const land = useLandStore()
+      const main = useMainStore()
       axios({
         url: sr.members.changePassword(),
         method: 'put',
@@ -283,6 +274,7 @@ export const useAccountStore = defineStore('account', {
         .then(res => {
           if (res.data) {
             land.btnCh = 1
+            main.btnCh = 0
             alert('성공적으로 비밀번호가 변경되었습니다.')
           } else {
             alert('비밀번호 변경에 실패했습니다.')
@@ -332,6 +324,7 @@ export const useAccountStore = defineStore('account', {
     sendNumTel(tel) {
       const phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
       if (!phoneJ.test(tel)) {
+        this.sendTel = 0
         alert('형식에 맞지 않는 번호입니다.')
       } else {
         this.sendTel = 1
@@ -354,12 +347,15 @@ export const useAccountStore = defineStore('account', {
           headers: this.authHeader,
         })
           .then(res => {
-            console.log(res);
-            this.removeToken()
-            this.isAdmin = false
-            alert('회원탈퇴가 성공적으로 되었습니다.')
-            main.$reset()
-            router.push({ name: 'home' })
+            if (res.data) {
+              this.removeToken()
+              this.isAdmin = false
+              alert('회원탈퇴가 성공적으로 되었습니다.')
+              main.$reset()
+              router.push({ name: 'home' })
+            } else {
+              alert('회원탈퇴에 실패하셨습니다. 잠시후 다시 시도해주세요.')  
+            }
           })
           .catch(err => {
             console.error(err.response)
