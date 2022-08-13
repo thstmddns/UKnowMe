@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -110,7 +111,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "mungmnb777")
     @DisplayName("[회원 정보 수정] 사용자는 회원 정보를 수정할 수 있어야 한다.")
     public void updateTest() throws Exception {
         // given
@@ -119,7 +120,7 @@ class MemberControllerTest {
         dto.setSmoke("Y");
         dto.setAddress("우리집");
         
-        Mockito.when(memberService.update(any(MemberUpdateDto.class))).thenReturn(true);
+        Mockito.when(memberService.update(any(MemberUpdateDto.class), eq("mungmnb777"))).thenReturn(true);
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.put("/member/update")
@@ -133,12 +134,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser("mungmnb777")
     @DisplayName("[착용 아바타 변경] 사용자는 아바타를 변경할 수 있어야 한다.")
     public void changeAvatarTest() throws Exception {
         // given
         ChangeAvatarDto dto = new ChangeAvatarDto();
         dto.setAvatarSeq(1);
+
+        Mockito.when(memberService.update(any(MemberUpdateDto.class), eq("mungmnb777"))).thenReturn(true);
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.put("/member/avatar")
@@ -172,11 +175,11 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "mungmnb777")
     @DisplayName("[회원 세부 정보 조회] 사용자는 자신의 정보를 조회할 수 있어야 한다.")
     public void getMemberInfoTest() throws Exception {
         // given
-        Mockito.when(memberService.getMemberInfo()).thenReturn(new MemberInfoResponseDto());
+        Mockito.when(memberService.getMemberInfo(eq("mungmnb777"))).thenReturn(new MemberInfoResponseDto());
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/member")
@@ -224,14 +227,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "mungmnb777")
     @DisplayName("[비밀번호 검증] 사용자는 정보 수정을 위해 서버로부터 비밀번호 검증을 받을 수 있다.")
     public void validatePasswordTest() throws Exception {
         // given
         ValidatePasswordRequestDto dto = new ValidatePasswordRequestDto();
         dto.setPassword("password");
 
-        Mockito.when(memberService.validatePassword(any(ValidatePasswordRequestDto.class))).thenReturn(true);
+        Mockito.when(memberService.validatePassword(any(ValidatePasswordRequestDto.class), eq("mungmnb777"))).thenReturn(true);
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.post("/member/validate/password")
@@ -245,11 +248,12 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "mungmnb777")
     @DisplayName("[회원 탈퇴] 사용자는 계정을 삭제할 수 있다.")
     public void deleteTest() throws Exception {
         // given
-        Mockito.when(memberService.delete()).thenReturn(true);
+        String id = "mungmnb777";
+        Mockito.when(memberService.delete(id)).thenReturn(true);
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.delete("/member")

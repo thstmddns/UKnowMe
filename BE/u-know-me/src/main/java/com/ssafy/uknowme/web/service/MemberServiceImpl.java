@@ -8,9 +8,6 @@ import com.ssafy.uknowme.web.repository.AvatarRepository;
 import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -75,22 +72,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean update(MemberUpdateDto memberUpdateDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // 로그인한 회원이 아니면 수정을 허용하지 말아야 한다.
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return false;
-        }
-
-        // 본인이 아니면 수정을 허용하지 말아야 한다.
-        if (!authentication.getName().equals(memberUpdateDto.getId())) {
-            log.info("본인만 정보를 변경할 수 있습니다.");
-            return false;
-        }
-
-        Member member = repository.findById(memberUpdateDto.getId()).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
+    public boolean update(MemberUpdateDto memberUpdateDto, String loginId) {
+        Member member = repository.findById(loginId).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
         member.updateMember(memberUpdateDto);
 
@@ -113,17 +96,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean delete() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // 로그인한 회원이 아니면 수정을 허용하지 말아야 한다.
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return false;
-        }
-
-        String id = authentication.getName();
-
+    public boolean delete(String id) {
         Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
         member.delete();
@@ -132,17 +105,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberInfoResponseDto getMemberInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public MemberInfoResponseDto getMemberInfo(String loginId) {
 
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return null;
-        }
-
-        String id = authentication.getName();
-
-        Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
+        Member member = repository.findById(loginId).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
         MemberInfoResponseDto responseDto = new MemberInfoResponseDto();
 
@@ -152,20 +117,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean validatePassword(ValidatePasswordRequestDto dto) {
+    public boolean validatePassword(ValidatePasswordRequestDto dto, String loginId) {
 
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return false;
-        }
-
-        String id = authentication.getName();
-
-        Member member = repository.findById(id).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
+        Member member = repository.findById(loginId).orElseThrow(() -> new IllegalStateException("해당 아이디가 없습니다."));
 
         if (!encoder.matches(dto.getPassword(), member.getPassword())) {
             log.info("비밀번호가 다릅니다.");
@@ -198,20 +154,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ManageMemberInfoResponseDto getMemberBySeq(int seq) {
-        ManageMemberInfoResponseDto dto = repository.findManageMemberInfoResponseDto(LocalDateTime.now().minusDays(7), seq).orElseThrow(IllegalStateException::new);
-
-        return dto;
+        return repository.findManageMemberInfoResponseDto(LocalDateTime.now().minusDays(7), seq).orElseThrow(IllegalStateException::new);
     }
 
     @Override
-    public void changeAvatar(ChangeAvatarDto dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        User principal = (User) authentication.getPrincipal();
-
-        String id = principal.getUsername();
-
-        Member member = repository.findById(id).orElseThrow(IllegalStateException::new);
+    public void changeAvatar(ChangeAvatarDto dto, String loginId) {
+        Member member = repository.findById(loginId).orElseThrow(IllegalStateException::new);
 
         Avatar avatar = avatarRepository.findById(dto.getAvatarSeq()).orElseThrow(IllegalStateException::new);
 
