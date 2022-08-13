@@ -122,7 +122,7 @@ export default {
   background-color: #f0f1ff;
  }
 .balance-table-content{
-  height:600px;
+  height:480px;
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid #f0f1ff;
