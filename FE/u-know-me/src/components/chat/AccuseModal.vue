@@ -62,7 +62,7 @@ export default {
           console.log(res);
           const modalOff = document.querySelector(".close-btn");
           console.log(modalOff)
-
+          alert("신고되었습니다");
           modalOff.accuseBtn = 0;
 
         })
@@ -120,6 +120,7 @@ export default {
 .accuse-modal-content-sub {
   font-weight: 700;
   text-align: center;
+  padding-bottom: 10px;
    color: rgb(153, 84, 199);
 }
 
