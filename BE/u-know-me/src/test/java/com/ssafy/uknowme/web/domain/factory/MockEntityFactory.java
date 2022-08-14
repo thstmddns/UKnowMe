@@ -30,7 +30,7 @@ public class MockEntityFactory {
                 .build();
     }
 
-    private static Member accusedMember() {
+    public static Member accusedMember() {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         return Member.builder()
