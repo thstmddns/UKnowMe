@@ -7,6 +7,7 @@ import * as Kalidokit from "kalidokit";
 import * as Holistic from "@mediapipe/holistic";
 import * as DrawConnectors from "@mediapipe/drawing_utils";
 import * as Camera from "@mediapipe/camera_utils";
+import { useMainStore } from '../main/main';
 
 let currentVrm;
 
@@ -38,7 +39,7 @@ export const useChatStore = defineStore('chat', {
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setSize(640, 480);
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.domElement.id = "avatarCanvas";
+      renderer.domElement.id = "avatarCanvas"+useMainStore().option.matchingRoom;
 
       document.getElementById("my-video").prepend(renderer.domElement);
 
@@ -392,7 +393,7 @@ export const useChatStore = defineStore('chat', {
     },
 
     leaveSession() {
-      document.getElementById("avatarCanvas").remove();
+      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
 
@@ -465,7 +466,7 @@ export const useChatStore = defineStore('chat', {
       this.camera.stop();
       
       document.querySelector(".preview").remove();
-      document.getElementById("avatarCanvas").remove();
+      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
 
       let videoElement = document.querySelector(".my-real-video");
 
