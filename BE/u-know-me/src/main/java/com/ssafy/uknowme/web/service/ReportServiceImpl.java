@@ -1,6 +1,5 @@
 package com.ssafy.uknowme.web.service;
 
-import com.ssafy.uknowme.model.dto.MemberDto.MemberUpdateDto;
 import com.ssafy.uknowme.model.dto.ReportDto.*;
 import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.domain.Report;
@@ -9,8 +8,6 @@ import com.ssafy.uknowme.web.repository.MemberRepository;
 import com.ssafy.uknowme.web.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,11 +61,11 @@ public class ReportServiceImpl implements ReportService {
 
         List<ReportResponseDto> list = new ArrayList<>();
 
-        Member accusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
+//        Member accusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
 
-        if (!accusedMember.getRole().toString().equals("MANAGER")) {
-            throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
-        }
+//        if (!accusedMember.getRole().toString().equals("MANAGER")) {
+//            throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
+//        }
 
         for (Report report : reportList) {
             ReportResponseDto responseDto = new ReportResponseDto();
@@ -83,13 +80,11 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportResponseDto getReportInfo(ReportInfoRequestDto dto) {
-
-
-        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
-
-        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
-            throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
-        }
+//        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
+//
+//        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
+//            throw new IllegalStateException("관리자만 정보를 변경할 수 있습니다.");
+//        }
 
         Report report = reportRepository.findById(dto.getReportSeq()).orElseThrow(IllegalStateException::new);
         ReportResponseDto reportResponseDto = new ReportResponseDto();
@@ -102,19 +97,19 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public boolean update(ReportUpdateRequestDto dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return false;
-        }
-
-        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
-
-        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
-            log.info("관리자만 정보를 변경할 수 있습니다.");
-            return false;
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication == null) {
+//            log.info("로그인한 회원이 아닙니다.");
+//            return false;
+//        }
+//
+//        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
+//
+//        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
+//            log.info("관리자만 정보를 변경할 수 있습니다.");
+//            return false;
+//        }
 
         Optional<Report> report = reportRepository.findById(dto.getReportSeq());
 
@@ -126,19 +121,19 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public boolean delete(ReportDeleteRequestDto dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null) {
-            log.info("로그인한 회원이 아닙니다.");
-            return false;
-        }
-
-        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
-        log.info(AccusedMember.getRole().toString());
-        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
-            log.info("관리자만 정보를 변경할 수 있습니다.");
-            return false;
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication == null) {
+//            log.info("로그인한 회원이 아닙니다.");
+//            return false;
+//        }
+//
+//        Member AccusedMember = memberRepository.getReferenceById(dto.getMemberSeq());
+//        log.info(AccusedMember.getRole().toString());
+//        if (!AccusedMember.getRole().toString().equals("MANAGER")) {
+//            log.info("관리자만 정보를 변경할 수 있습니다.");
+//            return false;
+//        }
 
         Report report = reportRepository.findById(dto.getReportSeq()).orElseThrow(() -> new IllegalStateException("해당 report가 없습니다."));
 

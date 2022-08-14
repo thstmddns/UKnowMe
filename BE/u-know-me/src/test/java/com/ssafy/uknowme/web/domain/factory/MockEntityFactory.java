@@ -3,8 +3,12 @@ package com.ssafy.uknowme.web.domain.factory;
 import com.ssafy.uknowme.web.domain.*;
 import com.ssafy.uknowme.web.domain.enums.ReportState;
 import com.ssafy.uknowme.web.domain.enums.Role;
+import com.ssafy.uknowme.web.domain.enums.RoomType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.UUID;
 
 public class MockEntityFactory {
 
@@ -26,7 +30,7 @@ public class MockEntityFactory {
                 .build();
     }
 
-    private static Member accusedMember() {
+    public static Member accusedMember() {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         return Member.builder()
@@ -80,6 +84,26 @@ public class MockEntityFactory {
                 .reportingMember(createMember())
                 .accusedMember(accusedMember())
                 .state(ReportState.REPORT)
+                .build();
+    }
+
+    public static Room createRoom() {
+        return Room.builder()
+                .type(RoomType.ONE)
+                .balanceCount(0)
+                .build();
+    }
+
+    public static Participation createParticipation() {
+        Member member = createMember();
+        Room room = createRoom();
+
+        ReflectionTestUtils.setField(member, "seq", 1);
+        ReflectionTestUtils.setField(room, "seq", String.valueOf(UUID.randomUUID()));
+
+        return Participation.builder()
+                .member(member)
+                .room(room)
                 .build();
     }
 }
