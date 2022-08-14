@@ -181,13 +181,25 @@ export default {
           otherJson.userName = data.user1_nickName;
           otherJson.userSeq = data.user1_seq;
           JSON.stringify(otherJson);
-          self.otherPeople.push(otherJson);
+
+          
+          if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
+              
+          
+          
           //2
           otherJson = new Object();
           otherJson.userName = data.user2_nickName;
           otherJson.userSeq = data.user2_seq;
           JSON.stringify(otherJson);
-          self.otherPeople.push(otherJson);
+         
+             if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
+
+          
 
           // 2대2일때,
           if (data.key == "users_seq_response_2") {
@@ -196,13 +208,17 @@ export default {
             otherJson.userName = data.user3_nickName;
             otherJson.userSeq = data.user3_seq;
             JSON.stringify(otherJson);
-            self.otherPeople.push(otherJson);
+               if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
             //4
             otherJson = new Object();
             otherJson.userName = data.user4_nickName;
             otherJson.userSeq = data.user4_seq;
             JSON.stringify(otherJson);
-            self.otherPeople.push(otherJson);
+               if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
           }
 
           setTimeout(() => router.push({ name: "chat" }), 3000);
