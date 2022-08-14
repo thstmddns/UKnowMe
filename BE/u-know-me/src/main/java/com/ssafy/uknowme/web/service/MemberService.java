@@ -8,7 +8,7 @@ public interface MemberService {
 
     boolean join(MemberJoinRequestDto dto);
 
-    boolean update(MemberUpdateDto memberUpdateDto);
+    boolean update(MemberUpdateDto memberUpdateDto, String loginId);
 
     boolean existsById(String memberId);
 
@@ -16,11 +16,11 @@ public interface MemberService {
 
     boolean existsByTel(String memberTel);
 
-    boolean delete();
+    boolean delete(String id);
 
-    MemberInfoResponseDto getMemberInfo();
+    MemberInfoResponseDto getMemberInfo(String loginId);
 
-    boolean validatePassword(ValidatePasswordRequestDto dto);
+    boolean validatePassword(ValidatePasswordRequestDto dto, String loginId);
 
     FindIdResponseDto findId(FindIdRequestDto dto);
 
@@ -28,7 +28,7 @@ public interface MemberService {
 
     ManageMemberInfoResponseDto getMemberBySeq(int seq);
 
-    void changeAvatar(ChangeAvatarDto dto);
+    void changeAvatar(ChangeAvatarDto dto, String loginId);
 
     void changePassword(ChangePasswordDto dto);
 }

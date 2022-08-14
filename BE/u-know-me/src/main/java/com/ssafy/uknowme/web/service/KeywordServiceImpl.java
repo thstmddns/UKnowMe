@@ -4,14 +4,9 @@ import com.ssafy.uknowme.model.dto.KeywordListResponseDto;
 import com.ssafy.uknowme.model.dto.KeywordResponseDto;
 import com.ssafy.uknowme.model.dto.KeywordSaveRequestDto;
 import com.ssafy.uknowme.model.dto.KeywordUpdateRequestDto;
-import com.ssafy.uknowme.security.auth.PrincipalDetails;
 import com.ssafy.uknowme.web.domain.Keyword;
-import com.ssafy.uknowme.web.domain.Member;
 import com.ssafy.uknowme.web.repository.KeywordRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +17,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class KeywordServiceImpl implements KeywordService {
 
-    @Autowired
     private final KeywordRepository keywordRepository;
 
     @Transactional
@@ -56,8 +50,7 @@ public class KeywordServiceImpl implements KeywordService {
 
         int rKeywordSeq = (int) (Math.random() * dtoList.size());
 
-        KeywordResponseDto dto = dtoList.get(rKeywordSeq);
-        return dto;
+        return dtoList.get(rKeywordSeq);
     }
 
     @Transactional

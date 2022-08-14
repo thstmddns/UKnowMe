@@ -3,10 +3,14 @@ package com.ssafy.uknowme.model.dto.noticeDto;
 import com.ssafy.uknowme.model.dto.MemberDto.MemberInfoResponseDto;
 import com.ssafy.uknowme.web.domain.Notice;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class NoticeListResponseDto {
 
     private int seq;

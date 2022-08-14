@@ -8,7 +8,6 @@ import com.ssafy.uknowme.model.dto.balanceDto.BalanceUpdateRequestDto;
 import com.ssafy.uknowme.web.domain.Balance;
 import com.ssafy.uknowme.web.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService{
 
-    @Autowired
     private final BalanceRepository balanceRepository;
 
     @Override
@@ -27,20 +25,18 @@ public class BalanceServiceImpl implements BalanceService{
         return null;
     }
 
+    @Override
     @Transactional
-    public Integer save(BalanceSaveRequestDto requestDto) {
-        Balance balance = toEntity(requestDto);
+    public Integer save(BalanceSaveRequestDto dto) {
+        Balance balance = Balance.builder()
+                            .question(dto.getQuestion())
+                            .answer1(dto.getAnswer1())
+                            .answer2(dto.getAnswer2())
+                            .build();
+
         balanceRepository.save(balance);
+
         return balance.getSeq();
-    }
-
-
-    public Balance toEntity(BalanceSaveRequestDto dto) {
-        return Balance.builder()
-                .question(dto.getQuestion())
-                .answer1(dto.getAnswer1())
-                .answer2(dto.getAnswer2())
-                .build();
     }
 
     @Transactional
