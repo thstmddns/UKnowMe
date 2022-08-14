@@ -57,7 +57,7 @@ class MemberServiceTest {
         ReflectionTestUtils.setField(member, "seq", 1);
 
         Mockito.when(memberRepository.save(any(Member.class))).thenReturn(member);
-        Mockito.when(avatarRepository.findById(4)).thenReturn(Optional.of(MockEntityFactory.createAvatar()));
+        Mockito.when(avatarRepository.findById(11)).thenReturn(Optional.of(MockEntityFactory.createAvatar()));
 
         // when
         boolean isSuccess = memberService.join(dto);
@@ -66,7 +66,7 @@ class MemberServiceTest {
         assertThat(isSuccess).isTrue();
 
         verify(memberRepository, times(1)).save(any(Member.class));
-        verify(avatarRepository, times(1)).findById(4);
+        verify(avatarRepository, times(1)).findById(11);
     }
 
     @Test

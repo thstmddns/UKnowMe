@@ -46,7 +46,7 @@ public class MockEntityFactory {
 
     public static Avatar createAvatar() {
         return Avatar.builder()
-                .seq(4)
+                .seq(11)
                 .name("유노")
                 .frequency(0)
                 .build();

@@ -65,9 +65,9 @@ public class MemberServiceImpl implements MemberService {
 
     private Avatar initAvatar(MemberJoinRequestDto dto) {
         if (dto.getGender().equals("M")) {
-            return avatarRepository.findById(4).orElseThrow(IllegalStateException::new);
+            return avatarRepository.findById(11).orElseThrow(IllegalStateException::new);
         } else {
-            return avatarRepository.findById(1).orElseThrow(IllegalAccessError::new);
+            return avatarRepository.findById(21).orElseThrow(IllegalStateException::new);
         }
     }
 
