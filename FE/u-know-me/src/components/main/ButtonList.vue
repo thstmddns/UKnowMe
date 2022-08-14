@@ -8,12 +8,10 @@
     <button class="main-btn" @click="main.btnCh = 2">
       정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
     </button>
+    <button class="main-btn" @click="main.btnCh = 5">
+      공지사항&#160;&#160;&#160;<img src="@/assets/main/notice-img.png" alt="">
+    </button>
   </div>
-  <!-- <div class="metaverse">
-      <div class="metaverse-img">
-        <img class="metaverse-img" src="@/assets/main/metaverse.png" alt="">
-      </div>
-    </div> -->
 
   <hgroup class="speech-bubble">
     <h2 id="speech-title">대기 중</h2>
@@ -181,13 +179,25 @@ export default {
           otherJson.userName = data.user1_nickName;
           otherJson.userSeq = data.user1_seq;
           JSON.stringify(otherJson);
-          self.otherPeople.push(otherJson);
+
+          
+          if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
+              
+          
+          
           //2
           otherJson = new Object();
           otherJson.userName = data.user2_nickName;
           otherJson.userSeq = data.user2_seq;
           JSON.stringify(otherJson);
-          self.otherPeople.push(otherJson);
+         
+             if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
+
+          
 
           // 2대2일때,
           if (data.key == "users_seq_response_2") {
@@ -196,13 +206,17 @@ export default {
             otherJson.userName = data.user3_nickName;
             otherJson.userSeq = data.user3_seq;
             JSON.stringify(otherJson);
-            self.otherPeople.push(otherJson);
+               if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
             //4
             otherJson = new Object();
             otherJson.userName = data.user4_nickName;
             otherJson.userSeq = data.user4_seq;
             JSON.stringify(otherJson);
-            self.otherPeople.push(otherJson);
+               if(self.account.currentUser.seq != otherJson.userSeq ) {
+              self.otherPeople.push(otherJson);
+          }
           }
 
           setTimeout(() => router.push({ name: "chat" }), 3000);
@@ -275,7 +289,7 @@ export default {
 .button-list {
   position: absolute;
   right: 50px;
-  top: 50px;
+  top: 15px;
   width: min-content;
 }
 
@@ -283,7 +297,7 @@ export default {
   width: 170px;
   height: 65px;
   padding: 10px 25px;
-  margin: 15px;
+  margin: 10px;
   border: 2px none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
@@ -317,23 +331,10 @@ export default {
     inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, 0.2);
 }
-
-.metaverse {
-  position: absolute;
-  bottom: 43%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  cursor: pointer;
+.main-btn img {
+  width: 20px;
+  height: 20px;
 }
-
-.metaverse-img {
-  width: 150px;
-}
-
-.metaverse-img :hover {
-  filter: brightness(90%);
-}
-
 .match-circle {
   position: absolute;
   right: 50px;
