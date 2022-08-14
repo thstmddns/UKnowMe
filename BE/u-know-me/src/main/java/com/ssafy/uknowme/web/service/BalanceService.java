@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface BalanceService {
 
-    String update(BalanceUpdateRequestDto balanceUpdateRequestDto);
     Integer save(BalanceSaveRequestDto requestDto);
 
     Integer update(int balanceSeq, BalanceUpdateRequestDto requestDto);

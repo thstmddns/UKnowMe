@@ -26,8 +26,8 @@ public class ParticipationInfoResponseDto {
         MemberInfoResponseDto memberDto = new MemberInfoResponseDto();
         RoomInfoResponseDto roomDto = new RoomInfoResponseDto();
 
-        member.convertFromEntity(participation.getMember());
-        room.convertFromEntity(participation.getRoom());
+        memberDto.convertFromEntity(participation.getMember());
+        roomDto.convertFromEntity(participation.getRoom());
 
 
         this.seq = participation.getSeq();

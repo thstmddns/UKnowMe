@@ -20,10 +20,6 @@ public class BalanceServiceImpl implements BalanceService{
 
     private final BalanceRepository balanceRepository;
 
-    @Override
-    public String update(BalanceUpdateRequestDto balanceUpdateRequestDto) {
-        return null;
-    }
 
     @Override
     @Transactional
@@ -34,9 +30,9 @@ public class BalanceServiceImpl implements BalanceService{
                             .answer2(dto.getAnswer2())
                             .build();
 
-        balanceRepository.save(balance);
+        Balance result = balanceRepository.save(balance);
 
-        return balance.getSeq();
+        return result.getSeq();
     }
 
     @Transactional
@@ -57,9 +53,7 @@ public class BalanceServiceImpl implements BalanceService{
 
         int rBalanceSeq = (int) (Math.random() * dtoList.size());
 
-        BalanceResponseDto dto = dtoList.get(rBalanceSeq);
-
-        return dto;
+        return dtoList.get(rBalanceSeq);
     }
 
     @Transactional

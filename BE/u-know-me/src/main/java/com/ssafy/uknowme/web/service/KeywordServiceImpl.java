@@ -21,15 +21,11 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Transactional
     public Integer save(KeywordSaveRequestDto requestDto) {
-        Keyword keyword = toEntity(requestDto);
-        keywordRepository.save(keyword);
-        return keyword.getSeq();
-    }
+        Keyword keyword = Keyword.builder()
+                    .keyword(requestDto.getKeyword())
+                    .build();
 
-    public Keyword toEntity(KeywordSaveRequestDto dto) {
-        return Keyword.builder()
-                .keyword(dto.getKeyword())
-                .build();
+        return keywordRepository.save(keyword).getSeq();
     }
 
     @Transactional
