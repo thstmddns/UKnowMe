@@ -21,7 +21,9 @@
             <td>{{member.id}}</td>
             <td>{{member.createDate.slice(0, 10)}}</td>
             <td>{{member.accusedCount}}</td>
-            <td><div class="warning-btn"></div></td>
+            <td v-if="member.accusedCount > 5"><img src="@/assets/admin/red-img.png" class="condition-img"></td>
+            <td v-else-if="member.accusedCount > 3"><img src="@/assets/admin/yellow-img.png" class="condition-img"></td>
+            <td v-else><img src="@/assets/admin/green-img.png" class="condition-img"></td>
           </tr>
         </tbody>
       </table>
@@ -35,7 +37,7 @@ export default {
   name: "AdminMember",
   data() {
     return{
-      
+      cnt: this.admin.members
     }
   },
   setup() {
@@ -78,16 +80,13 @@ export default {
   background: #c1c3fc;
   border-radius: 10px;
 }
-.warning-btn {
-  width: 0px;
-  height: 0px;
-  border-left: 17px solid transparent;
-  border-right: 17px solid transparent;
-  border-bottom: 20px solid red;
-}
 .member-info-active:hover {
   background-color: #f0f1ff;
   cursor: pointer;
   font-weight: 600;
+}
+.condition-img {
+  width: 30px;
+  height: 30px;
 }
 </style>
