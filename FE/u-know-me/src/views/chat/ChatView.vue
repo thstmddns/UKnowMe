@@ -181,11 +181,22 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(async () => {
-            var avatarVideo = await chat.avatarLoad(account.currentUser.avatar.seq);
+            await chat.avatarLoad(account.currentUser.avatar.seq);
+
+            // capture
+            const avatarCanvas = document.getElementById("avatarCanvas");
+            avatarCanvas.style.display = "inline-block";
+
+            const testVideo = document.getElementById("test-video");
+            testVideo.srcObject = avatarCanvas.captureStream();
+
+            var avatarVideo = testVideo.srcObject.getVideoTracks()[0];
+
+            await chat.startHolistic();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
+              audioSource: false, // The source of audio. If undefined default microphone
               videoSource: avatarVideo, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
@@ -201,11 +212,6 @@ export default {
             // --- Publish your stream ---
 
             this.session.publish(this.publisher);
-
-            setTimeout(function () {
-              console.log("Works!");
-              chat.startHolistic();
-            }, 1000);
           })
           .catch((error) => {
             console.log(
@@ -326,25 +332,34 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  width: calc((100vh - 220px)/3*4);
+  height: calc((100vh - 200px) - 160px);
+  max-width: 100vw;
+  margin: auto;
 }
 .video-item {
   position: relative;
+  height: calc((100vh - 200px) / 2 - 40px);
+  max-width: calc(100vw / 2 - 40px);
   margin: 20px;
   text-align: center;
 }
-.video-item canvas {
+#avatarCanvas {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 640px;
-  height: 480px;
+  width: auto !important;
+  max-width: calc(100vw / 2 - 40px) !important;
+  height: calc((100vh - 200px) / 2 - 80px) !important;
+  max-height: calc((100vw / 2 - 40px)*3/4) !important;
 }
 .video-item video {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 640px;
-  height: 480px;
+  max-width: calc(100vw / 2 - 40px);
+  height: calc((100vh - 200px) / 2 - 80px);
+  max-height: calc((100vw / 2 - 40px)*3/4);
 }
 .my-real-video {
   transform: rotateY(180deg);
@@ -368,5 +383,8 @@ h1 {
 .preview video {
   width: 100% !important;
   height: auto;
+}
+.nickName {
+  height: 20px;
 }
 </style>

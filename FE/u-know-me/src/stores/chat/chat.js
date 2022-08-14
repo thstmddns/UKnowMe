@@ -70,6 +70,7 @@ export const useChatStore = defineStore('chat', {
       const light = new THREE.DirectionalLight(0xffffff);
       light.position.set(1.0, 1.0, 1.0).normalize();
       scene.add(light);
+      scene.background = new THREE.Color( 0x252525 );
 
       // Main Render Loop
       const clock = new THREE.Clock();
@@ -135,16 +136,6 @@ export const useChatStore = defineStore('chat', {
           ),
         (error) => console.error(error)
       );
-
-      // capture
-      const avatarCanvas = document.getElementById("avatarCanvas");
-      avatarCanvas.style.display = 'inline-block'
-      // var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
-
-      const testVideo = document.getElementById("test-video");
-      testVideo.srcObject = avatarCanvas.captureStream();
-
-      return testVideo.srcObject.getVideoTracks()[0];
     },
 
     startHolistic() {
