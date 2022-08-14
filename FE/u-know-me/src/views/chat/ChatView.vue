@@ -23,7 +23,11 @@
             />
           </p>
           <p class="text-center">
-            <button class="btn btn-lg btn-success" id="joinBtn" @click="joinSession()">
+            <button
+              class="btn btn-lg btn-success"
+              id="joinBtn"
+              @click="joinSession()"
+            >
               Join!
             </button>
           </p>
@@ -55,10 +59,9 @@
       </div>
     </div>
     <chat-sub />
-    <accuse-modal v-if="chat.accuseBtn === 1"/>
-    <game-modal v-if="chat.gameBtn === 1"/>
+    <accuse-modal v-if="chat.accuseBtn === 1" />
+    <game-modal v-if="chat.gameBtn === 1" />
     <!-- <chat-something /> -->
-
   </div>
 </template>
 
@@ -73,8 +76,8 @@ import { useAccountStore } from "@/stores/land/account";
 
 // import ChatSomething from "@/components/chat/ChatSomething.vue";
 import ChatSub from "@/components/chat/ChatSub.vue";
-import AccuseModal from "@/components/chat/AccuseModal.vue"
-import GameModal from "@/components/chat/GameModal.vue"
+import AccuseModal from "@/components/chat/AccuseModal.vue";
+import GameModal from "@/components/chat/GameModal.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -89,7 +92,7 @@ export default {
     UserVideo,
     ChatSub,
     AccuseModal,
-    GameModal
+    GameModal,
   },
 
   setup() {
@@ -134,6 +137,7 @@ export default {
   methods: {
     joinSession() {
       const chat = useChatStore();
+      const account = useAccountStore();
 
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -177,7 +181,7 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(async () => {
-            var avatarVideo = await chat.avatarLoad();
+            var avatarVideo = await chat.avatarLoad(account.currentUser.avatar.seq);
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {

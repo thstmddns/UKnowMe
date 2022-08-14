@@ -155,8 +155,6 @@ export default {
 .keyword::-webkit-scrollbar {
   display: none;
 }
-.icon-list {
-}
 .logo {
   width: 100%;
   display: flex;
