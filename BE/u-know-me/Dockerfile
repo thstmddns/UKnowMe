@@ -10,7 +10,7 @@ USER root
 RUN chown -R gradle /home/gradle/src
 
 COPY . .
-RUN gradle clean build --exclude-task test
+RUN gradle clean build
     
 # actual container
 FROM openjdk:8-jdk-alpine
