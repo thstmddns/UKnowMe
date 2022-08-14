@@ -33,6 +33,11 @@ import { useAdminStore } from "@/stores/admin/admin";
 
 export default {
   name: "AdminMember",
+  data() {
+    return{
+      
+    }
+  },
   setup() {
     const admin = useAdminStore();
     admin.fetchMembers()
