@@ -38,9 +38,9 @@ public class NoticeServiceImpl implements NoticeService {
                 .hit(0)
                 .build();
 
-        noticeRepository.save(notice);
+        Notice result = noticeRepository.save(notice);
 
-        return notice.getSeq();
+        return result.getSeq();
     }
 
     @Override
