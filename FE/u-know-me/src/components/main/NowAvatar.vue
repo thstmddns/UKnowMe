@@ -1,7 +1,11 @@
 <template>
   <div>
     <div id="progress">
-      <progress id="progressTag" :value="avatarFun.avatarProgress" max="100"></progress>
+      <progress
+        id="progressTag"
+        :value="avatarFun.avatarProgress"
+        max="100"
+      ></progress>
       <div class="loading">
         <span>LOADING</span>
       </div>
@@ -14,7 +18,7 @@
 <script>
 import { onMounted } from "vue";
 import { useAvatarStore } from "@/stores/main/avatar";
-import { useAccountStore } from '@/stores/land/account';
+import { useAccountStore } from "@/stores/land/account";
 
 export default {
   setup() {
@@ -22,13 +26,7 @@ export default {
     const account = useAccountStore();
 
     onMounted(() => {
-      var avatar;
-      if (account.currentUser.gender == "M") {
-        avatar = 11;
-      } else {
-        avatar = 21;
-      }
-      avatarFun.load(avatar);
+      setTimeout(() => avatarFun.load(account.currentUser.avatar.seq), 1000);
     });
 
     return { avatarFun };

@@ -6,7 +6,7 @@
     <div class="find-result">
       <span>{{ account.findUserId }}</span>님의 비밀번호를 재설정 해주세요.
     </div>
-    <Form id="findPasswordResultForm" action="POST" class="text-center" @submit="account.chagePassword(password)">
+    <Form id="findPasswordResultForm" action="POST" class="text-center" @submit="account.changePassword(password)">
       <div>
         <div class="find-password-margin">
           <div class="text-find-password"><label for="findPasswordNewPassword">새 비밀번호</label></div>

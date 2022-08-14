@@ -32,7 +32,7 @@ export const useChatStore = defineStore('chat', {
 
   },
   actions: {
-    avatarLoad() {
+    avatarLoad(id) {
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -90,15 +90,10 @@ export const useChatStore = defineStore('chat', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      var ary = ["블랙.vrm", "유미.vrm", "동민.vrm"];
-      var rand = Math.floor(Math.random() * 101);
-
-      rand %= ary.length;
-
       // Import model from URL, add your own model here
       loader.load(
         // "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
-        ary[rand],
+        "vrm/" + id + ".vrm",
 
         (gltf) => {
           VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);

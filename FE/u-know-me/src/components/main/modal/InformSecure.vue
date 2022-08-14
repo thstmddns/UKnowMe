@@ -4,7 +4,7 @@
       <div class="inform-secure-head">비밀번호 변경</div>
       <hr>
     </div>
-    <Form id="informSecureForm" action="POST" class="text-center" @submit="account.chagePassword(password)">
+    <Form id="informSecureForm" action="POST" class="text-center" @submit="account.changePassword(password)">
       <div>
         <div>
           <div class="text-inform"><label for="informSecurePassword">현재 비밀번호</label></div>

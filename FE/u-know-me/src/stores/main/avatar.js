@@ -3,6 +3,7 @@ import * as THREE from "three";
 import * as GLTF from "three/examples/jsm/loaders/GLTFLoader";
 import * as OrbitControls from "three/examples/jsm/controls/OrbitControls";
 import * as VRMUtils from "@pixiv/three-vrm";
+import { useAccountStore } from '../land/account';
 
 export const useAvatarStore = defineStore('avatar', {
   state: () => ({
@@ -27,6 +28,11 @@ export const useAvatarStore = defineStore('avatar', {
   },
   actions: {
     load(id) {
+      //유저 아바타 변경 api 호출
+      var idJson = new Object();
+      idJson.avatarSeq = id;
+      JSON.stringify(idJson);
+      useAccountStore().changeAvatar(idJson);
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -96,14 +102,10 @@ export const useAvatarStore = defineStore('avatar', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      // var ary = [];
-      // var rand = Math.floor(Math.random() * 101);
-      // rand %= ary.length;
-
       // Import model from URL, add your own model here
       loader.load(
         // "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
-        "vrm/"+id+".vrm",
+        "vrm/" + id + ".vrm",
 
         (gltf) => {
           VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);

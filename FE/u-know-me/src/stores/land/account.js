@@ -97,7 +97,7 @@ export const useAccountStore = defineStore('account', {
         })
       if (!this.authError.login) {
         await this.fetchCurrentUser()
-        if(this.currentUser.role === "ROLE_USER") {
+        if (this.currentUser.role === "ROLE_USER") {
           router.push({ name: 'main' })
         } else {
           router.push({ name: 'admin' })
@@ -164,10 +164,10 @@ export const useAccountStore = defineStore('account', {
     },
     findPassword(credentials) {
       const land = useLandStore()
-       axios({
+      axios({
         url: sr.members.findPassword(),
         method: 'get',
-        params: {...credentials},
+        params: { ...credentials },
       })
         .then((res) => {
           if (res.data) {
@@ -262,7 +262,7 @@ export const useAccountStore = defineStore('account', {
           console.error(err.response)
         })
     },
-    chagePassword(password) {
+    changePassword(password) {
       const land = useLandStore()
       const main = useMainStore()
       axios({
@@ -354,7 +354,7 @@ export const useAccountStore = defineStore('account', {
               main.$reset()
               router.push({ name: 'home' })
             } else {
-              alert('회원탈퇴에 실패하셨습니다. 잠시후 다시 시도해주세요.')  
+              alert('회원탈퇴에 실패하셨습니다. 잠시후 다시 시도해주세요.')
             }
           })
           .catch(err => {
@@ -362,6 +362,24 @@ export const useAccountStore = defineStore('account', {
             alert('회원탈퇴에 실패하셨습니다.')
           })
       }
+    },
+    changeAvatar(avatarId) {
+      axios({
+        url: sr.members.changeAvatar(),
+        method: 'put',
+        data: { ...avatarId },
+        headers: this.authHeader,
+      })
+        .then(res => {
+          if (res.data) {
+            console.log('성공적으로 아바타가 변경되었습니다.')
+          } else {
+            console.log('아바타 변경에 실패했습니다.')
+          }
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
   },
 })
