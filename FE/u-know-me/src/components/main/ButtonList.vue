@@ -131,7 +131,7 @@ export default {
             let smoke = this.account.currentUser.smoke;
 
             let sendData = `{
-              "key" : "match_start_1",
+              "key" : "match_start_${this.main.option.matchingRoom}",
               "id" : "${this.account.currentUser.id}",
               "seq" : "${this.account.currentUser.seq}",
               "gender" : "${this.account.currentUser.gender}",
@@ -342,7 +342,7 @@ export default {
   display: grid;
 }
 #love-container {
-  width: 200px;
+  min-width: 200px;
   height: 200px;
   display: grid;
   place-items: center;

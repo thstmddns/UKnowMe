@@ -56,8 +56,6 @@ export default {
   background: #c1c3fc;
   border-radius: 10px;
 }
-.admin-avatar-card-container {
-}
 .admin-avatar-card {
   display: inline-block;
 }
