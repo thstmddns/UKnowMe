@@ -5,7 +5,7 @@ services:
     build: ./FE/u-know-me
     ports:
       - "3000:80"
-      - "4443:443"
+      - "443:443"
     volumes:
       - ../volumes-nginx/conf.d:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt
