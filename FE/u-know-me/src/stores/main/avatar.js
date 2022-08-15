@@ -3,6 +3,7 @@ import * as THREE from "three";
 import * as GLTF from "three/examples/jsm/loaders/GLTFLoader";
 import * as OrbitControls from "three/examples/jsm/controls/OrbitControls";
 import * as VRMUtils from "@pixiv/three-vrm";
+import { useAccountStore } from '../land/account';
 
 export const useAvatarStore = defineStore('avatar', {
   state: () => ({
@@ -12,11 +13,13 @@ export const useAvatarStore = defineStore('avatar', {
       { id: 13, name: '금태양', image: require('@/assets/main/boy3.png') },
       { id: 14, name: '클라디우스', image: require('@/assets/main/boy4.png') },
       { id: 15, name: '키츠네', image: require('@/assets/main/boy5.png') },
+      { id: 16, name: '블랙', image: require('@/assets/main/boy6.png') },
     ],
     avatarWoman: [
       { id: 21, name: '미', image: require('@/assets/main/girl1.png') },
       { id: 22, name: '마땡이', image: require('@/assets/main/girl2.png') },
-      { id: 23, name: '도레미', image: require('@/assets/main/girl3.png') },
+      { id: 23, name: '유미', image: require('@/assets/main/girl3.png') },
+      { id: 24, name: '도레미', image: require('@/assets/main/girl4.png') },
     ],
     avatarProgress: 0,
   }),
@@ -24,7 +27,12 @@ export const useAvatarStore = defineStore('avatar', {
 
   },
   actions: {
-    load() {
+    load(id) {
+      //유저 아바타 변경 api 호출
+      var idJson = new Object();
+      idJson.avatarSeq = id;
+      JSON.stringify(idJson);
+      useAccountStore().changeAvatar(idJson);
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -32,7 +40,7 @@ export const useAvatarStore = defineStore('avatar', {
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.domElement.id = "nowAvatar";
 
-      document.getElementById("nowAvatar").append(renderer.domElement);
+      document.getElementById("nowAvatarDiv").append(renderer.domElement);
 
       // camera
       const orbitCamera = new THREE.PerspectiveCamera(
@@ -94,15 +102,10 @@ export const useAvatarStore = defineStore('avatar', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      var ary = ["블랙.vrm"];
-      var rand = Math.floor(Math.random() * 101);
-
-      rand %= ary.length;
-
       // Import model from URL, add your own model here
       loader.load(
         // "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
-        ary[rand],
+        "vrm/" + id + ".vrm",
 
         (gltf) => {
           VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);

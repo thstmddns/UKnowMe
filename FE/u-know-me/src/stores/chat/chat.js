@@ -7,6 +7,7 @@ import * as Kalidokit from "kalidokit";
 import * as Holistic from "@mediapipe/holistic";
 import * as DrawConnectors from "@mediapipe/drawing_utils";
 import * as Camera from "@mediapipe/camera_utils";
+import { useMainStore } from '../main/main';
 
 let currentVrm;
 
@@ -32,13 +33,13 @@ export const useChatStore = defineStore('chat', {
 
   },
   actions: {
-    avatarLoad() {
+    avatarLoad(id) {
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setSize(640, 480);
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.domElement.id = "avatarCanvas";
+      renderer.domElement.id = "avatarCanvas"+useMainStore().option.matchingRoom;
 
       document.getElementById("my-video").prepend(renderer.domElement);
 
@@ -70,6 +71,7 @@ export const useChatStore = defineStore('chat', {
       const light = new THREE.DirectionalLight(0xffffff);
       light.position.set(1.0, 1.0, 1.0).normalize();
       scene.add(light);
+      scene.background = new THREE.Color( 0x252525 );
 
       // Main Render Loop
       const clock = new THREE.Clock();
@@ -90,15 +92,10 @@ export const useChatStore = defineStore('chat', {
       const loader = new GLTF.GLTFLoader();
       loader.crossOrigin = "anonymous";
 
-      var ary = ["블랙.vrm", "유미.vrm", "동민.vrm"];
-      var rand = Math.floor(Math.random() * 101);
-
-      rand %= ary.length;
-
       // Import model from URL, add your own model here
       loader.load(
         // "https://cdn.glitch.com/29e07830-2317-4b15-a044-135e73c7f840%2FAshtra.vrm?v=1630342336981",
-        ary[rand],
+        "vrm/" + id + ".vrm",
 
         (gltf) => {
           VRMUtils.VRMUtils.removeUnnecessaryJoints(gltf.scene);
@@ -140,16 +137,6 @@ export const useChatStore = defineStore('chat', {
           ),
         (error) => console.error(error)
       );
-
-      // capture
-      const avatarCanvas = document.getElementById("avatarCanvas");
-      avatarCanvas.style.display = 'inline-block'
-      // var avatarVideo = avatarCanvas.captureStream(30).getVideoTracks()[0];
-
-      const testVideo = document.getElementById("test-video");
-      testVideo.srcObject = avatarCanvas.captureStream();
-
-      return testVideo.srcObject.getVideoTracks()[0];
     },
 
     startHolistic() {
@@ -406,6 +393,7 @@ export const useChatStore = defineStore('chat', {
     },
 
     leaveSession() {
+      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
 
@@ -478,7 +466,7 @@ export const useChatStore = defineStore('chat', {
       this.camera.stop();
       
       document.querySelector(".preview").remove();
-      document.getElementById("avatarCanvas").remove();
+      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
 
       let videoElement = document.querySelector(".my-real-video");
 

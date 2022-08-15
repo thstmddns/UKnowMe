@@ -1,13 +1,13 @@
 <template>
   <div class="admin-table">
-    <div class="keyword">키워드 도우미</div>
+    <div class="admin-keyword">키워드 도우미</div>
     <div class="keyword-container">
       <div class="keyword-ex">
         <div class="keyword-table">
           <table>
             <thead>
               <tr>
-                <th class="numb">번호</th>
+                <th class="num">번호</th>
                 <th class="title">키워드 도우미</th>
                 <th class="UD">수정</th>
                 <th class="UD">삭제</th>
@@ -100,7 +100,7 @@ export default {
 .updateKeyword {
   width: 50;
 }
-.keyword {
+.admin-keyword {
   font-size: 30px;
   font-weight: 550;
 }

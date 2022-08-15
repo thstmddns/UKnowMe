@@ -12,6 +12,8 @@
         'inform-modify-profile': btnCh===3&&main.pBtnCh===1,
         'inform-modify-secure': btnCh===3&&main.pBtnCh===2,
         'matching-modal': btnCh===4,
+        'main-notice-modal': btnCh===5,
+        'main-notice-detail-modal': btnCh===6,
       }">
       <div class="close-btn" @click="btnCh=0;main.pBtnCh=0">
         <i class="fa-solid fa-xmark x-btn"></i>
@@ -24,11 +26,15 @@
         'inform-modify-profile-content': btnCh===3&&main.pBtnCh===1,
         'inform-modify-secure-content': btnCh===3&&main.pBtnCh===2,
         'matching-modal-content': btnCh===4,
+        'main-notice-modal-content': btnCh===5,
+        'main-notice-detail-modal-content': btnCh===6,
       }">
         <Logout v-if="btnCh===1"/>
         <InformPassword v-if="btnCh===2"/>
         <Inform v-if="btnCh===3"/>
         <MatchingOption v-if="btnCh===4"/>
+        <MainNotice v-if="btnCh===5"/>
+        <MainNoticeDetail v-if="btnCh===6"/>
       </div>
     </div>
   </div>
@@ -39,6 +45,8 @@ import Inform from '@/components/main/modal/InformModal.vue'
 import InformPassword from '@/components/main/modal/InformPassword.vue'
 import Logout from '@/components/main/modal/LogoutModal.vue'
 import MatchingOption from '@/components/main/modal/MatchingOption.vue'
+import MainNotice from '@/components/main/modal/MainNotice.vue'
+import MainNoticeDetail from '@/components/main/modal/MainNoticeDetail.vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main/main'
 
@@ -49,6 +57,8 @@ export default {
     InformPassword,
     Logout,
     MatchingOption,
+    MainNotice,
+    MainNoticeDetail,
   },
   setup() {
     const main = useMainStore()
@@ -98,6 +108,12 @@ export default {
 .matching-modal {
   width: 440px;
 }
+.main-notice-modal {
+  width: 600px;
+}
+.main-notice-detail-modal {
+  width: 600px;
+}
 .inform-modify-profile {
   height: 80%;
 }
@@ -131,6 +147,16 @@ export default {
 .matching-modal-content {
   padding: 32px 69px;
   text-align: center;
+  height: 92%;
+}
+.main-notice-modal-content {
+  padding: 32px 45px;
+  text-align: left;
+  height: 92%;
+}
+.main-notice-detail-modal-content {
+  padding: 32px 45px;
+  text-align: left;
   height: 92%;
 }
 .inform-modify-btn {

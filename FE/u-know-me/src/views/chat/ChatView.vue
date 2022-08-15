@@ -23,7 +23,11 @@
             />
           </p>
           <p class="text-center">
-            <button class="btn btn-lg btn-success" id="joinBtn" @click="joinSession()">
+            <button
+              class="btn btn-lg btn-success"
+              id="joinBtn"
+              @click="joinSession()"
+            >
               Join!
             </button>
           </p>
@@ -31,7 +35,12 @@
       </div>
     </div>
     <div id="session" v-if="session">
-      <div class="video-container">
+      <div
+        :class="{
+          'video-container1': main.option.matchingRoom == 1,
+          'video-container2': main.option.matchingRoom == 2,
+        }"
+      >
         <div class="video-item" id="my-video">
           <video class="my-real-video" style="display: none"></video>
           <video
@@ -55,10 +64,9 @@
       </div>
     </div>
     <chat-sub />
-    <accuse-modal v-if="chat.accuseBtn === 1"/>
-    <game-modal v-if="chat.gameBtn === 1"/>
+    <accuse-modal v-if="chat.accuseBtn === 1" />
+    <game-modal v-if="chat.gameBtn === 1" />
     <!-- <chat-something /> -->
-
   </div>
 </template>
 
@@ -73,8 +81,9 @@ import { useAccountStore } from "@/stores/land/account";
 
 // import ChatSomething from "@/components/chat/ChatSomething.vue";
 import ChatSub from "@/components/chat/ChatSub.vue";
-import AccuseModal from "@/components/chat/AccuseModal.vue"
-import GameModal from "@/components/chat/GameModal.vue"
+import AccuseModal from "@/components/chat/AccuseModal.vue";
+import GameModal from "@/components/chat/GameModal.vue";
+import { useMainStore } from "@/stores/main/main";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -89,12 +98,13 @@ export default {
     UserVideo,
     ChatSub,
     AccuseModal,
-    GameModal
+    GameModal,
   },
 
   setup() {
     const account = useAccountStore();
     const chat = useChatStore();
+    const main = useMainStore();
     account.fetchCurrentUser();
 
     let {
@@ -108,11 +118,18 @@ export default {
     } = storeToRefs(chat);
     chat.socketConnect(account.currentUser.seq);
 
+    //1:1 2:2 UI 판별
+
+    main;
+    // if(main.option.matchingRoom == "1"){
+    // }
+
     onMounted(() => {
       document.getElementById("joinBtn").click();
     });
 
     return {
+      main,
       account,
       chat,
       OV,
@@ -134,6 +151,7 @@ export default {
   methods: {
     joinSession() {
       const chat = useChatStore();
+      const account = useAccountStore();
 
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -177,11 +195,22 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(async () => {
-            var avatarVideo = await chat.avatarLoad();
+            await chat.avatarLoad(account.currentUser.avatar.seq);
+
+            // capture
+            const avatarCanvas = document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom);
+            avatarCanvas.style.display = "inline-block";
+
+            const testVideo = document.getElementById("test-video");
+            testVideo.srcObject = avatarCanvas.captureStream();
+
+            var avatarVideo = testVideo.srcObject.getVideoTracks()[0];
+
+            await chat.startHolistic();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
+              audioSource: false, // The source of audio. If undefined default microphone
               videoSource: avatarVideo, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
@@ -197,11 +226,6 @@ export default {
             // --- Publish your stream ---
 
             this.session.publish(this.publisher);
-
-            setTimeout(function () {
-              console.log("Works!");
-              chat.startHolistic();
-            }, 1000);
           })
           .catch((error) => {
             console.log(
@@ -305,6 +329,7 @@ h1 {
 }
 #join,
 #session {
+  position: relative;
   flex: 1;
 }
 .chat-body {
@@ -318,29 +343,56 @@ h1 {
   ); */
 }
 
-.video-container {
+.video-container1 {
+  position: absolute;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  width: 100vw;
+  height: calc(100vh - 200px);
+  max-height: calc((100vw / 2 -40px) / 4 * 3 + 60px);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.video-container2 {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: calc((100vh - 220px) / 3 * 4);
+  height: calc(100vh - 200px);
+  max-height: calc(100vw * 3 / 4);
+  max-width: 100vw;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .video-item {
   position: relative;
+  height: calc((100vh - 200px) / 2 - 40px);
+  max-height: calc(100vw * 3 / 8);
+  max-width: calc(100vw / 2 - 40px);
   margin: 20px;
   text-align: center;
 }
-.video-item canvas {
+#avatarCanvas1 {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 640px;
-  height: 480px;
+  width: auto !important;
+  max-width: calc(100vw / 2 - 40px) !important;
+  height: calc(100vh - 260px) !important;
+  max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
 }
-.video-item video {
+#avatarCanvas2 {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 640px;
-  height: 480px;
+  width: auto !important;
+  max-width: calc(100vw / 2 - 40px) !important;
+  height: calc((100vh - 200px) / 2 - 80px) !important;
+  max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
 }
 .my-real-video {
   transform: rotateY(180deg);
@@ -364,5 +416,11 @@ h1 {
 .preview video {
   width: 100% !important;
   height: auto;
+  border: 3px solid purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.nickName {
+  height: 20px;
 }
 </style>

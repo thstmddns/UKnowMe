@@ -13,6 +13,9 @@ html, body, #app {
   height: 100;
   overflow: hidden;
 }
+div, p, span, button, label {
+  font-family: 'NanumSquareRound';
+}
 button {
   width: 130px;
   height: 40px;
@@ -49,5 +52,24 @@ button:active{
     inset -4px -4px 6px 0 rgba(255,255,255,.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
 }
-
+@font-face {
+  font-family:'NanumSquareRound';
+  src: url('assets/fonts/NanumSquareRoundL.ttf') format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family:'NanumSquareRound';
+  src: url('assets/fonts/NanumSquareRoundR.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family:'NanumSquareRound';
+  src: url('assets/fonts/NanumSquareRoundEB.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family:'NanumSquareRound';
+  src: url('assets/fonts/NanumSquareRoundB.ttf') format('truetype');
+  font-weight: 700;
+}
 </style>

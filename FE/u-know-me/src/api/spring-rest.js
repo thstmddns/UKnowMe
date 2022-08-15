@@ -31,6 +31,7 @@ export default {
     block: () => HOST + MEMBERS + 'block',
     report: () => HOST + MEMBERS + 'report',
     reportInfo: reportSeq => HOST + MEMBERS + 'report/' + `${reportSeq}`,
+    changeAvatar: () => HOST + MEMBERS + 'avatar',
   },
   machings: {
     oneToOne: memberSeq => HOST + MACHINGS + '1vs1/' + `${memberSeq}`,

@@ -42,6 +42,7 @@ export default {
 .imform-password-text {
   font-size: 16px;
   font-weight: 500;
+  line-height:32px;
   margin: 16px 0;
 }
 .text-center {
