@@ -328,7 +328,7 @@ export const useAccountStore = defineStore('account', {
         alert('형식에 맞지 않는 번호입니다.')
       } else {
         this.sendTel = 1
-        window.open(`https://uknowme.mooo.com:4443/tc?pn=${tel}`, 'Pass인증', this.getTelPopupFeatures());
+        window.open(`https://uknowme.mooo.com/tc?pn=${tel}`, 'Pass인증', this.getTelPopupFeatures());
       }
     },
     certicateTel(num) {
