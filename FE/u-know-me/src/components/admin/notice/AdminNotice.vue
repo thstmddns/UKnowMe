@@ -13,7 +13,7 @@
     <table class="notice-table">
       <thead class="notice-table-title">
         <tr>
-          <th class="num"></th>
+          <th class="num">번호</th>
           <th class="notice-name">생성자 이름</th>
           <th>공지 제목</th>
           <th>생성 날짜</th>

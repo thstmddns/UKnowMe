@@ -3,7 +3,7 @@
     <div class="admin-toolbar">
       <div class="admin-toolbar-container">
         <div class="admin-toolbar-top">
-          <p>관리자 박진경</p>
+          <p>관리자 페이지</p>
         </div>
         <hr>
         <div class="admin-toolbar-bottom">
@@ -14,7 +14,7 @@
           <div class="admin-select" :class="{'admin-select-active' : adminBtn == 4}" @click="adminBtn = 4">도우미 키워드</div>
         </div>
       </div>
-      <button class="admin-btn admin-logout-btn">로그아웃&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      <button class="admin-btn admin-logout-btn" @click="account.logout()">로그아웃&#160;&#160;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
     </div>
     <div class="admin-content">
       <admin-member
@@ -44,6 +44,7 @@
 <script>
 import { storeToRefs } from 'pinia'
 import { useAdminStore } from '@/stores/admin/admin'
+import { useAccountStore } from "@/stores/land/account";
 import AdminMember from '@/components/admin/member/AdminMember.vue'
 import AdminNotice from '@/components/admin/notice/AdminNotice.vue'
 import AdminAvatar from '@/components/admin/AdminAvatar.vue'
@@ -59,10 +60,12 @@ export default {
   },
   setup() {
     const admin = useAdminStore()
+    const account = useAccountStore();
     const { adminBtn } = storeToRefs(admin)
     return {
       admin,
-      adminBtn
+      adminBtn,
+      account,
     }
   }
   
