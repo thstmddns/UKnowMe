@@ -37,15 +37,15 @@
     <div id="session" v-if="session">
       <div
         :class="{
-          'video-container1': main.option.matchingRoom == 1,
-          'video-container2': main.option.matchingRoom == 2,
+          'video-container1': main.option.matchingRoom == 1 && chat.mobile == false,
+          'video-container2': main.option.matchingRoom == 2 || chat.mobile == true,
         }"
       >
         <div class="video-item" id="my-video">
           <video
             :class="{
-              'my-real-video1': main.option.matchingRoom == 1,
-              'my-real-video2': main.option.matchingRoom == 2,
+              'my-real-video1': main.option.matchingRoom == 1 && chat.mobile == false,
+              'my-real-video2': main.option.matchingRoom == 2 || chat.mobile == true,
             }"
             style="display: none"
           ></video>
@@ -358,7 +358,7 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
   width: 100vw;
-  height: calc(100vh - 200px);
+  height: calc(100vh - var(--chat-sub-size));
   max-height: calc((100vw / 2 -40px) / 4 * 3 + 60px);
   left: 50%;
   top: 50%;
@@ -369,9 +369,9 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: calc((100vh - 220px) / 3 * 5);
-  height: calc(100vh - 200px);
-  max-height: calc(100vw * 3 / 4);
+  width: calc((100vh - var(--chat-sub-size) -20px) / 3 * 2 * var(--video-size));
+  height: calc(100vh - var(--chat-sub-size));
+  max-height: calc(100vw * 3 / 2 / var(--video-size));
   max-width: 100vw;
   left: 50%;
   top: 50%;
@@ -379,9 +379,9 @@ h1 {
 }
 .video-item {
   position: relative;
-  height: calc((100vh - 200px) / 2 - 40px);
-  max-height: calc(100vw * 3 / 8);
-  max-width: calc(100vw / 2 - 40px);
+  height: calc((100vh - var(--chat-sub-size)) / 2 - 40px);
+  max-height: calc(100vw * 3 / 4 / var(--video-size));
+  max-width: calc(100vw / var(--video-size) - 40px);
   margin: 20px;
   text-align: center;
 }
@@ -393,7 +393,7 @@ h1 {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: auto !important;
   max-width: calc(100vw / 2 - 40px) !important;
-  height: calc(100vh - 260px) !important;
+  height: calc(100vh - var(--chat-sub-size) - 60px) !important;
   max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
 }
 /* 2:2일때 canvas 크기 */
@@ -403,9 +403,9 @@ h1 {
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: auto !important;
-  max-width: calc(100vw / 2 - 40px) !important;
-  height: calc((100vh - 200px) / 2 - 80px) !important;
-  max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
+  max-width: calc(100vw / var(--chat-sub-size) - 40px) !important;
+  height: calc((100vh - var(--chat-sub-size)) / 2 - 80px) !important;
+  max-height: calc((100vw / var(--video-size) - 40px) * 3 / 4) !important;
 }
 .my-real-video1,
 .my-real-video2 {
