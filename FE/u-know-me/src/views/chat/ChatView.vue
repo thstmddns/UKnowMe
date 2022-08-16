@@ -215,19 +215,7 @@ export default {
           .connect(token, { clientData: this.myUserName })
           .then(async () => {
             await chat.avatarLoad(account.currentUser.avatar.seq);
-
-            // capture
-            const avatarCanvas = document.getElementById(
-              "avatarCanvas" + useMainStore().option.matchingRoom
-            );
-            avatarCanvas.style.display = "inline-block";
-
-            const testVideo = document.getElementById("test-video");
-            testVideo.srcObject = avatarCanvas.captureStream();
-
-            var avatarVideo = testVideo.srcObject.getVideoTracks()[0];
-
-            await chat.startHolistic();
+            var avatarVideo = await chat.startHolistic();
 
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {

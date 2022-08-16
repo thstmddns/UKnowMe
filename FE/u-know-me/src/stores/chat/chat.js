@@ -394,6 +394,19 @@ export const useChatStore = defineStore('chat', {
       });
       this.camera.start();
       ////////////////////////
+
+      // capture
+      const avatarCanvas = document.getElementById(
+        "avatarCanvas" + useMainStore().option.matchingRoom
+      );
+      avatarCanvas.style.display = "inline-block";
+
+      const testVideo = document.getElementById("test-video");
+      testVideo.srcObject = avatarCanvas.captureStream();
+
+      var avatarVideo = testVideo.srcObject.getVideoTracks()[0];
+
+      return avatarVideo;
     },
 
     leaveSession() {
