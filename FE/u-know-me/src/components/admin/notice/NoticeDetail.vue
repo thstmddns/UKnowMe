@@ -1,9 +1,9 @@
 <template>
   <div class="notice-detail-modal-title">
-    <h2 class="notice-detail-title">{{admin.notice.title}}</h2>
+    <div class="notice-detail-title">{{admin.notice.title}}</div>
   </div>
   <div class="notice-detail-modal-content">
-    <p class="notice-detail-content">{{admin.notice.content}}</p>
+    <pre class="notice-detail-content">{{admin.notice.content}}</pre>
   </div>
   <div class="notice-btn-list">
     <!-- {{admin.notice}} -->
@@ -33,18 +33,22 @@ export default {
 
 <style>
 .notice-detail-modal-title {
-  /* margin: 8%; */
+  margin-top: 2px;
   padding: 2% 11%;
 }
 .notice-detail-title {
   margin-bottom: 0;
+  font-size: 30px;
+  font-weight: 600;
 }
 .notice-detail-modal-content {
   border: 1px solid #c1c3fc;
+  border-radius: 10px;
   margin: 7%;
   height: 220px;
 }
 .notice-detail-content {
+  font-size: 15px;
   padding: 4%;
   margin: 0;
 }

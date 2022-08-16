@@ -12,7 +12,7 @@
                 <th class="answer1">답1</th>
                 <th class="answer2">답2</th>
                 <th class="UD">수정</th>
-                <th class="UD">삭제</th>
+                <th class="UD" style="padding-right:10px">삭제</th>
               </tr>
             </thead>
           </table>
@@ -89,6 +89,7 @@ export default {
 }
 
 .UD {
+  text-align: center;
   width: 20%;
   padding: 0;
 }

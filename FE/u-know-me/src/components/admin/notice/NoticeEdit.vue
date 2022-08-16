@@ -50,15 +50,20 @@ export default {
 }
 .notice-edit-title {
   width: 100%;
-  height: 30px;
+  height: 50px;
+  border-radius: 10px;
   border: 1px solid #c1c3fc;
   padding-left: 14px; padding-right: 14px;
+  font-size: 20px;
+  font-weight: 600;
 }
 .notice-edit-content {
   width: 100%;
   height: 170px;
+  border-radius: 10px;
   border: 1px solid #c1c3fc;
   padding: 16px 14px;
   background: #fff;
+  font-size: 15px;
 }
 </style>

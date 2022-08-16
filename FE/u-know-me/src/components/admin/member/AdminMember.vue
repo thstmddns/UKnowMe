@@ -2,30 +2,39 @@
   <div class="admin-table">
     <div class="member">회원 관리</div>
       <table class="member-table">
-        <thead class="member-table-title">
-          <tr>
-            <th class="num">번호</th>
-            <th>유저 이름</th>
-            <th>성별</th>
-            <th>유저 아이디</th>
-            <th>가입일</th>
-            <th>신고 누적 횟수</th>
-            <th>계정 상태</th>
-          </tr>
-        </thead>
-        <tbody class="member-table-content">
-          <tr v-for="(member, num) in admin.members" :key="num">
-            <td class="num">{{num}}</td>
-            <td class="member-info-active" @click="goDetail(num)">{{member.name}}</td>
-            <td>{{member.gender}}</td>
-            <td>{{member.id}}</td>
-            <td>{{member.createDate.slice(0, 10)}}</td>
-            <td>{{member.accusedCount}}</td>
-            <td v-if="member.accusedCount > 5"><img src="@/assets/admin/red-img.png" class="condition-img"></td>
-            <td v-else-if="member.accusedCount > 3"><img src="@/assets/admin/yellow-img.png" class="condition-img"></td>
-            <td v-else><img src="@/assets/admin/green-img.png" class="condition-img"></td>
-          </tr>
-        </tbody>
+        <div class="member-table-title">
+          <table>
+            <thead>
+              <tr>
+                <th class="num">번호</th>
+                <th>유저 이름</th>
+                <th>성별</th>
+                <th>유저 아이디</th>
+                <th>가입일</th>
+                <th>신고 누적 횟수</th>
+                <th>계정 상태</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="member-table-content">
+          <table>
+            <tbody>
+              <tr v-for="(member, num) in admin.members" :key="num"
+                  class="member-info-active" @click="goDetail(num)">
+                <td class="num">{{num}}</td>
+                <td>{{member.name}}</td>
+                <td>{{member.gender}}</td>
+                <td>{{member.id}}</td>
+                <td>{{member.createDate.slice(0, 10)}}</td>
+                <td>{{member.accusedCount}}</td>
+                <td v-if="member.accusedCount > 5"><img src="@/assets/admin/red-img.png" class="condition-img"></td>
+                <td v-else-if="member.accusedCount > 3"><img src="@/assets/admin/yellow-img.png" class="condition-img"></td>
+                <td v-else><img src="@/assets/admin/green-img.png" class="condition-img"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </table>
   </div>
 </template>
@@ -64,12 +73,12 @@ export default {
 .member-table{
   margin: 55px 0 0 0;
 }
- .member-table-title{
+.member-table-title {
   background-color: #f0f1ff;
 }
-.member-table-content{
-  height: 80%;
-  overflow-x: auto;
+.member-table-content {
+  height: 550px;
+  overflow-x:auto;
   margin-top: 0px;
   border: 1px solid #f0f1ff;
 }
