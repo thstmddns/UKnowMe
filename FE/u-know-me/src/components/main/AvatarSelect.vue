@@ -24,6 +24,7 @@
 import AvatarCard from "@/components/main/AvatarCard.vue";
 import { useAvatarStore } from "@/stores/main/avatar";
 import { useAccountStore } from "@/stores/land/account";
+import { onMounted } from "vue";
 
 export default {
   name: "AvatarSelect",
@@ -32,21 +33,23 @@ export default {
     const avatars = useAvatarStore();
     const account = useAccountStore();
 
-    //media 반응형
-    const mediaViewContent = window.matchMedia(`(max-width: 700px)`); // 1
-    const viewChangeHandler = (mediaViewContent) => {
-      var toggleBtn = document.getElementById("avatarBtn");
-      var toggle = document.querySelector(".avatarCollection");
+    onMounted(() => {
+      //media 반응형
+      const mediaViewContent = window.matchMedia(`(max-width: 700px)`); // 1
+      const viewChangeHandler = (mediaViewContent) => {
+        var toggleBtn = document.getElementById("avatarBtn");
+        var toggle = document.querySelector(".avatarCollection");
 
-      if (mediaViewContent.matches === true) {
-        toggle.style.left = "-300px";
-        toggleBtn.style.bottom = "50px";
-      } else {
-        toggle.style.left = "0px";
-        toggleBtn.style.bottom = "-70px";
-      }
-    };
-    mediaViewContent.addEventListener("change", viewChangeHandler);
+        if (mediaViewContent.matches === true) {
+          toggle.style.left = "-300px";
+          toggleBtn.style.bottom = "50px";
+        } else {
+          toggle.style.left = "0px";
+          toggleBtn.style.bottom = "-70px";
+        }
+      };
+      mediaViewContent.addEventListener("change", viewChangeHandler);
+    });
 
     return { avatars, account };
   },
