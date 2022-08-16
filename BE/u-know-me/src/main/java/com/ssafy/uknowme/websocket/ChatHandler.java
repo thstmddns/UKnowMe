@@ -146,9 +146,13 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_a_request_1":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp = String.format("{\n" +
-                        "\t\"key\" : \"balance_q_response_1\",\n" +
+                        "\t\"key\" : \"balance_a_response_1\",\n" +
+                        "\t\"nickName\" : \"%s\",\n" +
                         "\t\"answer\" : \"%s\",\n" +
-                        "}", jObject.get("answser").toString());
+                        "\t\"question\" : \"%s\"\n" +
+                        "}", jObject.get("nickName").toString()
+                        ,jObject.get("question").toString()
+                        , jObject.get("answser").toString());
                 TextMessage balance_a_request_msg = new TextMessage(balance_a_request_tmp);
 
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
@@ -166,9 +170,13 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_a_request_2":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp2 = String.format("{\n" +
-                        "\t\"key\" : \"balance_q_response_2\",\n" +
+                        "\t\"key\" : \"balance_a_response_2\",\n" +
                         "\t\"answer\" : \"%s\",\n" +
-                        "}", jObject.get("answser").toString());
+                                "\t\"answer\" : \"%s\",\n" +
+                                "\t\"question\" : \"%s\"\n" +
+                                "}", jObject.get("nickName").toString()
+                        ,jObject.get("question").toString()
+                        , jObject.get("answser").toString());
                 TextMessage balance_a_request_msg2 = new TextMessage(balance_a_request_tmp2);
 
                 for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
@@ -187,7 +195,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 log.info("키워드 헬퍼 요청");
                 String keyword_helper_tmp = String.format("{\n" +
                         "\t\"key\" : \"balance_q_response_1\",\n" +
-                        "\t\"keyword\" : \"%s\",\n" +
+                        "\t\"keyword\" : \"%s\"\n" +
                         "}", jObject.get("keyword").toString());
                 TextMessage keyword_helper_response_msg = new TextMessage(keyword_helper_tmp);
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
