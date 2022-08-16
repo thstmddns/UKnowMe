@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     createReport(accusedMemberSeq, reportingMemberSeq) {
+      const account = useAccountStore()
       axios({
         url: `https://uknowme.mooo.com:8443/report/create`,
         method: 'post',
@@ -56,7 +57,7 @@ export default {
           "accusedMemberSeq": accusedMemberSeq,
           "reportState": "REPORT",
           "reportingMemberSeq": reportingMemberSeq
-        }
+        },headers: account.authHeader,
       })
         .then(res => {
           console.log(res);
