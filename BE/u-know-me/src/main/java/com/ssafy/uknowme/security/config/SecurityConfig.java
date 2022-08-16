@@ -57,13 +57,16 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
-
     private final String[] PERMIT_ALL_MEMBER = {
             "/member/login",
             "/member/join",
             "/member/check/**",
             "/member/find/**",
             "/member/password",
+    };
+
+    private final String[] PERMIT_ALL_WEBSOCKET = {
+            "/ws/**"
     };
 
     @Bean
@@ -87,6 +90,7 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
                     .antMatchers(PERMIT_ALL_MEMBER).permitAll()
+                    .antMatchers(PERMIT_ALL_WEBSOCKET).permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling()
