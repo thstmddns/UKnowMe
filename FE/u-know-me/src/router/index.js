@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-// import { useAccountStore } from "@/stores/land/account";
+import { useAccountStore } from "@/stores/land/account";
 
 // account
 // import List from './components/컴포넌트명.vue';
@@ -11,7 +11,6 @@ import AdminView from '@/views/admin/AdminView.vue'
 import TelCerticate from '@/views/land/TelCerticate.vue'
 
 import NotFound404 from '@/views/NotFound404.vue'
-
 
 const routes = [
 //   {
@@ -65,25 +64,43 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach(async(to, from, next) => {
-//   const account = useAccountStore()
-//   // 이전 페이지에서 발생한 에러메시지 삭제
-//   account.authError = {
-//     login: 0,
-//   },
-//   const noAuthPages = ['home', 'NotFound404']
+router.beforeEach(async(to, from, next) => {
+  const account = useAccountStore()
+  // 이전 페이지에서 발생한 에러메시지 삭제
+  account.authError = {
+    login: 0,
+  }
 
-//   const isAuthRequired = !noAuthPages.includes(to.name)
+  const noAuthPages = ['home', 'NotFound404']
 
-//   if (isAuthRequired && !account.isLoggedIn) {
-//     next({ name: 'home' })
-//   } else {
-//     next()
-//   }
+  const isAuthRequired = !noAuthPages.includes(to.name)
 
-//   if (!isAuthRequired && account.isLoggedIn) {
-//     next({ name: to.name })
-//   }
-// })
+  if ("admin" == to.name) {
+    await account.fetchCurrentUser();
+
+    if (account.getRole == "ROLE_MANAGER") {
+      next();
+      return;
+    }
+    
+    alert("관리자만 접근할 수 있는 페이지입니다!");
+
+    if (account.isLoggedIn) next({ name: 'main' });
+    else next({ name: 'home' });
+
+    return;
+  } 
+  
+  if (isAuthRequired && !account.isLoggedIn) {
+    alert("로그인이 필요한 페이지입니다!")
+    next({ name: 'home' })
+  } else {
+    next()
+  }
+
+  if (!isAuthRequired && account.isLoggedIn) {
+    next({ name: to.name })
+  }
+})
 
 export default router; 
