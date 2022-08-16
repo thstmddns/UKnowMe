@@ -15,7 +15,6 @@ export const useChatStore = defineStore('chat', {
   state: () => ({
     accuseBtn: 0,
     gameBtn: 0,
-    test: 0,
     webSocket: null,
     OV: undefined,
     session: undefined,
@@ -23,23 +22,28 @@ export const useChatStore = defineStore('chat', {
     publisher: undefined,
     subscribers: [],
     camera: null,
-    camera2: null,
     videoDevices: null,
-    jsonData: null,
-    SessionName : "SessionA",
-    otherPeople : [],
+    SessionName: "SessionA",
+    otherPeople: [],
+    motionCheck: true,
+    time: null,
   }),
   getters: {
 
   },
   actions: {
+    getTime() {
+      let today = new Date();
+
+      this.time = today.toLocaleTimeString('en-US', { hour12: false });
+    },
     avatarLoad(id) {
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setSize(640, 480);
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.domElement.id = "avatarCanvas"+useMainStore().option.matchingRoom;
+      renderer.domElement.id = "avatarCanvas" + useMainStore().option.matchingRoom;
 
       document.getElementById("my-video").prepend(renderer.domElement);
 
@@ -71,7 +75,7 @@ export const useChatStore = defineStore('chat', {
       const light = new THREE.DirectionalLight(0xffffff);
       light.position.set(1.0, 1.0, 1.0).normalize();
       scene.add(light);
-      scene.background = new THREE.Color( 0x252525 );
+      scene.background = new THREE.Color(0x252525);
 
       // Main Render Loop
       const clock = new THREE.Clock();
@@ -393,7 +397,7 @@ export const useChatStore = defineStore('chat', {
     },
 
     leaveSession() {
-      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
+      document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
 
@@ -405,30 +409,27 @@ export const useChatStore = defineStore('chat', {
 
       window.removeEventListener("beforeunload", this.leaveSession);
 
-      if(this.camera){
+      if (this.camera) {
         this.camera.stop();
-      }
-      if(this.camera2){
-        this.camera2.stop();
       }
     },
 
     socketConnect(seq) {
+      const self = this;
       //socket test
       console.log("socket test");
       // 1. 웹소켓 클라이언트 객체 생성
       const webSocket = new WebSocket("wss://uknowme.mooo.com:8443/ws/chat");
 
       this.webSocket = webSocket;
-      let toCam = this.toCam;
 
       // 2. 웹소켓 이벤트 처리
       // 2-1) 연결 이벤트 처리
       webSocket.onopen = () => {
         console.log("웹소켓서버와 연결 성공");
         webSocket.send(`{
-          "key" : "chat_start_1",
-          "room_seq" : "${this.SessionName}",
+          "key" : "chat_start_${useMainStore().option.matchingRoom}",
+          "room_seq" : "${self.SessionName}",
           "user_seq" : "${seq}"
         }`);
       };
@@ -437,10 +438,18 @@ export const useChatStore = defineStore('chat', {
       webSocket.onmessage = function (event) {
         console.log(`서버 웹소켓에게 받은 데이터: ${event.data}`);
         const test = event.data.replace(/,\s*}$/, '}');
-        this.jsonData = JSON.parse(test);
-        console.log(this.jsonData);
-        if (this.jsonData.key == "uknowme") {
-          toCam();
+        const jsonData = JSON.parse(test);
+        console.log(jsonData);
+        if (jsonData.key == "uknowme") {
+          let p = document.createElement("p");
+          p.textContent = self.time + " : 서로의 하트가 눌렸습니다! 카메라로 변경됩니다.";
+          document.querySelector(".keyword-content").prepend(p);
+          self.toCam();
+        }
+        if (jsonData.key == "balance_q_response_" + useMainStore().option.matchingRoom) {
+          let p = document.createElement("p");
+          p.textContent = self.time + " : 밸런스게임이 시작되었습니다.";
+          document.querySelector(".keyword-content").prepend(p);
         }
       };
 
@@ -455,30 +464,85 @@ export const useChatStore = defineStore('chat', {
       };
     },
 
-    heartClick() {
-      this.webSocket.send(`{
-        "key" : "heart_1",
-        "room" : "cavavsdv-sadvas-asdvas"
-      }`);
+    balanceClick() {
+      let message = `{
+        "key" : "balance_q_request_${useMainStore().option.matchingRoom}",
+        "room" : "${this.SessionName}"
+      }`
+      console.log("밸런스 버튼", message);
+
+      this.webSocket.send(message);
     },
 
-    toCam() {
+    motionClick() {
       this.camera.stop();
-      
-      document.querySelector(".preview").remove();
-      document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom).remove();
+      let p = document.createElement("p");
+      let videoElement;
 
-      let videoElement = document.querySelector(".my-real-video");
+      if (this.motionCheck == true) {
+        this.motionCheck = false;
+        p.textContent = this.time + " : 모션인식을 중지합니다.";
+        document.querySelector(".input_video").style.display = "none";
+        document.querySelector(".input_video2").style.display = "block";
+        videoElement = document.querySelector(".input_video2");
+      } else {
+        this.motionCheck = true;
+        p.textContent = this.time + " : 모션인식을 시작합니다.";
+        document.querySelector(".input_video").style.display = "block";
+        document.querySelector(".input_video2").style.display = "none";
+        videoElement = document.querySelector(".input_video");
 
-      videoElement.style.display = "block";
+        this.camera.start();
+      }
 
-      this.camera2 = new Camera.Camera(videoElement, {
+      this.camera = new Camera.Camera(videoElement, {
         width: 640,
         height: 480,
       });
-      this.camera2.start();
+      this.camera.start();
 
-      console.log("디바이스 카메라 리스트 : "+this.videoDevices);
+      document.querySelector(".keyword-content").prepend(p);
+    },
+
+    heartClick() {
+      let p = document.createElement("p");
+      if (useMainStore().option.matchingRoom == "1") {
+        p.textContent = this.time + " : 하트를 눌렸습니다! 상대방이 하트를 누르면 서로의 카메라가 공개됩니다.";
+      }
+      if (useMainStore().option.matchingRoom == "2") {
+        p.textContent = this.time + " : 하트를 눌렸습니다! 모든사람이 하트를 누르면 모두의 카메라가 공개됩니다.";
+      }
+
+      document.querySelector(".keyword-content").prepend(p);
+
+      let message = `{
+        "key" : "heart_${useMainStore().option.matchingRoom}",
+        "room" : "${this.SessionName}"
+      }`
+      console.log("하트 버튼", message);
+
+      this.webSocket.send(message);
+    },
+
+    toCam() {
+      // 모션 인식 버튼 비활성화
+      this.motionCheck = false;
+      document.getElementById("motionBtn").disabled = true;
+
+      document.querySelector(".preview").remove();
+      document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
+
+      let videoElement = document.querySelector(".my-real-video" + useMainStore().option.matchingRoom);
+      videoElement.style.display = "block";
+
+      this.camera.stop();
+      this.camera = new Camera.Camera(videoElement, {
+        width: 640,
+        height: 480,
+      });
+      this.camera.start();
+      // videoElement.style.display = "block";
+      // console.log("디바이스 카메라 리스트 : " + this.videoDevices);
 
       let newPublisher = this.OV.initPublisher('html-element-id', {
         videoSource: undefined, // The source of video. If undefined default webcam
@@ -497,6 +561,6 @@ export const useChatStore = defineStore('chat', {
           console.log('New publisher published!');
         });
       });
-    }
+    },
   },
 })
