@@ -27,6 +27,7 @@ export const useChatStore = defineStore('chat', {
     otherPeople: [],
     motionCheck: true,
     time: null,
+    mobile: false,
   }),
   getters: {
 
@@ -454,15 +455,11 @@ export const useChatStore = defineStore('chat', {
         const jsonData = JSON.parse(test);
         console.log(jsonData);
         if (jsonData.key == "uknowme") {
-          let p = document.createElement("p");
-          p.textContent = self.time + " : 서로의 하트가 눌렸습니다! 카메라로 변경됩니다.";
-          document.querySelector(".keyword-content").prepend(p);
+          self.systemMessagePrint("서로의 하트가 눌렸습니다! 카메라로 변경됩니다.")
           self.toCam();
         }
         if (jsonData.key == "balance_q_response_" + useMainStore().option.matchingRoom) {
-          let p = document.createElement("p");
-          p.textContent = self.time + " : 밸런스게임이 시작되었습니다.";
-          document.querySelector(".keyword-content").prepend(p);
+          self.systemMessagePrint("밸런스게임이 시작되었습니다.")
         }
       };
 
@@ -477,6 +474,14 @@ export const useChatStore = defineStore('chat', {
       };
     },
 
+    systemMessagePrint(text) {
+      let p = document.createElement("p");
+      p.textContent = this.time + " : " + text;
+
+      document.querySelector(".keyword-content").prepend(p);
+      document.querySelector(".keyword-content-mobile").prepend(p);
+    },
+
     balanceClick() {
       let message = `{
         "key" : "balance_q_request_${useMainStore().option.matchingRoom}",
@@ -489,18 +494,17 @@ export const useChatStore = defineStore('chat', {
 
     motionClick() {
       this.camera.stop();
-      let p = document.createElement("p");
       let videoElement;
 
       if (this.motionCheck == true) {
         this.motionCheck = false;
-        p.textContent = this.time + " : 모션인식을 중지합니다.";
+        this.systemMessagePrint("모션인식을 중지합니다.")
         document.querySelector(".input_video").style.display = "none";
         document.querySelector(".input_video2").style.display = "block";
         videoElement = document.querySelector(".input_video2");
       } else {
         this.motionCheck = true;
-        p.textContent = this.time + " : 모션인식을 시작합니다.";
+        this.systemMessagePrint("모션인식을 재시작합니다.")
         document.querySelector(".input_video").style.display = "block";
         document.querySelector(".input_video2").style.display = "none";
         videoElement = document.querySelector(".input_video");
@@ -513,20 +517,15 @@ export const useChatStore = defineStore('chat', {
         height: 480,
       });
       this.camera.start();
-
-      document.querySelector(".keyword-content").prepend(p);
     },
 
     heartClick() {
-      let p = document.createElement("p");
       if (useMainStore().option.matchingRoom == "1") {
-        p.textContent = this.time + " : 하트를 눌렸습니다! 상대방이 하트를 누르면 서로의 카메라가 공개됩니다.";
+        this.systemMessagePrint("하트를 눌렸습니다! 상대방이 하트를 누르면 서로의 카메라가 공개됩니다.")
       }
       if (useMainStore().option.matchingRoom == "2") {
-        p.textContent = this.time + " : 하트를 눌렸습니다! 모든사람이 하트를 누르면 모두의 카메라가 공개됩니다.";
+        this.systemMessagePrint("하트를 눌렸습니다! 모든사람이 하트를 누르면 모두의 카메라가 공개됩니다.")
       }
-
-      document.querySelector(".keyword-content").prepend(p);
 
       let message = `{
         "key" : "heart_${useMainStore().option.matchingRoom}",
@@ -540,12 +539,21 @@ export const useChatStore = defineStore('chat', {
     toCam() {
       // 모션 인식 버튼 비활성화
       this.motionCheck = false;
-      document.getElementById("motionBtn").disabled = true;
+      var motionBtn = document.querySelectorAll(".motionBtn");
+      for (let i = 0; i < motionBtn.length; i++) {
+        motionBtn[i].disabled = true;
+      }
 
       document.querySelector(".preview").remove();
-      document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
 
-      let videoElement = document.querySelector(".my-real-video" + useMainStore().option.matchingRoom);
+      let videoElement
+      if (this.mobile) {
+        document.getElementById("avatarCanvas2").remove();
+        videoElement = document.querySelector(".my-real-video2");
+      } else {
+        document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
+        videoElement = document.querySelector(".my-real-video" + useMainStore().option.matchingRoom);
+      }
       videoElement.style.display = "block";
 
       this.camera.stop();
