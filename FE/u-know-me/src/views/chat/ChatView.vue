@@ -42,7 +42,13 @@
         }"
       >
         <div class="video-item" id="my-video">
-          <video class="my-real-video" style="display: none"></video>
+          <video
+            :class="{
+              'my-real-video1': main.option.matchingRoom == 1,
+              'my-real-video2': main.option.matchingRoom == 2,
+            }"
+            style="display: none"
+          ></video>
           <video
             id="test-video"
             style="display: none"
@@ -50,8 +56,18 @@
             controls
           ></video>
           <div class="preview">
-            <canvas class="guides" style="position: absolute"></canvas>
-            <video class="input_video" style=""></video>
+            <video
+              class="input_video"
+              style="position: absolute; left: 0%"
+            ></video>
+            <video
+              class="input_video2"
+              style="position: absolute; left: 0%; display: none"
+            ></video>
+            <canvas
+              class="guides"
+              style="position: absolute; left: 0%"
+            ></canvas>
           </div>
           <div><p>My Video</p></div>
         </div>
@@ -100,7 +116,6 @@ export default {
     AccuseModal,
     GameModal,
   },
-
   setup() {
     const account = useAccountStore();
     const chat = useChatStore();
@@ -127,6 +142,10 @@ export default {
     onMounted(() => {
       document.getElementById("joinBtn").click();
     });
+
+    setInterval(() => {
+      chat.getTime();
+    }, 1000);
 
     return {
       main,
@@ -198,7 +217,9 @@ export default {
             await chat.avatarLoad(account.currentUser.avatar.seq);
 
             // capture
-            const avatarCanvas = document.getElementById("avatarCanvas"+useMainStore().option.matchingRoom);
+            const avatarCanvas = document.getElementById(
+              "avatarCanvas" + useMainStore().option.matchingRoom
+            );
             avatarCanvas.style.display = "inline-block";
 
             const testVideo = document.getElementById("test-video");
@@ -360,7 +381,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: calc((100vh - 220px) / 3 * 4);
+  width: calc((100vh - 220px) / 3 * 5);
   height: calc(100vh - 200px);
   max-height: calc(100vw * 3 / 4);
   max-width: 100vw;
@@ -376,7 +397,9 @@ h1 {
   margin: 20px;
   text-align: center;
 }
-#avatarCanvas1 {
+/* 1:1일때 canvas 크기 */
+#avatarCanvas1,
+.my-real-video1 {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -385,7 +408,9 @@ h1 {
   height: calc(100vh - 260px) !important;
   max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
 }
-#avatarCanvas2 {
+/* 2:2일때 canvas 크기 */
+#avatarCanvas2,
+.my-real-video2 {
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -394,7 +419,8 @@ h1 {
   height: calc((100vh - 200px) / 2 - 80px) !important;
   max-height: calc((100vw / 2 - 40px) * 3 / 4) !important;
 }
-.my-real-video {
+.my-real-video1,
+.my-real-video2 {
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
@@ -409,16 +435,18 @@ h1 {
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
 }
-.preview .guides {
-  width: 100% !important;
-  height: auto;
-}
 .preview video {
   width: 100% !important;
   height: auto;
   border: 3px solid purple;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.preview .guides {
+  width: 100% !important;
+  height: auto;
+  border: 3px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
 }
 .nickName {
   height: 20px;

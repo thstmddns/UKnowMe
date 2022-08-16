@@ -3,15 +3,7 @@
     <div class="chat-keyword-container">
       <div class="keyword-box">
         <div class="keyword-content">
-          <p>"유노"님께서 입장하셨습니다.</p>
-          <p>"유노"님께서 입장하셨습니다.</p>
-          <p>"유노"님께서 입장하셨습니다.</p>
-          <p>이것은 더미 데이터입니다. 길게 한 번 작성해보겠습니다.</p>
-          <p>예쁘게 만들고 싶은데 디자인 솜씨가 부족한 걸까요.. 어렵네요.</p>
-          <p>
-            예쁘게 만들고 싶은데 디자인 솜씨가 부족한 걸까요.. 어렵네요.
-            더더더더더더 긴 문장입니다.
-          </p>
+          <p>테스트</p>
         </div>
       </div>
     </div>
@@ -55,7 +47,10 @@
     <div class="chat-icon-container">
       <div class="option-btn-list">
         <div class="option">
-          <button class="chat-btn-lg" @click="chat.gameBtn = 1">
+          <button
+            class="chat-btn-lg"
+            @click="chat.balanceClick(), (chat.gameBtn = 1)"
+          >
             <div>밸런스 게임</div>
             <img src="@/assets/chat/game-img.png" alt="" />
           </button>
@@ -65,10 +60,18 @@
           </button>
         </div>
         <div class="option">
-          <button class="chat-btn-lg">
+          <button class="chat-btn-lg" id="motionBtn" @click="chat.motionClick()">
             <div>모션 인식</div>
-            <img src="@/assets/chat/option-on-img.png" alt="" />
-            <!-- <img src="@/assets/chat/option-off-img.png" alt="" /> -->
+            <img
+              src="@/assets/chat/option-on-img.png"
+              alt=""
+              v-if="chat.motionCheck == true"
+            />
+            <img
+              src="@/assets/chat/option-off-img.png"
+              alt=""
+              v-if="chat.motionCheck == false"
+            />
           </button>
           <button
             @click="chat.leaveSession(), $router.replace({ name: 'main' })"
@@ -88,6 +91,7 @@
 
 <script>
 import { useChatStore } from "@/stores/chat/chat";
+import { onMounted } from "vue";
 
 export default {
   data() {
@@ -99,21 +103,23 @@ export default {
     const chat = useChatStore();
     var mobile = false;
 
-    //media 반응형
-    const mediaViewContent = window.matchMedia(`(max-width: 1120px)`); // 1
-    const viewChangeHandler = (mediaViewContent) => {
-      var toggleBtn = document.getElementById("avatarBtn");
-      var toggle = document.querySelector(".avatarCollection");
+    onMounted(() => {
+      //media 반응형
+      const mediaViewContent = window.matchMedia(`(max-width: 1120px)`); // 1
+      const viewChangeHandler = (mediaViewContent) => {
+        var toggleBtn = document.getElementById("avatarBtn");
+        var toggle = document.querySelector(".avatarCollection");
 
-      if (mediaViewContent.matches === true) {
-        toggle.style.left = "-300px";
-        toggleBtn.style.bottom = "50px";
-      } else {
-        toggle.style.left = "0px";
-        toggleBtn.style.bottom = "-70px";
-      }
-    };
-    mediaViewContent.addEventListener("change", viewChangeHandler);
+        if (mediaViewContent.matches === true) {
+          toggle.style.left = "-300px";
+          toggleBtn.style.bottom = "50px";
+        } else {
+          toggle.style.left = "0px";
+          toggleBtn.style.bottom = "-70px";
+        }
+      };
+      mediaViewContent.addEventListener("change", viewChangeHandler);
+    });
 
     return { chat, mobile };
   },
