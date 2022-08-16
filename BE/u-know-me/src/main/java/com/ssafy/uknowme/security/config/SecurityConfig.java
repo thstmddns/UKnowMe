@@ -12,6 +12,7 @@ import com.ssafy.uknowme.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,6 +22,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -56,6 +58,13 @@ public class SecurityConfig {
             "/swagger-ui/**"
     };
 
+    private final String[] PERMIT_ALL_MEMBER = {
+            "/member/login",
+            "/member/join",
+            "/member/check/**",
+            "/member/find/**",
+            "/member/password",
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -77,8 +86,11 @@ public class SecurityConfig {
                     .addFilterBefore(tokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(PERMIT_ALL_SWAGGER).permitAll()
-                    .antMatchers("/member/login", "/member/join", "/member/check/**", "/member/find/**", "/ws/chat", "/ws/matching").permitAll()
+                    .antMatchers(PERMIT_ALL_MEMBER).permitAll()
                     .anyRequest().authenticated()
+                .and()
+                    .exceptionHandling()
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
                     .oauth2Login()
                         .authorizationEndpoint()
