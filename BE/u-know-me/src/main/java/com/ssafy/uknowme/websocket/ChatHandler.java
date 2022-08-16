@@ -84,15 +84,15 @@ public class ChatHandler extends TextWebSocketHandler {
                 break;
             case "heart_2":
                 log.info("하트 버튼 클릭 요청");
-                for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
-                    try {
-                        sendLike2(roomcnt, session, UKNOWME);
-                    } catch (IndexOutOfBoundsException e) {
-                        log.info("리스트를 벗어나 버렸습니다.");
-                    } catch (IllegalStateException e) {
-                        log.info("웹소켓이 이미 닫혔습니다");
-                    }
+                String roomNum = jObject.get("room").toString();
+                try {
+                    sendLike2(roomNum, session, UKNOWME);
+                } catch (IndexOutOfBoundsException e) {
+                    log.info("리스트를 벗어나 버렸습니다.");
+                } catch (IllegalStateException e) {
+                    log.info("웹소켓이 이미 닫혔습니다");
                 }
+
                 break;
             case "balance_q_request_1":
                 log.info("밸런스 게임 요청");
@@ -146,12 +146,12 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_a_request_1":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp = String.format("{\n" +
-                        "\t\"key\" : \"balance_a_response_1\",\n" +
-                        "\t\"nickName\" : \"%s\",\n" +
-                        "\t\"answer\" : \"%s\",\n" +
-                        "\t\"question\" : \"%s\"\n" +
-                        "}", jObject.get("nickName").toString()
-                        ,jObject.get("question").toString()
+                                "\t\"key\" : \"balance_a_response_1\",\n" +
+                                "\t\"nickName\" : \"%s\",\n" +
+                                "\t\"answer\" : \"%s\",\n" +
+                                "\t\"question\" : \"%s\"\n" +
+                                "}", jObject.get("nickName").toString()
+                        , jObject.get("question").toString()
                         , jObject.get("answser").toString());
                 TextMessage balance_a_request_msg = new TextMessage(balance_a_request_tmp);
 
@@ -170,12 +170,12 @@ public class ChatHandler extends TextWebSocketHandler {
             case "balance_a_request_2":
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp2 = String.format("{\n" +
-                        "\t\"key\" : \"balance_a_response_2\",\n" +
-                        "\t\"answer\" : \"%s\",\n" +
+                                "\t\"key\" : \"balance_a_response_2\",\n" +
+                                "\t\"answer\" : \"%s\",\n" +
                                 "\t\"answer\" : \"%s\",\n" +
                                 "\t\"question\" : \"%s\"\n" +
                                 "}", jObject.get("nickName").toString()
-                        ,jObject.get("question").toString()
+                        , jObject.get("question").toString()
                         , jObject.get("answser").toString());
                 TextMessage balance_a_request_msg2 = new TextMessage(balance_a_request_tmp2);
 
@@ -370,27 +370,45 @@ public class ChatHandler extends TextWebSocketHandler {
         }
     }
 
-    public void sendLike2(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException {
-        for (int userCnt = 0; userCnt < PEOPLE_NUM_2VS2; userCnt++) {
-            if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(userCnt).getSession())) {
-                room2vs2.get(roomcnt).getUserInfos().get(userCnt).setLike(true);
-                int likeCnt = 0;
-                try {
-                    for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
-                        if (room2vs2.get(roomcnt).getUserInfos().get(i).isLike()) likeCnt++;
+    public void sendLike2(String roomNum, WebSocketSession session, TextMessage msg) throws IOException {
+try{
 
+
+        for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
+
+            try{
+                if (roomNum.equals(room2vs2.get(roomcnt).getRoomNum())) {
+                for (int userCnt = 0; userCnt < PEOPLE_NUM_2VS2; userCnt++) {
+
+                    if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(userCnt).getSession())) {
+                        room2vs2.get(roomcnt).getUserInfos().get(userCnt).setLike(true);
+
+                        int likeCnt = 0;
+
+                        try {
+                            for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
+                                if (room2vs2.get(roomcnt).getUserInfos().get(i).isLike()) {
+                                    log.info("하트가 눌렸습니다");
+                                    likeCnt++;
+                                }
+                            }
+                        } catch (Exception e) {
+                            log.info("아직 모든 인원이 차지 않았습니다");
+                        }
+                        log.info(likeCnt);
+                        if (likeCnt == PEOPLE_NUM_2VS2) {
+                            for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
+                                room2vs2.get(roomcnt).getUserInfos().get(i).getSession().sendMessage(msg);
+                            }
+                        }
                     }
-                } catch (Exception e) {
-                    log.info("아직 모든 인원이 차지 않았습니다");
                 }
-                if (likeCnt == PEOPLE_NUM_2VS2) {
-                    for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
-                        room2vs2.get(i).getUserInfos().get(userCnt).getSession().sendMessage(msg);
-                    }
-                }
-            }
+            }}catch(Exception e){
+                log.info("이미 사라진 방은 체크되지 않습니다");
+             }
+        }}catch (Exception e){
+    log.info("이미 사라진 방은 체크되지 않습니다");
         }
-
     }
 
 
@@ -401,7 +419,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
 
     public void sendUserMessage(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException, IllegalStateException {
-        if (session == room1vs1.get(roomcnt).getUser1Session()) { //자기가1이면
+        if (session.equals(room1vs1.get(roomcnt).getUser1Session())) { //자기가1이면
             room1vs1.get(roomcnt).getUser2Session().sendMessage(msg); //2한테 메세지 보내기
         } else {//자기가 2라면
             room1vs1.get(roomcnt).getUser1Session().sendMessage(msg); //1한테 메세지 보내기
