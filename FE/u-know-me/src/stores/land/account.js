@@ -36,6 +36,7 @@ export const useAccountStore = defineStore('account', {
       Authorization: `Bearer ${state.a_token}`,
       refreshToken: state.r_token
     }),
+    getRole: state => state.currentUser.role,
   },
   actions: {
     getToken() {

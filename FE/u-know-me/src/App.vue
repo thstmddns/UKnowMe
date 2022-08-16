@@ -10,8 +10,10 @@ export default {
 
 <style>
 html, body, #app {
-  height: 100;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
+  position: fixed;
 }
 div, p, span, button, label {
   font-family: 'NanumSquareRound';
