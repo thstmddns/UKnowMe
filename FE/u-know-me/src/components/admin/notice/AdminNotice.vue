@@ -29,10 +29,9 @@
               <td class="num">{{ num }}</td>
               <td class="notice-name">{{ a.member.name }}</td>
               <td>{{ a.title }}</td>
-              <td class="notice-delete" @click="admin.deleteNotice(a.seq)">
-                {{ a.createDate.slice(0, 10) }}&#160;&#160;&#160;<button
-                  class="delete-btn"
-                >
+              <td class="notice-delete">
+                {{ a.createDate.slice(0, 10) }}&#160;&#160;&#160;
+                <button class="delete-btn" @click="admin.deleteNotice(a.seq)">
                   삭제
                 </button>
               </td>
@@ -89,7 +88,7 @@ export default {
   background-color: #f0f1ff;
 }
 .notice-table-content {
-  height: 550px;
+  height: 600px;
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid #f0f1ff;

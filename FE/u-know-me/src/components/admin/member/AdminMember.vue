@@ -77,7 +77,7 @@ export default {
   background-color: #f0f1ff;
 }
 .member-table-content {
-  height: 550px;
+  height: 600px;
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid #f0f1ff;

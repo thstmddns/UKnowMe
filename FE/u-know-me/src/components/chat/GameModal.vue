@@ -1,14 +1,15 @@
 <template>
   <div class="game-modal-bg">
     <div class="game-modal">
-      <div class="close-btn" @click="gameBtn = 0">
+      <div class="close-btn" @click="chat.balanceAnswerClick('선택 포기')">
         <i class="fa-solid fa-xmark x-btn"></i>
       </div>
       <div class="game-modal-container">
-        <div class="game-title">제목</div>
+        <div class="game-title">밸런스 게임</div>
         <div class="game-content">
-          <div class="answer">답1</div>
-          <div class="answer">답2</div>
+          <button class="answser" @click="chat.balanceAnswerClick(chat.gameA1)">{{ chat.gameA1 }}</button>
+          <img class="game-img" src="@/assets/chat/vs.png" alt="" />
+          <button class="answser" @click="chat.balanceAnswerClick(chat.gameA2)">{{ chat.gameA2 }}</button>
         </div>
       </div>
     </div>
@@ -39,7 +40,7 @@ export default {
   width: 100vw;
   height: 100vh;
   z-index: 9;
-  /* background: rgba(0, 0, 0, 0.5); */
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
@@ -48,8 +49,8 @@ export default {
 .game-modal {
   position: relative;
   width: 500px;
-  height: 350px;
-  background-color: rgba(0, 0, 0, 0.2);
+  min-height: 350px;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 27px;
   left: 50%;
@@ -57,26 +58,34 @@ export default {
   transform: translate(-50%, -50%);
 }
 .game-modal-container {
+  display: flex;
+  flex-direction: column;
   padding: 32px 40px;
 }
 .game-title {
-  width: 85%;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  background-color: rgba(255, 255, 255, 0.8);
-
+  padding: 2% 11%;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #8227fa;
 }
 .game-content {
   display: flex;
-  justify-content: space-evenly;
-  margin: 20px 0;
+  flex: 1;
+  flex-direction: column;
+  align-content: center;
 }
-.answer {
-  background-color: rgba(255, 255, 255, 0.8);
-  width: 40%;
+.answser {
+  flex: 1;
+  width: 100%;
   height: 100px;
+  font-size: 16px;
   text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.game-img {
+  width: 75px;
+  margin: auto;
 }
 </style>

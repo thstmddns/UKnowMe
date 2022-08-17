@@ -3,8 +3,7 @@
   <div class="chat-sub">
     <div class="chat-keyword-container">
       <div class="keyword-box">
-        <div class="keyword-content">
-        </div>
+        <div class="keyword-content"></div>
       </div>
     </div>
 
@@ -60,10 +59,7 @@
           </button>
         </div>
         <div class="option">
-          <button
-            class="chat-btn-lg motionBtn"
-            @click="chat.motionClick()"
-          >
+          <button class="chat-btn-lg motionBtn" @click="chat.motionClick()">
             <img
               src="@/assets/chat/option-on-img.png"
               alt=""
@@ -77,7 +73,7 @@
             <div>모션 인식</div>
           </button>
           <button
-            @click="chat.leaveSession(), $router.replace({ name: 'main' })"
+            @click="chat.leaveSession()"
             class="chat-btn-lg"
           >
             <img src="@/assets/chat/exit-img.png" alt="" />
@@ -93,18 +89,14 @@
   <div class="chat-sub-mobile">
     <div class="chat-keyword-container">
       <div class="keyword-box">
-        <div class="keyword-content-mobile">
-        </div>
+        <div class="keyword-content-mobile" @click="chatSubMobileClick()"></div>
       </div>
     </div>
     <div class="chat-sub-mobile-child">
       <div class="chat-left-container" style="min-width: 160px; height: 300px">
         <div class="option-btn-list" style="margin: auto 0px">
           <div class="option" style="margin-left: auto; margin-right: 0">
-            <button
-              class="chat-btn-lg-mobile"
-              @click="chat.balanceClick(), (chat.gameBtn = 1)"
-            >
+            <button class="chat-btn-lg-mobile" @click="chat.balanceClick()">
               <img src="@/assets/chat/game-img.png" alt="" />
               <div>밸런스 게임</div>
             </button>
@@ -194,6 +186,7 @@ export default {
   data() {
     return {
       success: false,
+      chatExpand: false,
     };
   },
   setup() {
@@ -205,6 +198,7 @@ export default {
       var chatSubMobile = document.querySelector(".chat-sub-mobile");
       setTimeout(() => {
         // 접속당시 width가 1120px 보다 작을 때,
+        console.log("window.innerWidth!!!", window.innerWidth);
         if (window.innerWidth < 1120) {
           chatSub.style.bottom = "-200px";
           chatSubMobile.style.left = "50%";
@@ -220,7 +214,7 @@ export default {
             document.getElementById("avatarCanvas1").id = "avatarCanvas2";
           }
         }
-      }, 500);
+      }, 2000);
       //media 반응형
       const mediaViewContent = window.matchMedia(`(max-width: 1120px)`); // 1
       const viewChangeHandler = (mediaViewContent) => {
@@ -275,6 +269,16 @@ export default {
         }
       }
     },
+    chatSubMobileClick() {
+      if (!this.chatExpand) {
+        this.chatExpand = true;
+        document.querySelector(".keyword-content-mobile").style.height =
+          "calc(100vh - 400px)";
+      } else {
+        this.chatExpand = false;
+        document.querySelector(".keyword-content-mobile").style.height = "50px";
+      }
+    },
   },
 };
 </script>
@@ -282,7 +286,7 @@ export default {
 <style>
 /* 전역변수 */
 :root {
-  /* 비디오사이즈 1=모바일 2=데탑? */
+  /* 비디오사이즈 1=모바일 2=데탑 */
   --video-size: 2;
   /* 하단바 사이즈 */
   --chat-sub-size: 200px;
@@ -433,15 +437,18 @@ export default {
   width: 500px;
   height: 70%;
   margin: auto 30px;
-  background-color: #ebdcfe;
+  background-color: #ebdcfead;
+  backdrop-filter: blur(5px);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   flex: 1;
   font-weight: 600;
   overflow: auto;
 }
-.keyword-content, .keyword-content-mobile {
+.keyword-content,
+.keyword-content-mobile {
   margin: 2% 5%;
+  transition: 0.5s;
 }
 .keyword-content-mobile {
   height: 50px;
