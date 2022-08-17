@@ -29,10 +29,9 @@
               <td class="num">{{ num }}</td>
               <td class="notice-name">{{ a.member.name }}</td>
               <td>{{ a.title }}</td>
-              <td class="notice-delete" @click="admin.deleteNotice(a.seq)">
-                {{ a.createDate.slice(0, 10) }}&#160;&#160;&#160;<button
-                  class="delete-btn"
-                >
+              <td class="notice-delete">
+                {{ a.createDate.slice(0, 10) }}&#160;&#160;&#160;
+                <button class="delete-btn" @click="admin.deleteNotice(a.seq)">
                   삭제
                 </button>
               </td>
