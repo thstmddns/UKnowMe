@@ -8,6 +8,7 @@ import * as Holistic from "@mediapipe/holistic";
 import * as DrawConnectors from "@mediapipe/drawing_utils";
 import * as Camera from "@mediapipe/camera_utils";
 import { useMainStore } from '../main/main';
+import { useAccountStore } from '../land/account';
 
 let currentVrm;
 
@@ -28,6 +29,10 @@ export const useChatStore = defineStore('chat', {
     motionCheck: true,
     time: null,
     mobile: false,
+    gameQ : "질문",
+    gameA1 : "답1",
+    gameA2 : "답2",
+    ready: false,
   }),
   getters: {
 
@@ -39,6 +44,8 @@ export const useChatStore = defineStore('chat', {
       this.time = today.toLocaleTimeString('en-US', { hour12: false });
     },
     avatarLoad(id) {
+      console.log("1. 아바타 로드 시작");
+
       //three
       const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -142,9 +149,12 @@ export const useChatStore = defineStore('chat', {
           ),
         (error) => console.error(error)
       );
+      console.log("2. 아바타 로드 완료");
     },
 
     startHolistic() {
+      console.log("3. Holistic 로드 시작");
+
       const clamp = Kalidokit.Utils.clamp;
       const lerp = Kalidokit.Vector.lerp;
 
@@ -341,7 +351,9 @@ export const useChatStore = defineStore('chat', {
 
       const holistic = new Holistic.Holistic({
         locateFile: (file) => {
-          console.log("test :" + file);
+          if(file == "pose_landmark_full.tflite"){
+            this.ready = true;
+          }
           // return './holistic/' + file;
           return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
         },
@@ -407,25 +419,28 @@ export const useChatStore = defineStore('chat', {
 
       var avatarVideo = testVideo.srcObject.getVideoTracks()[0];
 
+      console.log("4. Holistic 로드 완료");
+
       return avatarVideo;
     },
 
     leaveSession() {
-      document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
-      if (this.session) this.session.disconnect();
+      // document.getElementById("avatarCanvas" + useMainStore().option.matchingRoom).remove();
+      // // --- Leave the session by calling 'disconnect' method over the Session object ---
+      // if (this.session) this.session.disconnect();
 
-      this.session = undefined;
-      this.mainStreamManager = undefined;
-      this.publisher = undefined;
-      this.subscribers = [];
-      this.OV = undefined;
+      // this.session = undefined;
+      // this.mainStreamManager = undefined;
+      // this.publisher = undefined;
+      // this.subscribers = [];
+      // this.OV = undefined;
 
-      window.removeEventListener("beforeunload", this.leaveSession);
+      // window.removeEventListener("beforeunload", this.leaveSession);
 
-      if (this.camera) {
-        this.camera.stop();
-      }
+      // if (this.camera) {
+      //   this.camera.stop();
+      // }
+      window.location.href = "https://uknowme.mooo.com/main";
     },
 
     socketConnect(seq) {
@@ -460,6 +475,15 @@ export const useChatStore = defineStore('chat', {
         }
         if (jsonData.key == "balance_q_response_" + useMainStore().option.matchingRoom) {
           self.systemMessagePrint("밸런스게임이 시작되었습니다.")
+          self.systemMessagePrint(jsonData.answer1+" / "+jsonData.answer2);
+          self.systemMessagePrint("당신의 선택은?");
+          self.gameQ = jsonData.question;
+          self.gameA1 = jsonData.answer1;
+          self.gameA2 = jsonData.answer2;
+          self.gameBtn = 1;
+        }
+        if (jsonData.key == "balance_a_response_" + useMainStore().option.matchingRoom) {
+          self.systemMessagePrint(jsonData.nickName + "님이 "+jsonData.question+"을(를) 선택하셨습니다.")
         }
       };
 
@@ -476,10 +500,12 @@ export const useChatStore = defineStore('chat', {
 
     systemMessagePrint(text) {
       let p = document.createElement("p");
+      let p2 = document.createElement("p");
       p.textContent = this.time + " : " + text;
+      p2.textContent =  this.time + " : " + text;
 
-      document.querySelector(".keyword-content").prepend(p);
       document.querySelector(".keyword-content-mobile").prepend(p);
+      document.querySelector(".keyword-content").prepend(p2);
     },
 
     balanceClick() {
@@ -487,7 +513,21 @@ export const useChatStore = defineStore('chat', {
         "key" : "balance_q_request_${useMainStore().option.matchingRoom}",
         "room" : "${this.SessionName}"
       }`
-      console.log("밸런스 버튼", message);
+      console.log("밸런스게임 버튼", message);
+
+      this.webSocket.send(message);
+    },
+
+    balanceAnswerClick(answser) {
+      this.gameBtn = 0
+      let message = `{
+        "key" : "balance_a_request_${useMainStore().option.matchingRoom}",
+        "room" : "${this.SessionName}",
+        "nickName" : "${useAccountStore().currentUser.nickname}",
+        "question" : "${this.gameQ}",
+        "answser" : "${answser}"
+      }`
+      console.log("밸런스게임 선택 버튼", message);
 
       this.webSocket.send(message);
     },
