@@ -89,7 +89,7 @@ export default {
   background-color: #f0f1ff;
 }
 .notice-table-content {
-  height: 550px;
+  height: 450px;
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid #f0f1ff;
