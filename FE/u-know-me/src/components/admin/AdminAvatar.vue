@@ -4,8 +4,15 @@
     <button class="admin-btn admin-avatar">아바타 추가</button>
     <div class="admin-avatar-collection">
       <div class="admin-avatar-card-container">
-        <admin-avatar-card class="admin-avatar-card"
-          v-for="(avatar, i) in avatars.avatar"
+        <admin-avatar-card
+          class="admin-avatar-card"
+          v-for="(avatar, i) in avatars.avatarMan"
+          :avatar="avatar"
+          :key="i"
+        />
+        <admin-avatar-card
+          class="admin-avatar-card"
+          v-for="(avatar, i) in avatars.avatarWoman"
           :avatar="avatar"
           :key="i"
         />
@@ -16,17 +23,17 @@
 
 <script>
 import AdminAvatarCard from "@/components/admin/AdminAvatarCard.vue";
-import { useAvatarStore } from '@/stores/main/avatar'
+import { useAvatarStore } from "@/stores/main/avatar";
 
 export default {
   name: "AdminAvatar",
   components: { AdminAvatarCard },
   setup() {
-    const avatars = useAvatarStore()
+    const avatars = useAvatarStore();
     return {
-      avatars
-    }
-  }
+      avatars,
+    };
+  },
 };
 </script>
 
@@ -41,11 +48,11 @@ export default {
   left: 90%;
   width: 100px;
   height: 40px;
-  margin: 0  0 15px 0;
+  margin: 0 0 15px 0;
 }
 .admin-avatar-collection {
   height: 700px;
-  overflow-x:auto;
+  overflow-x: auto;
   margin: auto;
   border: 1px solid #f0f1ff;
 }
