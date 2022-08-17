@@ -137,7 +137,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 TextMessage balance_q_request_msg2 = new TextMessage(balance_q_request_tmp2);
                 for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
                     try {
-                        sendUserMessage2(roomcnt, session, balance_q_request_msg2);
+                        sendUserMessage2Wooyeong(roomcnt, session, balance_q_request_msg2);
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
                     } catch (IllegalStateException e) {
@@ -186,7 +186,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
                 for (int roomcnt = 0; roomcnt < room2vs2.size(); roomcnt++) {
                     try {
-                        sendUserMessage2(roomcnt, session, balance_a_request_msg2);
+                        sendUserMessage2Wooyeong(roomcnt, session, balance_a_request_msg2);
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
@@ -435,6 +435,12 @@ try{
     public void sendUserMessage2(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException, IllegalStateException {
         for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
             if (session.equals(room2vs2.get(roomcnt).getUserInfos().get(i).getSession())) continue;
+            room2vs2.get(roomcnt).getUserInfos().get(i).getSession().sendMessage(msg);
+        }
+    }
+
+    public void sendUserMessage2Wooyeong(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException, IllegalStateException {
+        for (int i = 0; i < PEOPLE_NUM_2VS2; i++) {
             room2vs2.get(roomcnt).getUserInfos().get(i).getSession().sendMessage(msg);
         }
     }
