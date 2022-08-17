@@ -1,51 +1,21 @@
 <template>
   <div class="chat-body" id="main-container">
-    <div id="join" v-if="!session">
-      <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
-        <div class="form-group">
-          <p>
-            <label>Participant</label>
-            <input
-              v-model="myUserName"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p>
-            <label>Session</label>
-            <input
-              v-model="mySessionId"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p class="text-center">
-            <button
-              class="btn btn-lg btn-success"
-              id="joinBtn"
-              @click="joinSession()"
-            >
-              Join!
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div id="session" v-if="session">
+    <div id="session">
       <div
         :class="{
-          'video-container1': main.option.matchingRoom == 1 && chat.mobile == false,
-          'video-container2': main.option.matchingRoom == 2 || chat.mobile == true,
+          'video-container1':
+            main.option.matchingRoom == 1 && chat.mobile == false,
+          'video-container2':
+            main.option.matchingRoom == 2 || chat.mobile == true,
         }"
       >
         <div class="video-item" id="my-video">
           <video
             :class="{
-              'my-real-video1': main.option.matchingRoom == 1 && chat.mobile == false,
-              'my-real-video2': main.option.matchingRoom == 2 || chat.mobile == true,
+              'my-real-video1':
+                main.option.matchingRoom == 1 && chat.mobile == false,
+              'my-real-video2':
+                main.option.matchingRoom == 2 || chat.mobile == true,
             }"
             style="display: none"
           ></video>
@@ -83,6 +53,7 @@
     <accuse-modal v-if="chat.accuseBtn === 1" />
     <game-modal v-if="chat.gameBtn === 1" />
     <!-- <chat-something /> -->
+    <loading-modal v-if="chat.loading === 1" />
   </div>
 </template>
 
@@ -92,13 +63,13 @@ import { OpenVidu } from "openvidu-browser";
 import UserVideo from "@/components/chat/UserVideo";
 import { useChatStore } from "@/stores/chat/chat";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
 import { useAccountStore } from "@/stores/land/account";
 
 // import ChatSomething from "@/components/chat/ChatSomething.vue";
 import ChatSub from "@/components/chat/ChatSub.vue";
 import AccuseModal from "@/components/chat/AccuseModal.vue";
 import GameModal from "@/components/chat/GameModal.vue";
+import LoadingModal from "@/components/chat/LoadingModal.vue";
 import { useMainStore } from "@/stores/main/main";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -115,6 +86,7 @@ export default {
     ChatSub,
     AccuseModal,
     GameModal,
+    LoadingModal,
   },
   setup() {
     const account = useAccountStore();
@@ -138,10 +110,6 @@ export default {
     main;
     // if(main.option.matchingRoom == "1"){
     // }
-
-    onMounted(() => {
-      document.getElementById("joinBtn").click();
-    });
 
     setInterval(() => {
       chat.getTime();
@@ -167,10 +135,29 @@ export default {
       myUserName: this.account.currentUser.nickname,
     };
   },
+  mounted() {
+    this.joinSession();
+  },
   methods: {
-    joinSession() {
+    async joinSession() {
+      await this.account.fetchCurrentUser();
+      await this.chat.avatarLoad(this.account.currentUser.avatar.seq);
+      var avatarVideo = await this.chat.startHolistic();
+      var interval = setInterval(() => {
+        if (this.chat.ready) {
+          this.loadingText = "안정화 중..";
+          setTimeout(() => {
+            this.chat.loading = 0;
+            this.startOpenVidu(avatarVideo);
+          }, 10000);
+          clearInterval(interval);
+        }
+      }, 1000);
+    },
+
+    startOpenVidu(avatarVideo) {
+      console.log("5. OpenVidu 시작");
       const chat = useChatStore();
-      const account = useAccountStore();
 
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -213,10 +200,7 @@ export default {
       this.getToken(this.mySessionId).then((token) => {
         this.session
           .connect(token, { clientData: this.myUserName })
-          .then(async () => {
-            await chat.avatarLoad(account.currentUser.avatar.seq);
-            var avatarVideo = await chat.startHolistic();
-
+          .then(() => {
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
               audioSource: false, // The source of audio. If undefined default microphone
@@ -247,7 +231,6 @@ export default {
 
       window.addEventListener("beforeunload", chat.leaveSession);
     },
-
     updateMainVideoStreamManager(stream) {
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;

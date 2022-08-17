@@ -48,7 +48,7 @@ export default {
     };
   },
   methods: {
-    createReport(accusedMemberSeq, reportingMemberSeq) {
+    createReport(reportingMemberSeq, accusedMemberSeq) {
       const account = useAccountStore()
       axios({
         url: `https://uknowme.mooo.com:8443/report/create`,
@@ -128,7 +128,6 @@ export default {
 .accuse-btn-list {
   display: flex;
   justify-content: center;
-  margin-top: 6%;
 }
 
 .accuse-btn {
