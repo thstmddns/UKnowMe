@@ -16,8 +16,8 @@
       <div class="main-notice-table-content">
         <table>
           <tbody>
-            <tr v-for="(notice, num) in admin.notices" :key="num">
-              <td class="notice-detail-active" @click="noticeDetail(num)">{{ notice.title }}</td>
+            <tr v-for="(notice, num) in admin.notices" :key="num" class="notice-detail-active" @click="noticeDetail(num)">
+              <td>{{ notice.title }}</td>
               <td class="table-date">{{ notice.createDate.slice(0, 10) }}</td>
             </tr>
           </tbody>
