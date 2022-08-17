@@ -53,6 +53,7 @@
     <accuse-modal v-if="chat.accuseBtn === 1" />
     <game-modal v-if="chat.gameBtn === 1" />
     <!-- <chat-something /> -->
+    <loading-modal v-if="chat.loading === 1" />
   </div>
 </template>
 
@@ -68,6 +69,7 @@ import { useAccountStore } from "@/stores/land/account";
 import ChatSub from "@/components/chat/ChatSub.vue";
 import AccuseModal from "@/components/chat/AccuseModal.vue";
 import GameModal from "@/components/chat/GameModal.vue";
+import LoadingModal from "@/components/chat/LoadingModal.vue";
 import { useMainStore } from "@/stores/main/main";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -84,6 +86,7 @@ export default {
     ChatSub,
     AccuseModal,
     GameModal,
+    LoadingModal,
   },
   setup() {
     const account = useAccountStore();
@@ -142,7 +145,9 @@ export default {
       var avatarVideo = await this.chat.startHolistic();
       var interval = setInterval(() => {
         if (this.chat.ready) {
+          this.loadingText = "안정화 중..";
           setTimeout(() => {
+            this.chat.loading = 0;
             this.startOpenVidu(avatarVideo);
           }, 10000);
           clearInterval(interval);

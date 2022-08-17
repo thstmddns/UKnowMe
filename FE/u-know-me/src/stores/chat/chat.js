@@ -16,6 +16,8 @@ export const useChatStore = defineStore('chat', {
   state: () => ({
     accuseBtn: 0,
     gameBtn: 0,
+    loading: 1,
+    loadingText: "로딩중",
     webSocket: null,
     OV: undefined,
     session: undefined,
@@ -354,6 +356,7 @@ export const useChatStore = defineStore('chat', {
           if(file == "pose_landmark_full.tflite"){
             this.ready = true;
           }
+          this.loadingText = "불러오는 중..<br>"+file;
           // return './holistic/' + file;
           return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
         },
