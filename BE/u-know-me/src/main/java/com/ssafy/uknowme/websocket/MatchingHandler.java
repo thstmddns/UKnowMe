@@ -287,6 +287,10 @@ public class MatchingHandler extends TextWebSocketHandler {
     //1번 유저 기준으로 옵션 체크
     public boolean isMaching1vs1(User1vs1 user1, User1vs1 user2) {
 
+        if(user1.getAge()<=18){
+            if(user2.getAge()>18) return false;
+            return true;
+        }
 
         // 나이 체크
         if (user1.getMaxAge() < user2.getAge()) return false;
@@ -307,6 +311,12 @@ public class MatchingHandler extends TextWebSocketHandler {
 
     //1번 유저 기준으로 옵션 체크 - 후에 옵션 추가시 이 메소드에 넣으면 됨
     public boolean isMatching2v2(User2vs2 user1, User2vs2 user2) {
+
+        //미성년자 나이 체크
+        if(user1.getAge()<=18){
+            if(user2.getAge()>18) return false;
+            return true;
+        }
         // 나이 체크
         if (user1.getMaxAge() < user2.getAge()) return false;
         if (user1.getMinAge() > user2.getAge()) return false;
