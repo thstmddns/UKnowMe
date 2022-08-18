@@ -160,15 +160,12 @@ public class ChatHandler extends TextWebSocketHandler {
 
                 for (int roomcnt = 0; roomcnt < room1vs1.size(); roomcnt++) {
                     try {
-                        if (session.equals(room1vs1.get(roomcnt).getUser1Session())| session.equals(room1vs1.get(roomcnt).getUser2Session())) {
-                            sendRoomMessage(roomcnt, balance_a_request_msg);
-                        }
+                        sendRoomMessage_new(roomcnt, session, balance_a_request_msg);
                     } catch (IndexOutOfBoundsException e) {
                         log.info("리스트를 벗어나 버렸습니다.");
                     } catch (IllegalStateException e) {
                         log.info("웹소켓이 이미 닫혔습니다");
                     }
-                    break;
                 }
 
                 break;
@@ -418,8 +415,22 @@ try{
 
 
     public void sendRoomMessage(int roomcnt, TextMessage msg) throws IOException, IllegalStateException {
+        log.info("sendRoomMessage");
         room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
         room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
+    }
+
+    public void sendRoomMessage_new(int roomcnt, WebSocketSession session, TextMessage msg) throws IOException, IllegalStateException {
+        log.info("새로운 sendRoommessage에 들어왔습니다");
+        log.info(room1vs1.get(roomcnt).getUser1Session());
+        log.info(room1vs1.get(roomcnt).getUser2Session());
+        log.info(session);
+        if (session.equals(room1vs1.get(roomcnt).getUser1Session()) | session.equals(room1vs1.get(roomcnt).getUser2Session())) {
+                log.info("같습니다");
+                room1vs1.get(roomcnt).getUser1Session().sendMessage(msg);
+                room1vs1.get(roomcnt).getUser2Session().sendMessage(msg);
+
+        }
     }
 
 
