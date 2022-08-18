@@ -1,11 +1,10 @@
 <template>
   <div class="loading-modal-bg">
     <div class="loading-modal">
-      <img class="loading-img" src="@/assets/chat/loding_anim_r.gif" alt="ani">
+      <img class="loading-img" src="@/assets/chat/loding_anim.gif" alt="ani">
       <div class="loading-text-title">
         <span>LOADING</span>
       </div>
-      <div class="loading-text">{{ chat.loadingText }}</div>
     </div>
   </div>
 </template>
@@ -34,9 +33,6 @@ export default {
 }
 .loading-modal {
   position: absolute;
-  /* background-color: gray;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 27px; */
   left: 50%;
   top: 45%;
   transform: translate(-50%, -50%);
