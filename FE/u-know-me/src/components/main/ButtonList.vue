@@ -11,6 +11,7 @@
     <button class="main-btn" @click="main.btnCh = 5">
       공지사항&#160;&#160;&#160;<img src="@/assets/main/notice-img.png" alt="">
     </button>
+    <button class="main-btn" @click="$router.push('beta')">Beta</button>
   </div>
 
   <hgroup class="speech-bubble">

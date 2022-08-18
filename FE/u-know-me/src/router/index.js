@@ -44,8 +44,8 @@ const routes = [
     component: TelCerticate,
   },
   {
-    path: "/test2",
-    name: 'test2',
+    path: "/beta",
+    name: 'beta',
     component: Test2View,
   },
   {
@@ -71,7 +71,7 @@ router.beforeEach(async(to, from, next) => {
     login: 0,
   }
 
-  const noAuthPages = ['home', 'NotFound404', 'tc','test2']
+  const noAuthPages = ['home', 'NotFound404', 'tc']
 
   const isAuthRequired = !noAuthPages.includes(to.name)
 
