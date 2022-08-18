@@ -1,6 +1,5 @@
 <template>
-  <div>Unity Test Page</div>
-  <iframe src="./Build/index.html" frameborder="0" width="100%" height="700px"></iframe>
+  <iframe src="./Build/index.html" frameborder="0" width="100%" height="100%"></iframe>
 </template>
 
 <script>

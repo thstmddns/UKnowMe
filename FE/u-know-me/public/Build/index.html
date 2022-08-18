@@ -11,15 +11,17 @@
     <script>
       var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build.json", {onProgress: UnityProgress});
     </script>
+    <style>
+      body {
+        background: linear-gradient(180deg, #ebdcfe 0%, rgba(217, 217, 217, 0) 100%);
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
     <div class="webgl-content">
-      <div id="unityContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
-        <div class="title">uKnowMe</div>
-      </div>
-    </div>
+      <div id="unityContainer" style="width: 60vw; height: 37.5vw"></div>
   </body>
 </html>
