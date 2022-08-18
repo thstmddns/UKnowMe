@@ -1,4 +1,5 @@
 <template>
+  <HeartRain v-if="chat.heartRainFlag"/>
   <div class="chat-body" id="main-container">
     <div id="session">
       <div
@@ -70,6 +71,7 @@ import ChatSub from "@/components/chat/ChatSub.vue";
 import AccuseModal from "@/components/chat/AccuseModal.vue";
 import GameModal from "@/components/chat/GameModal.vue";
 import LoadingModal from "@/components/chat/LoadingModal.vue";
+import HeartRain from "@/components/chat/HeartRain.vue";
 import { useMainStore } from "@/stores/main/main";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -87,6 +89,7 @@ export default {
     AccuseModal,
     GameModal,
     LoadingModal,
+    HeartRain,
   },
   setup() {
     const account = useAccountStore();
@@ -137,6 +140,9 @@ export default {
   },
   mounted() {
     this.joinSession();
+    setInterval(() => {
+      this.chat.keywordMessage()
+    }, 10000);
   },
   methods: {
     async joinSession() {
@@ -149,7 +155,7 @@ export default {
           setTimeout(() => {
             this.chat.loading = 0;
             this.startOpenVidu(avatarVideo);
-          }, 10000);
+          }, 3000);
           clearInterval(interval);
         }
       }, 1000);
@@ -203,7 +209,7 @@ export default {
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
             let publisher = this.OV.initPublisher(undefined, {
-              audioSource: false, // The source of audio. If undefined default microphone
+              audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: avatarVideo, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not

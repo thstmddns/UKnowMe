@@ -10,6 +10,10 @@ import * as Camera from "@mediapipe/camera_utils";
 import { useMainStore } from '../main/main';
 import { useAccountStore } from '../land/account';
 
+import sr from '@/api/spring-rest'
+import axios from 'axios'
+
+
 let currentVrm;
 
 export const useChatStore = defineStore('chat', {
@@ -35,6 +39,7 @@ export const useChatStore = defineStore('chat', {
     gameA1 : "답1",
     gameA2 : "답2",
     ready: false,
+    heartRainFlag: false,
   }),
   getters: {
 
@@ -475,6 +480,10 @@ export const useChatStore = defineStore('chat', {
         if (jsonData.key == "uknowme") {
           self.systemMessagePrint("서로의 하트가 눌렸습니다! 카메라로 변경됩니다.")
           self.toCam();
+          self.heartRainFlag = true;
+          setTimeout(() => {
+            self.heartRainFlag = false;
+          }, 3000);
         }
         if (jsonData.key == "balance_q_response_" + useMainStore().option.matchingRoom) {
           self.systemMessagePrint("밸런스게임이 시작되었습니다.")
@@ -625,6 +634,29 @@ export const useChatStore = defineStore('chat', {
           console.log('New publisher published!');
         });
       });
+    },
+    keywordMessage() {
+      const account = useAccountStore()
+      axios({
+        url: sr.features.keywordRand(),
+        method: 'get',
+        headers: account.authHeader,
+      })
+        .then(res => {
+          this.keywordMessagePrint(res.data.keyword)
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
+    },
+    keywordMessagePrint(text) {
+      let p = document.createElement("p");
+      let p2 = document.createElement("p");
+      p.innerHTML = `${this.time} : <span style="color:red;">${text}</span> 은(는) 어떠신가요?`;
+      p2.innerHTML =  `${this.time} : <span style="color:red;">${text}</span> 은(는) 어떠신가요?`;
+
+      document.querySelector(".keyword-content-mobile").prepend(p);
+      document.querySelector(".keyword-content").prepend(p2);
     },
   },
 })
