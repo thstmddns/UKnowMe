@@ -4,11 +4,11 @@ import { useAccountStore } from "@/stores/land/account";
 // account
 // import List from './components/컴포넌트명.vue';
 import LandPageView from '@/views/land/LandPageView.vue'
-import SnsPopUpView from '@/views/land/SnsPopUp.vue'
 import ChatView from '@/views/chat/ChatView.vue'
 import MainView from '@/views/main/MainView.vue'
 import AdminView from '@/views/admin/AdminView.vue'
 import TelCerticate from '@/views/land/TelCerticate.vue'
+import Test2View from '@/views/land/Test2View.vue'
 
 import NotFound404 from '@/views/NotFound404.vue'
 
@@ -22,11 +22,6 @@ const routes = [
     path: "/",
     name: 'home',
     component: LandPageView,
-  },
-  {
-    path: "/ntpu",
-    name: 'ntpu',
-    component: SnsPopUpView,
   },
   {
     path: "/chat",
@@ -47,6 +42,11 @@ const routes = [
     path: "/tc",
     name: 'tc',
     component: TelCerticate,
+  },
+  {
+    path: "/test2",
+    name: 'test2',
+    component: Test2View,
   },
   {
     path: '/404',
@@ -71,7 +71,7 @@ router.beforeEach(async(to, from, next) => {
     login: 0,
   }
 
-  const noAuthPages = ['home', 'NotFound404']
+  const noAuthPages = ['home', 'NotFound404', 'tc','test2']
 
   const isAuthRequired = !noAuthPages.includes(to.name)
 
