@@ -44,6 +44,7 @@ export default {
     keyword: () => HOST + FEATURES + 'keyword/create',
     keywordList: () => HOST + FEATURES + 'keyword/list',
     keywordInfo: keywordSeq => HOST + FEATURES + 'keyword/' + `${keywordSeq}`,
+    keywordRand: () => HOST + FEATURES + 'keyword/random',
   },
   rooms: {
     like: memberSeq => HOST + ROOMS + 'like/' + `${memberSeq}`,
