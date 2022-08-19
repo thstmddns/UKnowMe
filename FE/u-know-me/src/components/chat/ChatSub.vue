@@ -204,7 +204,7 @@ export default {
           chatSubMobile.style.left = "50%";
           document.documentElement.style.setProperty(
             "--chat-sub-size",
-            "380px"
+            "400px"
           );
           // 1대1일때 모바일
           if (main.option.matchingRoom == "1") {
@@ -224,7 +224,7 @@ export default {
           chatSubMobile.style.left = "50%";
           document.documentElement.style.setProperty(
             "--chat-sub-size",
-            "380px"
+            "400px"
           );
           if (main.option.matchingRoom == "1") {
             document.documentElement.style.setProperty("--video-size", "1");
@@ -336,7 +336,7 @@ export default {
     left: 50%;
   }
   :root {
-    --chat-sub-size: 380px;
+    --chat-sub-size: 400px;
   }
 }
 .chat-keyword-container {
