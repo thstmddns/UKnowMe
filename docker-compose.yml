@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  web-front:
+    build: ./FE/u-know-me
+    ports:
+      - "3000:80"
+      - "443:443"
+    volumes:
+      - ../volumes-nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/cerbot:/var/www/certbot
+
+  web-back:
+    build: ./BE/u-know-me
+    ports:
+      - "8080:8080"
+      - "8443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
