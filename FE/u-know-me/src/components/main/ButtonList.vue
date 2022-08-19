@@ -9,9 +9,18 @@
       정보수정&#160;&#160;&#160;<i class="fa-solid fa-gear"></i>
     </button>
     <button class="main-btn" @click="main.btnCh = 5">
-      공지사항&#160;&#160;&#160;<img src="@/assets/main/notice-img.png" alt="">
+      공지사항&#160;&#160;&#160;<img
+        src="@/assets/main/notice-img.png"
+        alt=""
+      />
     </button>
-    <button class="main-btn" @click="$router.push('beta')">Beta</button>
+    <img
+      class="main-btn-mata"
+      src="@/assets/main/metaverse2.png"
+      style="width: 175px; margin: 10px;"
+      @click="$router.push('beta')"
+      alt=""
+    />
   </div>
 
   <hgroup class="speech-bubble">
@@ -176,29 +185,24 @@ export default {
 
           // 신고할 사람 객체 만들기
           var otherJson = new Object();
-          //1          
+          //1
           otherJson.userName = data.user1_nickName;
           otherJson.userSeq = data.user1_seq;
           JSON.stringify(otherJson);
 
-          
-          if(self.account.currentUser.seq != otherJson.userSeq ) {
-              self.otherPeople.push(otherJson);
+          if (self.account.currentUser.seq != otherJson.userSeq) {
+            self.otherPeople.push(otherJson);
           }
-              
-          
-          
+
           //2
           otherJson = new Object();
           otherJson.userName = data.user2_nickName;
           otherJson.userSeq = data.user2_seq;
           JSON.stringify(otherJson);
-         
-             if(self.account.currentUser.seq != otherJson.userSeq ) {
-              self.otherPeople.push(otherJson);
-          }
 
-          
+          if (self.account.currentUser.seq != otherJson.userSeq) {
+            self.otherPeople.push(otherJson);
+          }
 
           // 2대2일때,
           if (data.key == "users_seq_response_2") {
@@ -207,17 +211,17 @@ export default {
             otherJson.userName = data.user3_nickName;
             otherJson.userSeq = data.user3_seq;
             JSON.stringify(otherJson);
-               if(self.account.currentUser.seq != otherJson.userSeq ) {
+            if (self.account.currentUser.seq != otherJson.userSeq) {
               self.otherPeople.push(otherJson);
-          }
+            }
             //4
             otherJson = new Object();
             otherJson.userName = data.user4_nickName;
             otherJson.userSeq = data.user4_seq;
             JSON.stringify(otherJson);
-               if(self.account.currentUser.seq != otherJson.userSeq ) {
+            if (self.account.currentUser.seq != otherJson.userSeq) {
               self.otherPeople.push(otherJson);
-          }
+            }
           }
 
           setTimeout(() => router.push({ name: "chat" }), 3000);

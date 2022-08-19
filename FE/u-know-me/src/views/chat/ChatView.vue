@@ -140,9 +140,10 @@ export default {
   },
   mounted() {
     this.joinSession();
+    this.chat.systemMessagePrint("상호간에 매너채팅은 필수! 좋은 만남 보내세요~");
     setInterval(() => {
       this.chat.keywordMessage()
-    }, 10000);
+    }, 30000);
   },
   methods: {
     async joinSession() {
