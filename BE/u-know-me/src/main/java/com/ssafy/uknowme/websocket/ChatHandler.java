@@ -173,7 +173,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 log.info("밸런스 게임 답 요청");
                 String balance_a_request_tmp2 = String.format("{\n" +
                                 "\t\"key\" : \"balance_a_response_2\",\n" +
-                                "\t\"answer\" : \"%s\",\n" +
+                                "\t\"nickname\" : \"%s\",\n" +
                                 "\t\"answer\" : \"%s\",\n" +
                                 "\t\"question\" : \"%s\"\n" +
                                 "}", jObject.get("nickName").toString()

@@ -33,7 +33,7 @@ export const useChatStore = defineStore('chat', {
     SessionName: "SessionA",
     otherPeople: [],
     motionCheck: true,
-    time: null,
+    time: "채팅시작!",
     mobile: false,
     gameQ : "질문",
     gameA1 : "답1",

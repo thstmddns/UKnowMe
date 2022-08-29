@@ -40,7 +40,7 @@
               style="position: absolute; left: 0%"
             ></canvas>
           </div>
-          <div><p>My Video</p></div>
+          <div><p>{{account.currentUser.nickname}}</p></div>
         </div>
         <user-video
           v-for="sub in subscribers"
