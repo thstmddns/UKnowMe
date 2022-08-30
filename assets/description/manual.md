@@ -4,7 +4,7 @@
 
 1. 작업할 공간에 폴더를 하나 생성합니다.
 2. 생성한 폴더를 열고 해당 위치에서 `Git Bash`를 열어줍니다. (`CMD`와 같은 다른 터미널도 상관없습니다!)
-3. `git clone https://lab.ssafy.com/s07-webmobile1-sub2/S07P12D104.git`를 터미널에 입력해줍니다.
+3. `git clone https://github.com/mungmnb777/u-know-me.git`를 터미널에 입력해줍니다.
 4. 그러면 `S07P12D104` 폴더가 생깁니다. 앞으로 이 폴더를 `root directory`라고 하겠습니다. 이후 프론트엔드, 백엔드에 따라 원하는 작업 공간으로 가서 빌드 과정을 수행해주시면 됩니다.
     - 프론트엔드 : `FE/u-know-me`
     - 백엔드 : `BE/u-know-me`

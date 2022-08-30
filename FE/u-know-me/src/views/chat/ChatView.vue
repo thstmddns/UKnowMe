@@ -77,7 +77,7 @@ import { useMainStore } from "@/stores/main/main";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-const OPENVIDU_SERVER_URL = "https://i7d104.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://uknowme.mooo.com:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
